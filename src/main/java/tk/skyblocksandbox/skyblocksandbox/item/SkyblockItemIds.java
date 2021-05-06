@@ -13,4 +13,9 @@ public final class SkyblockItemIds {
      */
     public static final String NECRONS_HANDLE = "NECRON_HANDLE";
 
+    /*
+     * Bows
+     */
+    public static final String BONEMERANG = "BOW_BOOMERANG";
+
 }

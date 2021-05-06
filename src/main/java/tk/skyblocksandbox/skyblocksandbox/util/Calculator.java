@@ -80,9 +80,6 @@ public final class Calculator {
     }
 
     public static long damage(SkyblockEntity entity, SkyblockPlayer sbPlayer, boolean doKnockback) {
-
-        sbPlayer.sendMessage("entity health: " + entity.getEntityHealth());
-
         /*
          * Variables
          */
@@ -132,7 +129,7 @@ public final class Calculator {
         entity.damage(Math.round(damage));
 
         if(doKnockback && entity.getEntityData().canTakeKnockback) {
-            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> entity.getBukkitEntity().setVelocity( entity.getBukkitEntity().getLocation().getDirection().multiply(-0.4) ), 1L);
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> entity.getBukkitEntity().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.4) ), 1L);
         }
 
         if(entity.getEntityData().isBoss) {

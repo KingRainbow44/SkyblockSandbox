@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.Hyperion;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.MidasStaff;
 import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
@@ -19,6 +20,7 @@ public final class SkyblockItemManager {
     public SkyblockItemManager() {
         registerItem(new Hyperion());
         registerItem(new MidasStaff());
+        registerItem(new Bonemerang());
 
         registerItem(new NecronsHandle());
     }

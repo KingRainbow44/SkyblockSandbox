@@ -1,8 +1,8 @@
 package tk.skyblocksandbox.skyblocksandbox.item.bows;
 
 import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -32,12 +32,11 @@ public final class Bonemerang extends SkyblockItem {
 
     @Override
     public Collection<String> getLore() {
-        Lore generator = new Lore(0,
-                "",
+        Lore generator = new Lore(9,
                 Utility.colorize("&7Deals &cdouble damage &7when"),
                 Utility.colorize("&7coming back. Pierces up to &e10"),
                 Utility.colorize("&7foes."),
-                " "
+                ""
         );
 
         return generator.genericLore(this);
@@ -71,16 +70,24 @@ public final class Bonemerang extends SkyblockItem {
         if(!boneCheck(player)) return;
 
         Player bukkitPlayer = player.getBukkitPlayer();
+        ItemStack bone = bukkitPlayer.getInventory().getItemInMainHand();
 
         ArmorStand stand = (ArmorStand) bukkitPlayer.getWorld().spawnEntity(bukkitPlayer.getLocation().add(0, 1, 0), EntityType.ARMOR_STAND);
         Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
+
+        NBTItem nbtItem = new NBTItem(bone, true);
+
+        float pitch = bukkitPlayer.getLocation().getPitch();
+        float yaw = bukkitPlayer.getLocation().getYaw();
+
+        final Vector[] afterTeleport = {null};
 
         stand.setInvisible(true);
         stand.setInvulnerable(true);
         stand.setGravity(false);
 
         stand.setArms(false);
-        stand.getEquipment().setItemInMainHand(createItem());
+        stand.getEquipment().setItemInMainHand(new ItemStack(Material.BONE));
         stand.setRightArmPose(new EulerAngle(Math.toRadians(350), Math.toRadians(120), Math.toRadians(0)));
         stand.setBasePlate(false);
 
@@ -93,16 +100,20 @@ public final class Bonemerang extends SkyblockItem {
             public void run() {
                 ran++;
 
-                if(ran == 30) {
+                if(ran == 28) {
                     stand.remove();
+                    returnBone(bone);
+
                     cancel();
                     return;
                 }
 
                 int i = ran;
                 int num = 120;
-                int angle = 0;
+                int angle;
                 boolean back;
+
+                Location loc = null;
 
                 if(i < 13) {
                     angle = (i * 20) + num;
@@ -110,37 +121,52 @@ public final class Bonemerang extends SkyblockItem {
                 } else {
                     angle = (i * 20) - num;
                     back = true;
+
+                    loc = bukkitPlayer.getLocation();
+                    loc.setDirection(teleportTo);
                 }
+
+                if(stand.getLocation().getBlock().getType() != Material.AIR) {
+                    stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, stand.getLocation(), 3);
+
+                    stand.remove();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if(nbtItem.getInteger("ejectedBonemerang") == 1) {
+                                returnBone(bone);
+                                cancel();
+                            }
+                        }
+                    }.runTaskLater(SkyblockSandbox.getInstance(), 20*3L);
+
+                    cancel();
+                    return;
+                }
+
                 stand.setRightArmPose(new EulerAngle(Math.toRadians(0), Math.toRadians(angle), Math.toRadians(380)));
 
                 if(i % 2 == 0 && i < 13) {
                     stand.teleport(stand.getLocation().add(teleportTo).multiply(1));
                     stand.teleport(stand.getLocation().add(teleportTo).multiply(1));
                 } else if(i % 2 == 0) {
-                    stand.teleport(stand.getLocation().subtract(player.getBukkitPlayer().getLocation().getDirection().normalize().multiply(1)).multiply(1));
-                    stand.teleport(stand.getLocation().subtract(player.getBukkitPlayer().getLocation().getDirection().normalize().multiply(1)).multiply(1));
+                    stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
+                    stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
 
                 for(Entity e : stand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != player.getBukkitPlayer()) {
-                        Damageable entity = (Damageable)e;
+                        Damageable entity = (Damageable) e;
                         if(entity instanceof ArmorStand) return;
+                        if(entity instanceof Player) return;
 
-                        if(entity instanceof Player) {
-                            SkyblockPlayer sbTarget = (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity);
-                            Calculator.damage(sbTarget, 30f, true, false);
-                            if(back) {
-                                Calculator.damage(sbTarget, 30f, true, false);
-                            }
-                        }else{
-                            SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
-                            if(sbEntity == null) return;
+                        SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
+                        if(sbEntity == null) return;
 
-                            entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 0));
+                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 0));
+                        Calculator.damage(sbEntity, player, true);
+                        if(back) {
                             Calculator.damage(sbEntity, player, true);
-                            if(back) {
-                                Calculator.damage(sbEntity, player, true);
-                            }
                         }
 
                     }
@@ -156,44 +182,20 @@ public final class Bonemerang extends SkyblockItem {
      */
     private boolean boneCheck(SkyblockPlayer player) {
         ItemStack item = player.getBukkitPlayer().getInventory().getItemInMainHand();
-        PersistentDataContainer dataContainer = item.getItemMeta().getPersistentDataContainer();
 
-        if(!DataContainerAPI.has(item, SkyblockSandbox.getInstance(), "ejectedBonemerang", PersistentDataType.INTEGER)) {
-            DataContainerAPI.set(dataContainer, SkyblockSandbox.getInstance(), "ejectedBonemerang", 0);
+        NBTItem nbtItem = new NBTItem(item, true);
+
+        if(!nbtItem.hasKey("ejectedBonemerang")) {
+            nbtItem.setInteger("ejectedBonemerang", 0);
         }
 
-        Object ejected = DataContainerAPI.get(dataContainer, SkyblockSandbox.getInstance(), "ejectedBonemerang", PersistentDataType.INTEGER);
-        if(!(ejected instanceof Integer)) return false;
+        int ejected = nbtItem.getInteger("ejectedBonemerang");
 
-        if((int) ejected == 1) {
+        if(ejected == 1) {
             return false;
         } else {
             item.setType(Material.GHAST_TEAR);
-            DataContainerAPI.set(dataContainer, SkyblockSandbox.getInstance(), "ejectedBonemerang", 1);
-
-            new BukkitRunnable() {
-                /**
-                 * When an object implementing interface {@code Runnable} is used
-                 * to create a thread, starting the thread causes the object's
-                 * {@code run} method to be called in that separately executing
-                 * thread.
-                 * <p>
-                 * The general contract of the method {@code run} is that it may
-                 * take any action whatsoever.
-                 *
-                 * @see Thread#run()
-                 */
-                @Override
-                public void run() {
-                    Object ejected = DataContainerAPI.get(dataContainer, SkyblockSandbox.getInstance(), "ejectedBonemerang", PersistentDataType.INTEGER);
-                    if(!(ejected instanceof Integer)) return;
-
-                    if((int) ejected == 1) {
-                        returnBone(item);
-                        cancel();
-                    }
-                }
-            }.runTaskLater(SkyblockSandbox.getInstance(), 20*3L);
+            nbtItem.setInteger("ejectedBonemerang", 1);
             return true;
         }
     }
@@ -202,13 +204,14 @@ public final class Bonemerang extends SkyblockItem {
      * Return Bonemerang function.
      */
     private void returnBone(ItemStack item) {
-        PersistentDataContainer dataContainer = item.getItemMeta().getPersistentDataContainer();
+        if(item.getType() == Material.AIR) return;
 
-        if(!DataContainerAPI.has(item, SkyblockSandbox.getInstance(), "ejectedBonemerang", PersistentDataType.INTEGER)) {
+        NBTItem nbtItem = new NBTItem(item, true);
+        if(!nbtItem.hasKey("ejectedBonemerang")) {
             return;
         }
 
-        DataContainerAPI.set(dataContainer, SkyblockSandbox.getInstance(), "ejectedBonemerang", 0);
+        nbtItem.setInteger("ejectedBonemerang", 0);
         item.setType(Material.BONE);
     }
 }

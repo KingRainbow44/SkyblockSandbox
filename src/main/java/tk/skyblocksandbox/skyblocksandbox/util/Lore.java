@@ -61,54 +61,56 @@ public final class Lore {
         int line = 0;
         if(hasExtraLore && insertLocation == 0) {
             finalLore.addAll(Arrays.asList(extraLore));
+            line = (extraLore.length - 1);
         }
 
         /*
          * Lore Generation: Percentages
          */
+        boolean addBreak1 = false;
         if(item.getItemData().isDungeonItem && !item.getItemData().isMaterial) {
             finalLore.add(line, Utility.colorize("&7Gear Score: &d--- &8(---)"));
-            line++;
+            line++; addBreak1 = true;
         }
 
         if(item.getItemData().baseDamage > 0) {
             finalLore.add(line, Utility.colorize("&7Damage: &c+" + item.getItemData().finalDamage()));
-            line++;
+            line++; addBreak1 = true;
         }
 
-        if(item.getItemData().baseCriticalDamage > 0) {
+        if(item.getItemData().baseStrength > 0) {
             finalLore.add(line, Utility.colorize("&7Strength: &c+" + item.getItemData().finalStrength()));
-            line++;
+            line++; addBreak1 = true;
         }
 
         if(item.getItemData().baseCriticalStrikeChance > 0) {
             finalLore.add(line, Utility.colorize("&7Crit Chance: &c+" + item.getItemData().finalCritChance() + "%"));
-            line++;
+            line++; addBreak1 = true;
         }
 
         if(item.getItemData().baseCriticalDamage > 0) {
             finalLore.add(line, Utility.colorize("&7Crit Damage: &c+" + item.getItemData().finalCritDamage() + "%"));
-            line++;
+            line++; addBreak1 = true;
         }
 
         if(item.getItemData().baseBonusAttackSpeed > 0) {
             finalLore.add(line, Utility.colorize("&7Bonus Attack Speed: &c+" + item.getItemData().finalAttackSpeed() + "%"));
-            line++;
+            line++; addBreak1 = true;
         }
 
         if(item.getItemData().baseSeaCreatureChance > 0) {
             finalLore.add(line, Utility.colorize("&7Sea Creature Chance: &c+" + item.getItemData().finalSeaCreatureChance() + "%"));
-            line++;
+            line++; addBreak1 = true;
         }
 
         if(item.getItemData().baseAbilityDamage > 0) {
             finalLore.add(line, Utility.colorize("&7Ability Damage: &c+" + item.getItemData().finalAbilityDamage() + "%"));
-            line++;
+            line++; addBreak1 = true;
         }
 
 
         // Break
-        if(line > 1) {
+        if(line > 1 && addBreak1) {
             finalLore.add(line, " ");
             line++;
         }
@@ -117,49 +119,50 @@ public final class Lore {
         /*
          * Lore Generation: Integers
          */
+        boolean addBreak2 = false;
         if(item.getItemData().baseHealth > 0) {
             finalLore.add(line, Utility.colorize("&7Health: &a+" + item.getItemData().finalHealth() + " HP"));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().baseDefense > 0) {
             finalLore.add(line, Utility.colorize("&7Defense: &a+" + item.getItemData().finalDefense()));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().baseSpeed > 0) {
             finalLore.add(line, Utility.colorize("&7Speed: &a+" + item.getItemData().finalSpeed()));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().baseIntelligence > 0) {
             finalLore.add(line, Utility.colorize("&7Intelligence: &a+" + item.getItemData().finalIntelligence()));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().baseTrueDefense > 0) {
             finalLore.add(line, Utility.colorize("&7True Defense: &a+" + item.getItemData().finalTrueDefense()));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().baseMagicFind > 0) {
             finalLore.add(line, Utility.colorize("&7Magic Find: &a+" + item.getItemData().finalMagicFind()));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().basePetLuck > 0) {
             finalLore.add(line, Utility.colorize("&7Pet Luck: &a+" + item.getItemData().finalPetLuck()));
-            line++;
+            line++; addBreak2 = true;
         }
 
         if(item.getItemData().baseFerocity > 0) {
             finalLore.add(line, Utility.colorize("&7Ferocity: &a+" + item.getItemData().finalFerocity()));
-            line++;
+            line++; addBreak2 = true;
         }
 
 
         // Break
-        if(line > 1) {
+        if(line > 1 && addBreak2) {
             finalLore.add(line, " ");
             line++;
         }
@@ -175,20 +178,17 @@ public final class Lore {
                     finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName)); line++;
                     break;
                 case 1:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lLEFT CLICK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lLEFT CLICK")); line++;
                     break;
                 case 2:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lRIGHT CLICK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lRIGHT CLICK")); line++;
                     break;
                 case 3:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lSNEAK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lSNEAK")); line++;
                     break;
             }
 
-            Bukkit.getLogger().info("" + finalLore.size());
             for(String loreLine : lines) {
-                Bukkit.getLogger().info(loreLine + ";" + line);
-
                 finalLore.add(line, Utility.colorize("&7" + loreLine));
                 line++;
             }
@@ -202,7 +202,7 @@ public final class Lore {
         }
 
         if(item.getItemData().hasSecondAbility) {
-            finalLore.add(line, " ");
+            finalLore.add(line, " "); line++;
 
             String[] lines = item.getItemData().abilityDescription2.split("\n");
             switch(item.getItemData().abilityTrigger2) {
@@ -210,19 +210,17 @@ public final class Lore {
                     finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2)); line++;
                     break;
                 case 1:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2 + " &e&lLEFT CLICK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2 + " &e&lLEFT CLICK")); line++;
                     break;
                 case 2:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2 + " &e&lRIGHT CLICK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2 + " &e&lRIGHT CLICK")); line++;
                     break;
                 case 3:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2 + " &e&lSNEAK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName2 + " &e&lSNEAK")); line++;
                     break;
             }
 
-            Bukkit.getLogger().info("" + lines.length);
             for(String loreLine : lines) {
-                Bukkit.getLogger().info(loreLine + ";" + line);
 
                 finalLore.add(line, Utility.colorize("&7" + loreLine));
                 line++;
@@ -237,7 +235,7 @@ public final class Lore {
         }
 
         if(item.getItemData().hasThirdAbility) {
-            finalLore.add(line, " ");
+            finalLore.add(line, " "); line++;
 
             String[] lines = item.getItemData().abilityDescription3.split("\n");
             switch(item.getItemData().abilityTrigger3) {
@@ -245,19 +243,17 @@ public final class Lore {
                     finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3)); line++;
                     break;
                 case 1:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3 + " &e&lLEFT CLICK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3 + " &e&lLEFT CLICK")); line++;
                     break;
                 case 2:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3 + " &e&lRIGHT CLICK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3 + " &e&lRIGHT CLICK")); line++;
                     break;
                 case 3:
-                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3 + " &e&lSNEAK"));;
+                    finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName3 + " &e&lSNEAK")); line++;
                     break;
             }
 
-            Bukkit.getLogger().info("" + lines.length);
             for(String loreLine : lines) {
-                Bukkit.getLogger().info(loreLine + ";" + line);
 
                 finalLore.add(line, Utility.colorize("&7" + loreLine));
                 line++;
@@ -285,6 +281,11 @@ public final class Lore {
             finalLore.add(line, Utility.colorize("&8Brewing Ingredient")); line++;
         } else if (item.getItemData().canReforge) {
             finalLore.add(line, Utility.colorize("&8This item can be reforged!")); line++;
+        }
+
+        if(item.getItemData().isMaterial) {
+            finalLore.add(line, Utility.colorize("&eRight-click to view recipes!")); line++;
+            finalLore.add(line, ""); line++;
         }
 
         String color;

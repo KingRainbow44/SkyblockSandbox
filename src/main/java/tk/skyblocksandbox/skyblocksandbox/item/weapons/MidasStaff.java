@@ -32,11 +32,13 @@ public final class MidasStaff extends SkyblockItem {
                 "&7damage.";
         itemData.abilityCost = 500;
         itemData.abilityCooldown = 1;
+        itemData.abilityTrigger = RIGHT_CLICK_TRIGGER;
 
         itemData.hasSecondAbility = true;
         itemData.abilityName2 = "Greed";
         itemData.abilityDescription2 = "&7The &3ability damage bonus &7of\n" +
-                "&7this item is dependent on the price paid for it at the &5Dark\n" +
+                "&7this item is dependent on the\n" +
+                "&7price paid for it at the &5Dark\n" +
                 "&5Auction&7!\n" +
                 "&7The maximum bonus of this item\n" +
                 "&7is &326,000 &7if the bid was\n" +

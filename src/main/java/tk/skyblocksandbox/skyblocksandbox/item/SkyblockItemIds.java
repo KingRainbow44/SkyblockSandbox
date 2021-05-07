@@ -16,6 +16,6 @@ public final class SkyblockItemIds {
     /*
      * Bows
      */
-    public static final String BONEMERANG = "BOW_BOOMERANG";
+    public static final String BONEMERANG = "BONE_BOOMERANG";
 
 }

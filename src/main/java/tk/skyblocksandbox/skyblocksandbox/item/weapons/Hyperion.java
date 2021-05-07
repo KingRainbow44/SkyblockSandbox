@@ -31,14 +31,14 @@ public final class Hyperion extends SkyblockItem {
 
     @Override
     public Collection<String> getLore() {
-        Lore generator = new Lore(14,
+        Lore generator = new Lore(16,
+                " ",
                 Utility.colorize("&7Deals &a+50% &7damage to"),
                 Utility.colorize("&7Withers. Grants &c+1 ❁ Damage"),
                 Utility.colorize("&7and &a+2&b ✎ Intelligence"),
                 Utility.colorize("&7per &cCatacombs &7level."),
                 " ",
-                Utility.colorize("&7Your Catacombs level: &c0"),
-                " "
+                Utility.colorize("&7Your Catacombs level: &c0")
         );
 
         return generator.genericLore(this);
@@ -53,7 +53,8 @@ public final class Hyperion extends SkyblockItem {
         finalItemData.abilityName = "Wither Impact";
         finalItemData.abilityDescription = "&7Teleport &a10 blocks &7ahead of\n" +
                 "&7you. Then implode dealing\n" +
-                "&c10,000 &7damage to nearby&n&7enemies. Also applies the wither\n" +
+                "&c10,000 &7damage to nearby\n" +
+                "&7enemies. Also applies the wither\n" +
                 "&7shield scroll ability reducing\n&7damage taken and granting an\n" +
                 "&7absorption shield for &e5\n" +
                 "&7seconds.";

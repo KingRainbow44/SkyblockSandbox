@@ -100,7 +100,7 @@ public final class Bonemerang extends SkyblockItem {
             public void run() {
                 ran++;
 
-                if(ran == 28) {
+                if(ran == 26) {
                     stand.remove();
                     returnBone(bone);
 
@@ -126,7 +126,7 @@ public final class Bonemerang extends SkyblockItem {
                     loc.setDirection(teleportTo);
                 }
 
-                if(stand.getLocation().getBlock().getType() != Material.AIR) {
+                if(!stand.getLocation().getBlock().getType().isTransparent()) {
                     stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, stand.getLocation(), 3);
 
                     stand.remove();

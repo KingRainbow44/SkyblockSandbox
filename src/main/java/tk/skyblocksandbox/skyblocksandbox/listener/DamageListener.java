@@ -20,6 +20,7 @@ public final class DamageListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if(event.getCause() == EntityDamageEvent.DamageCause.CUSTOM) return; // This means that the damage was from our custom damage system. Don't double damage.
+        event.setCancelled(true);
 
         Entity entity = event.getEntity();
         double damage = event.getDamage();
@@ -48,7 +49,6 @@ public final class DamageListener implements Listener {
             if(sbEntity == null) return;
 
             Calculator.damage(sbEntity, sbPlayer, true);
-            event.setCancelled(true);
             return;
         }
 
@@ -60,7 +60,6 @@ public final class DamageListener implements Listener {
             SkyblockPlayer sbPlayer = (SkyblockPlayer) rawPlayer;
 
             Calculator.damage(sbPlayer, (float) damage, true, false);
-            event.setCancelled(true);
             return;
         }
 
@@ -74,7 +73,6 @@ public final class DamageListener implements Listener {
         if(sbEntity == null) return;
 
         Calculator.damage(sbEntity, (float) damage, true);
-        event.setCancelled(true);
     }
 
 }

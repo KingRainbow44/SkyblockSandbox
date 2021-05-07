@@ -81,7 +81,7 @@ public final class Hyperion extends SkyblockItem {
         player.setFallDistance(0);
 
         // Teleport System - START \\
-        if(sbPlayer.getPlayerData().limitedMovement) {
+        if(!sbPlayer.getPlayerData().limitedMovement) {
             int blocks = 10;
             Location playerLocation = player.getLocation(); // get the player's location
             Vector playerDirection = player.getLocation().getDirection(); // get the player's direction

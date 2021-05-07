@@ -199,6 +199,10 @@ public final class DebugCommand extends SkyblockCommand {
                                 sbPlayer.getPlayerData().currentMana = sbPlayer.getPlayerData().intelligence;
                                 sbPlayer.sendMessage("&aSet intelligence to " + args[2] + "!");
                                 return true;
+                            case "strength":
+                                sbPlayer.getPlayerData().strength = setStat;
+                                sbPlayer.sendMessage("&aSet strength to " + args[2] + "!");
+                                return true;
                         }
                 }
                 return true;

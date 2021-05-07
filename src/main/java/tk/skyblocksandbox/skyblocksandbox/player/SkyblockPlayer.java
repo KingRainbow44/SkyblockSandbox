@@ -111,7 +111,7 @@ public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer 
 
     public VanillaItemData getVanillaItemData() {
         VanillaItemData itemData = new VanillaItemData();
-
+        itemData.importData(getBukkitPlayer().getInventory().getItemInMainHand());
         return itemData;
     }
 

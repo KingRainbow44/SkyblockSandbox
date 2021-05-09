@@ -3,9 +3,6 @@ package tk.skyblocksandbox.skyblocksandbox.player;
 import com.kingrainbow44.customplayer.player.CustomPlayer;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import me.vagdedes.mysql.database.SQL;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_16_R3.ItemArmorStand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -13,6 +10,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
 import tk.skyblocksandbox.skyblocksandbox.item.VanillaItemData;
@@ -20,7 +18,7 @@ import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
-public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
+public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
     /*
      * Constants
@@ -30,6 +28,9 @@ public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer 
 
     private final SkyblockPlayerData playerData;
     private final SkyblockScoreboard scoreboard;
+
+    private PartyInstance currentParty = null;
+    private int partyPermissions = 0;
 
     /*
      * Private Methods/Data Methods
@@ -72,9 +73,37 @@ public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer 
      * Set Methods
      */
 
+    public void setCurrentParty(Object partyInstance) {
+        if(partyInstance instanceof PartyInstance) {
+            currentParty = (PartyInstance) partyInstance;
+        } else {
+            currentParty = null;
+        }
+    }
+
+    public void setPartyPermissions(int partyPermission) {
+        if(!inParty()) return;
+
+        partyPermissions = partyPermission;
+    }
+
     /*
      * Get Methods
      */
+
+    public PartyInstance getCurrentParty() {
+        return currentParty;
+    }
+
+    public boolean inParty() {
+        return currentParty == null;
+    }
+
+    public int getPartyPermissions() {
+        if(!inParty()) return 0;
+
+        return partyPermissions;
+    }
 
     public Location getSpawn() {
         // TODO: Refactor with Public Islands.
@@ -157,10 +186,10 @@ public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer 
     private String getHudHealth() {
 
         if(getPlayerData().absorptionHealth > 0) {
-            return "&6" + (getPlayerData().currentHealth + getPlayerData().absorptionHealth) + "/" + playerData.health + "❤";
+            return "&6" + (getPlayerData().currentHealth + getPlayerData().absorptionHealth) + "/" + playerData.getFinalMaxHealth() + "❤";
         }
 
-        return "&c" + getPlayerData().currentHealth + "/" + playerData.health + "❤";
+        return "&c" + getPlayerData().currentHealth + "/" + playerData.getFinalMaxHealth() + "❤";
     }
 
     /*
@@ -170,11 +199,11 @@ public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer 
     public void updateHud() {
         if(playerData.defense > 0) {
             Utility.sendActionBarMessage(getBukkitPlayer(), Utility.colorize(
-                    getHudHealth() + "   " + "&a" + Math.round(playerData.defense) + "❈ Defense" + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.intelligence + "✎ Mana"
+                    getHudHealth() + "   " + "&a" + Math.round(playerData.getFinalDefense()) + "❈ Defense" + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.getFinalIntelligence() + "✎ Mana"
             ));
         } else {
             Utility.sendActionBarMessage(getBukkitPlayer(), Utility.colorize(
-                    getHudHealth() + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.intelligence + "✎ Mana"
+                    getHudHealth() + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.getFinalIntelligence() + "✎ Mana"
             ));
         }
     }
@@ -184,7 +213,7 @@ public final class SkyblockPlayer extends CustomPlayer implements ICustomPlayer 
             if(!getPlayerData().infiniteMana) getPlayerData().currentMana -= manaCost;
 
             Utility.sendActionBarMessage(getBukkitPlayer(), Utility.colorize(
-                    getHudHealth() + "   " + "&b-" + manaCost + " Mana (&6" + usageMessage + "&b)" + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.intelligence + "✎ Mana"
+                    getHudHealth() + "   " + "&b-" + manaCost + " Mana (&6" + usageMessage + "&b)" + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.getFinalIntelligence() + "✎ Mana"
             ), 1, SkyblockSandbox.getInstance());
 
             return true;

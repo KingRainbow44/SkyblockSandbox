@@ -10,6 +10,7 @@ import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import tk.skyblocksandbox.dungeonsandbox.DungeonsModule;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.ItemCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
@@ -18,25 +19,21 @@ import tk.skyblocksandbox.skyblocksandbox.listener.DamageListener;
 import tk.skyblocksandbox.skyblocksandbox.listener.ItemListener;
 import tk.skyblocksandbox.skyblocksandbox.listener.PlayerListener;
 import tk.skyblocksandbox.skyblocksandbox.listener.WorldListener;
+import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
+import tk.skyblocksandbox.skyblocksandbox.module.SandboxModuleManager;
 import tk.skyblocksandbox.skyblocksandbox.runnable.PlayerRunnable;
 
 public final class SkyblockSandbox extends JavaPlugin {
 
-    private final static String version = "v0.0.3-development";
+    private final static String version = "v0.1-development";
 
     /*
      * Skyblock Sandbox To-Do List:
      * - Player Storage (ender chest, backpacks)
-     * - Vanilla Items -> Custom Items System
      * - Custom NPCs System
      * - Custom Enchants (e-table, anvil, enchantments)
-     * - Custom Commands System (able to write commands in-game)
      * - Auctions (display, menu)
      * - Bazaar (menu, system)
-     * - Dungeons (system, maps)
-     * - Custom Item Creator (system, menu)
-     * - Party & Friends System
-     * - Custom Mining System
      * - Item Reforges
      * - Custom Mining System (pickaxes, drills, axes, etc.)
      * - Regions
@@ -44,9 +41,10 @@ public final class SkyblockSandbox extends JavaPlugin {
 
     /*
      * Working on:
-     * - Module Loader (for multi server) - TODO: Instead of loading modules based on the server configuration, enable/disable plugins based on whats enabled in the configuration. TLDR: Use plugins instead of coding a custom module loader. Use SBS as a framework.
-     * - Custom Items System (items, stats, lore generator)
-     * - Custom Damage System (damage indicators & the damage calculation)
+     * - Dungeons (system, maps)
+     * - Vanilla Items -> Custom Items System
+     * - Custom Item Creator (system, menu)
+     * - Real-time updating stats system
      */
 
     /*
@@ -55,17 +53,28 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Player Stats System
      * - Player Data Sync (stats, storage system)
      * - Custom Mobs System (mobs, stats, bosses)
+     * - Module Loader (for multi server)
+     * - Custom Items System (items, stats, lore generator)
+     * - Custom Damage System (damage indicators & the damage calculation)
+     * - Party System
+     * - Custom Commands System
      */
 
     private static PlayerAPI api;
     private static SkyblockSandbox instance;
     private static SkyblockManager management;
+    private static SandboxModuleManager moduleManager;
 
     private static Configuration configuration;
 
     @Override
     public void onLoad() {
         instance = this;
+
+        moduleManager = new SandboxModuleManager();
+        moduleManager.addModule(new DungeonsModule());
+
+        moduleManager.callModules(SandboxModule.LOAD_ON_PLUGIN);
     }
 
     @Override
@@ -92,11 +101,14 @@ public final class SkyblockSandbox extends JavaPlugin {
 
         registerRunnable(new PlayerRunnable(), 1L);
 
+        moduleManager.enableModules();
+
         getLogger().info("Enabled Skyblock Sandbox.");
     }
 
     @Override
     public void onDisable() {
+        moduleManager.disableModules();
         getLogger().info("Disabled Skyblock Sandbox.");
     }
 

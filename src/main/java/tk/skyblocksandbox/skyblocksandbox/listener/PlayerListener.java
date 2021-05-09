@@ -7,8 +7,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import tk.skyblocksandbox.dungeonsandbox.player.DungeonPlayer;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Music;
@@ -21,7 +23,12 @@ public final class PlayerListener implements Listener {
         Player player = event.getPlayer();
         CustomPlayerManager playerManager = SkyblockSandbox.getApi().getPlayerManager();
 
-        playerManager.addPlayer(player, new SkyblockPlayer(player));
+        if(SkyblockSandbox.getConfiguration().dungeonCatacombsEnabled) {
+            playerManager.addPlayer(player, new DungeonPlayer(player));
+        } else {
+            playerManager.addPlayer(player, new SkyblockPlayer(player));
+        }
+
         event.setJoinMessage(Utility.colorize("&a[+] " + player.getDisplayName()));
     }
 
@@ -31,7 +38,7 @@ public final class PlayerListener implements Listener {
         CustomPlayerManager playerManager = SkyblockSandbox.getApi().getPlayerManager();
 
         ICustomPlayer customPlayer = playerManager.isCustomPlayer(player);
-        if(!(customPlayer instanceof SkyblockPlayer)) return;
+        if(!(customPlayer instanceof DungeonPlayer)) return;
 
         SkyblockPlayer sbPlayer = (SkyblockPlayer) customPlayer;
 

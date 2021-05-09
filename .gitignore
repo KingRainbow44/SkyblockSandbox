@@ -115,3 +115,7 @@ run/
 # Legal
 src/main/resources/nbs/
 libs/
+
+# Others
+src/main/java/com/kingrainbow44/
+src/mainjava/me/

@@ -35,6 +35,7 @@ public final class Configuration {
     public boolean oneIslandServer = true;
     public boolean privateIslandServer = false;
     public boolean enableDefaultBuilding = false;
+    public boolean dungeonCatacombsEnabled = false;
 
     // // Multi-Island Server Config \\ //
     public boolean dungeonHubEnabled = false;
@@ -49,6 +50,7 @@ public final class Configuration {
         oneIslandServer = configuration.getBoolean("oneIslandServer");
         privateIslandServer = configuration.getBoolean("privateIslandServer");
         enableDefaultBuilding = configuration.getBoolean("enableDefaultBuilding");
+        dungeonCatacombsEnabled = configuration.getBoolean("dungeonCatacombsEnabled");
 
         dungeonHubEnabled = configuration.getBoolean("dungeonHubEnabled");
         theParkEnabled = configuration.getBoolean("theParkEnabled");

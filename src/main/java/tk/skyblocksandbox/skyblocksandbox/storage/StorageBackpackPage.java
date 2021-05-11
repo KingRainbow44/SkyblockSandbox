@@ -1,7 +1,5 @@
 package tk.skyblocksandbox.skyblocksandbox.storage;
 
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
-
 import java.util.HashMap;
 import java.util.Map;
 

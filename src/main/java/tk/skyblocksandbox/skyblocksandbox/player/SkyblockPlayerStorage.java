@@ -3,7 +3,7 @@ package tk.skyblocksandbox.skyblocksandbox.player;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.storage.StoragePage;
 
 import java.util.Base64;
@@ -48,7 +48,7 @@ public final class SkyblockPlayerStorage {
         return storage;
     }
 
-    public void addToEnderChest(int slot, int page, SkyblockItem item) {
+    public void addToEnderChest(int slot, int page, SandboxItemStack item) {
         StoragePage storagePage = enderchest.getOrDefault(page, null);
         if(storagePage == null) return;
 

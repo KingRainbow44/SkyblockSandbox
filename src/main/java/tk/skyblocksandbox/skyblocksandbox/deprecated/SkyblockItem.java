@@ -1,6 +1,5 @@
-package tk.skyblocksandbox.skyblocksandbox.item;
+package tk.skyblocksandbox.skyblocksandbox.deprecated;
 
-import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
@@ -9,6 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Deprecated
 public abstract class SkyblockItem {
 
     /*
@@ -224,22 +225,22 @@ public abstract class SkyblockItem {
         return new NamespacedKey(SkyblockSandbox.getInstance(), key);
     }
 
-    /*
-     * Static Gets
-     */
-    public static SkyblockItem toSkyblockItem(ItemStack item) {
-        if(!DataContainerAPI.validityCheck(item, SkyblockSandbox.getInstance(), "id", PersistentDataType.STRING)) return null;
-        PersistentDataContainer dataContainer = item.getItemMeta().getPersistentDataContainer();
-
-        Object rawId = DataContainerAPI.get(dataContainer, SkyblockSandbox.getInstance(), "id", PersistentDataType.STRING);
-        if(!(rawId instanceof String)) return null;
-
-        if(SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(item) == null) {
-            // TODO: Vanilla to SkyblockItem
-            return null;
-        } else {
-            return (SkyblockItem) SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(item);
-        }
-    }
+//    /*
+//     * Static Gets
+//     */
+//    public static SkyblockItem toSkyblockItem(ItemStack item) {
+//        if(!DataContainerAPI.validityCheck(item, SkyblockSandbox.getInstance(), "id", PersistentDataType.STRING)) return null;
+//        PersistentDataContainer dataContainer = item.getItemMeta().getPersistentDataContainer();
+//
+//        Object rawId = DataContainerAPI.get(dataContainer, SkyblockSandbox.getInstance(), "id", PersistentDataType.STRING);
+//        if(!(rawId instanceof String)) return null;
+//
+//        if(SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(item) == null) {
+//            // TODO: Vanilla to SkyblockItem
+//            return null;
+//        } else {
+//            return (SkyblockItem) SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(item);
+//        }
+//    }
 
 }

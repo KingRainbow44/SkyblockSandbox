@@ -1,20 +1,17 @@
 package tk.skyblocksandbox.skyblocksandbox.item.bows;
 
-import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -24,10 +21,10 @@ import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.Collection;
 
-public final class Bonemerang extends SkyblockItem {
+public final class Bonemerang extends SandboxItem {
 
     public Bonemerang() {
-        super("&6Bonemerang", Material.BONE, SkyblockItemIds.BONEMERANG);
+        super(Material.BONE, "Bonemerang", SkyblockItemIds.BONEMERANG);
     }
 
     @Override

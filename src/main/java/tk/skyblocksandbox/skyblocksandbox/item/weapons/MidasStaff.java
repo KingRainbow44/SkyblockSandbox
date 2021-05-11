@@ -1,17 +1,17 @@
 package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
 import org.bukkit.Material;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
 
 import java.util.Collection;
 
-public final class MidasStaff extends SkyblockItem {
+public final class MidasStaff extends SandboxItem {
 
     public MidasStaff() {
-        super("&6Midas Staff", Material.GOLDEN_SHOVEL, SkyblockItemIds.MIDAS_STAFF);
+        super(Material.GOLDEN_SHOVEL, "Midas Staff", SkyblockItemIds.MIDAS_STAFF);
     }
 
     @Override

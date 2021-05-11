@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 public final class ItemCommand extends SkyblockCommand {
@@ -36,19 +36,19 @@ public final class ItemCommand extends SkyblockCommand {
             case 1:
                 if(args[0].matches("list")) {
                     sbPlayer.sendMessage("&eList of Skyblock Item IDs:");
-                    for(SkyblockItem sbItem : SkyblockSandbox.getManagement().getItemManager().getRegisteredItems().values()) {
+                    for(SandboxItem sbItem : SkyblockSandbox.getManagement().getItemManager().getRegisteredItems().values()) {
                         sbPlayer.sendMessage("&a- " + sbItem.getItemId());
                     }
                 } else {
                     String itemId = args[0];
                     Object sbItem = SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(itemId);
 
-                    if(!(sbItem instanceof SkyblockItem)) {
+                    if(!(sbItem instanceof SandboxItem)) {
                         sbPlayer.sendMessage("&cInvalid item. Use '/item list' to get a list of items.");
                         return true;
                     }
 
-                    sbPlayer.getBukkitPlayer().getInventory().addItem(((SkyblockItem) sbItem).createItem());
+                    sbPlayer.getBukkitPlayer().getInventory().addItem(((SandboxItem) sbItem).create());
                     sbPlayer.sendMessage("&aAdded " + args[0] + " to your inventory!");
                 }
                 return true;
@@ -56,7 +56,7 @@ public final class ItemCommand extends SkyblockCommand {
                 String itemId = args[0];
                 Object sbItem = SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(itemId);
 
-                if(!(sbItem instanceof SkyblockItem)) {
+                if(!(sbItem instanceof SandboxItem)) {
                     sbPlayer.sendMessage("&cInvalid item. Use '/item list' to get a list of items.");
                     return true;
                 }
@@ -68,10 +68,12 @@ public final class ItemCommand extends SkyblockCommand {
                     return true;
                 }
 
-                bukkitPlayer.getInventory().addItem(((SkyblockItem) sbItem).createItem());
-                bukkitPlayer.sendMessage(ChatColor.GREEN + "You received a(n) " + ((SkyblockItem) sbItem).getItemId() + " from an admin!");
+                bukkitPlayer.getInventory().addItem(((SandboxItem) sbItem).create());
+                if(!bukkitPlayer.getUniqueId().equals(sbPlayer.getBukkitPlayer().getUniqueId())) {
+                    bukkitPlayer.sendMessage(ChatColor.GREEN + "You received a(n) " + ((SandboxItem) sbItem).getItemId() + " from an admin!");
+                }
 
-                sbPlayer.sendMessage("&aAdded " + ((SkyblockItem) sbItem).getItemId() + " to " + bukkitPlayer.getDisplayName() + "'s inventory!");
+                sbPlayer.sendMessage("&aAdded " + ((SandboxItem) sbItem).getItemId() + " to " + bukkitPlayer.getDisplayName() + "'s inventory!");
                 return true;
         }
     }

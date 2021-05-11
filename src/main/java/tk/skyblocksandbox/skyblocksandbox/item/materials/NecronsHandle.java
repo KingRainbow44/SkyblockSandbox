@@ -1,17 +1,17 @@
 package tk.skyblocksandbox.skyblocksandbox.item.materials;
 
 import org.bukkit.Material;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
 
 import java.util.Collection;
 
-public final class NecronsHandle extends SkyblockItem {
+public final class NecronsHandle extends SandboxItem {
 
     public NecronsHandle() {
-        super("&5Necron's Handle", Material.STICK, SkyblockItemIds.NECRONS_HANDLE);
+        super(Material.STICK, "Necron's Handle", SkyblockItemIds.NECRONS_HANDLE);
     }
 
     @Override

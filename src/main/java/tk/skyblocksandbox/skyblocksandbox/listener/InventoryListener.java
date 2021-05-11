@@ -7,14 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
-public class InventoryListener implements Listener {
+public final class InventoryListener implements Listener {
 
     /*
-     * To not be inefficient, stats will update every time a player's inventory changes.
      * Inventory related events can be found at https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/package-summary.html
      */
 
@@ -23,7 +21,12 @@ public class InventoryListener implements Listener {
         HumanEntity entity = event.getWhoClicked();
         if(!(entity instanceof Player)) return;
 
-        SkyblockPlayer sbPlayer = (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity);
+        ItemStack item = event.getCurrentItem();
+        if(item == null) return;
+
+        if(!SkyblockSandbox.getManagement().getItemManager().isSBItemInstance(item)) {
+
+        }
     }
 
     @EventHandler

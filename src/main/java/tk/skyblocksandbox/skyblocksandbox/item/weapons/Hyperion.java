@@ -1,6 +1,5 @@
 package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -13,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -23,10 +22,10 @@ import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.Collection;
 
-public final class Hyperion extends SkyblockItem {
+public final class Hyperion extends SandboxItem {
 
     public Hyperion() {
-        super("&6Hyperion", Material.IRON_SWORD, SkyblockItemIds.HYPERION);
+        super(Material.IRON_SWORD, "Hyperion", SkyblockItemIds.HYPERION);
     }
 
     @Override
@@ -74,7 +73,7 @@ public final class Hyperion extends SkyblockItem {
 
     @Override
     public void ability(int action, SkyblockPlayer sbPlayer) {
-        if(action != SkyblockItem.INTERACT_RIGHT_CLICK) return;
+        if(action != SandboxItem.INTERACT_RIGHT_CLICK) return;
 
         if(!sbPlayer.manaCheck(300, "Wither Impact")) return;
         Player player = sbPlayer.getBukkitPlayer();

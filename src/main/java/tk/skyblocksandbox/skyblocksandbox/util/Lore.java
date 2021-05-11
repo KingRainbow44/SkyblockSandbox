@@ -1,7 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.util;
 
-import org.bukkit.Bukkit;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +30,7 @@ public final class Lore {
 
     }
 
-    public Collection<String> genericLore(SkyblockItem item) {
+    public Collection<String> genericLore(SandboxItem item) {
 
         /*
          * genericLore:
@@ -277,7 +276,7 @@ public final class Lore {
         /*
          * Reforge/Brewing Ingredient
          */
-        if(item.getItemData().itemType == SkyblockItem.BREWING_INGREDIENT) {
+        if(item.getItemData().itemType == SandboxItem.BREWING_INGREDIENT) {
             finalLore.add(line, Utility.colorize("&8Brewing Ingredient")); line++;
         } else if (item.getItemData().canReforge) {
             finalLore.add(line, Utility.colorize("&8This item can be reforged!")); line++;
@@ -292,62 +291,62 @@ public final class Lore {
         if(item.getItemData().isDungeonItem) {
             switch(item.getItemData().rarity) {
                 default:
-                case SkyblockItem.COMMON:
+                case SandboxItem.COMMON:
                     color = Utility.colorize("&f&lCOMMON DUNGEON");
                     break;
-                case SkyblockItem.UNCOMMON:
+                case SandboxItem.UNCOMMON:
                     color = Utility.colorize("&a&lUNCOMMON DUNGEON");
                     break;
-                case SkyblockItem.RARE:
+                case SandboxItem.RARE:
                     color = Utility.colorize("&9&lRARE DUNGEON");
                     break;
-                case SkyblockItem.EPIC:
+                case SandboxItem.EPIC:
                     color = Utility.colorize("&5&lEPIC DUNGEON");
                     break;
-                case SkyblockItem.LEGENDARY:
+                case SandboxItem.LEGENDARY:
                     color = Utility.colorize("&6&lLEGENDARY DUNGEON");
                     break;
-                case SkyblockItem.MYTHIC:
+                case SandboxItem.MYTHIC:
                     color = Utility.colorize("&d&lMYTHIC DUNGEON");
                     break;
-                case SkyblockItem.SPECIAL:
+                case SandboxItem.SPECIAL:
                     color = Utility.colorize("&c&lSPECIAL DUNGEON");
                     break;
-                case SkyblockItem.VERY_SPEICAL:
+                case SandboxItem.VERY_SPEICAL:
                     color = Utility.colorize("&c&lVERY SPECIAL DUNGEON");
                     break;
-                case SkyblockItem.SUPREME:
+                case SandboxItem.SUPREME:
                     color = Utility.colorize("&4&lSUPREME DUNGEON");
                     break;
             }
         } else {
             switch(item.getItemData().rarity) {
                 default:
-                case SkyblockItem.COMMON:
+                case SandboxItem.COMMON:
                     color = Utility.colorize("&f&lCOMMON");
                     break;
-                case SkyblockItem.UNCOMMON:
+                case SandboxItem.UNCOMMON:
                     color = Utility.colorize("&a&lUNCOMMON");
                     break;
-                case SkyblockItem.RARE:
+                case SandboxItem.RARE:
                     color = Utility.colorize("&9&lRARE");
                     break;
-                case SkyblockItem.EPIC:
+                case SandboxItem.EPIC:
                     color = Utility.colorize("&5&lEPIC");
                     break;
-                case SkyblockItem.LEGENDARY:
+                case SandboxItem.LEGENDARY:
                     color = Utility.colorize("&6&lLEGENDARY");
                     break;
-                case SkyblockItem.MYTHIC:
+                case SandboxItem.MYTHIC:
                     color = Utility.colorize("&d&lMYTHIC");
                     break;
-                case SkyblockItem.SPECIAL:
+                case SandboxItem.SPECIAL:
                     color = Utility.colorize("&c&lSPECIAL");
                     break;
-                case SkyblockItem.VERY_SPEICAL:
+                case SandboxItem.VERY_SPEICAL:
                     color = Utility.colorize("&c&lVERY SPECIAL");
                     break;
-                case SkyblockItem.SUPREME:
+                case SandboxItem.SUPREME:
                     color = Utility.colorize("&4&lSUPREME");
                     break;
             }
@@ -355,53 +354,53 @@ public final class Lore {
 
         switch(item.getItemData().itemType) {
             default:
-            case SkyblockItem.BREWING_INGREDIENT:
-            case SkyblockItem.OTHER:
+            case SandboxItem.BREWING_INGREDIENT:
+            case SandboxItem.OTHER:
                 finalLore.add(line, Utility.colorize(color));
                 break;
-            case SkyblockItem.ITEM:
+            case SandboxItem.ITEM:
                 finalLore.add(line, Utility.colorize(color + " ITEM"));
                 break;
-            case SkyblockItem.SWORD:
+            case SandboxItem.SWORD:
                 finalLore.add(line, Utility.colorize(color + " SWORD"));
                 break;
-            case SkyblockItem.BOW:
+            case SandboxItem.BOW:
                 finalLore.add(line, Utility.colorize(color + " BOW"));
                 break;
-            case SkyblockItem.PICKAXE:
+            case SandboxItem.PICKAXE:
                 finalLore.add(line, Utility.colorize(color + " PICKAXE"));
                 break;
-            case SkyblockItem.AXE:
+            case SandboxItem.AXE:
                 finalLore.add(line, Utility.colorize(color + " AXE"));
                 break;
-            case SkyblockItem.SHOVEL:
+            case SandboxItem.SHOVEL:
                 finalLore.add(line, Utility.colorize(color + " SHOVEL"));
                 break;
-            case SkyblockItem.HOE:
+            case SandboxItem.HOE:
                 finalLore.add(line, Utility.colorize(color + " HOE"));
                 break;
-            case SkyblockItem.SHEARS:
+            case SandboxItem.SHEARS:
                 finalLore.add(line, Utility.colorize(color + " SHEARS"));
                 break;
-            case SkyblockItem.ACCESSORY:
+            case SandboxItem.ACCESSORY:
                 finalLore.add(line, Utility.colorize(color + " ACCESSORY"));
                 break;
-            case SkyblockItem.REFORGE_STONE:
+            case SandboxItem.REFORGE_STONE:
                 finalLore.add(line, Utility.colorize(color + " REFORGE STONE"));
                 break;
-            case SkyblockItem.FISHING_ROD:
+            case SandboxItem.FISHING_ROD:
                 finalLore.add(line, Utility.colorize(color + " FISHING ROD"));
                 break;
-            case SkyblockItem.HELMET:
+            case SandboxItem.HELMET:
                 finalLore.add(line, Utility.colorize(color + " HELMET"));
                 break;
-            case SkyblockItem.CHESTPLATE:
+            case SandboxItem.CHESTPLATE:
                 finalLore.add(line, Utility.colorize(color + " CHESTPLATE"));
                 break;
-            case SkyblockItem.LEGGINGS:
+            case SandboxItem.LEGGINGS:
                 finalLore.add(line, Utility.colorize(color + " LEGGINGS"));
                 break;
-            case SkyblockItem.BOOTS:
+            case SandboxItem.BOOTS:
                 finalLore.add(line, Utility.colorize(color + " BOOTS"));
                 break;
         }
@@ -413,7 +412,7 @@ public final class Lore {
         return finalLore;
     }
 
-    public Collection<String> advancedLore(SkyblockItem item) {
+    public Collection<String> advancedLore(SandboxItem item) {
         return null;
     }
 

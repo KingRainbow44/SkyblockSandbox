@@ -12,7 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.item.VanillaItemData;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
@@ -144,12 +145,9 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         return itemData;
     }
 
-    public SkyblockItem getItemInHand(boolean mainHand) {
-        ItemStack item = mainHand ? getBukkitPlayer().getInventory().getItemInMainHand() : getBukkitPlayer().getInventory().getItemInOffHand();
-        Object sbItem = SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(item);
-        if(!(sbItem instanceof SkyblockItem)) return null;
-
-        return (SkyblockItem) sbItem;
+    public SandboxItem getItemInHand(boolean mainHand) {
+        ItemStack bukkitItem = mainHand ? getBukkitPlayer().getInventory().getItemInMainHand() : getBukkitPlayer().getInventory().getItemInOffHand();
+        return SandboxItemStack.toSandboxItem(bukkitItem);
     }
 
     public SkyblockScoreboard getScoreboard() {

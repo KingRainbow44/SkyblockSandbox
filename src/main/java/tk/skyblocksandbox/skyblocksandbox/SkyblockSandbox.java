@@ -37,14 +37,17 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Item Reforges
      * - Custom Mining System (pickaxes, drills, axes, etc.)
      * - Regions
+     *
+     * - Real-time updating stats system
+     *  - While it isn't needed (we have getFinal_STAT_()) it would be nice to have for efficiency.
      */
 
     /*
      * Working on:
+     * - New (NBT Based) custom item system
      * - Dungeons (system, maps)
      * - Vanilla Items -> Custom Items System
      * - Custom Item Creator (system, menu)
-     * - Real-time updating stats system
      */
 
     /*

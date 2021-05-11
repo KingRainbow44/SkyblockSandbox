@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -144,10 +145,27 @@ public final class Utility {
         return commafiedNum+decimalNum;
     }
 
-    public static void convertItem(ItemStack item) {
-
-
-
+    public static ChatColor rarityToColor(Integer rarity) {
+        switch(rarity) {
+            default:
+            case SandboxItem.COMMON:
+                return ChatColor.WHITE;
+            case SandboxItem.UNCOMMON:
+                return ChatColor.GREEN;
+            case SandboxItem.RARE:
+                return ChatColor.BLUE;
+            case SandboxItem.EPIC:
+                return ChatColor.DARK_PURPLE;
+            case SandboxItem.LEGENDARY:
+                return ChatColor.GOLD;
+            case SandboxItem.MYTHIC:
+                return ChatColor.LIGHT_PURPLE;
+            case SandboxItem.SUPREME:
+                return ChatColor.DARK_RED;
+            case SandboxItem.SPECIAL:
+            case SandboxItem.VERY_SPEICAL:
+                return ChatColor.RED;
+        }
     }
 
     public static NamespacedKey key(String key) {

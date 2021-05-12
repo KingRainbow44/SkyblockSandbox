@@ -14,9 +14,9 @@ import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
-import tk.skyblocksandbox.skyblocksandbox.item.VanillaItemData;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
+import tk.skyblocksandbox.skyblocksandbox.util.Music;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
@@ -57,7 +57,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         }
     }
 
-    public void saveData() {
+    public void onUnregister() {
         String uuid = getBukkitPlayer().getUniqueId().toString();
         if(SkyblockSandbox.getConfiguration().databaseEnabled) {
             if (!SQL.exists("uuid", uuid, "players")) {
@@ -67,6 +67,10 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
             }
 
             SQL.set("data", getPlayerData().exportData(), "uuid", "=", uuid, "players");
+        }
+
+        if(!getPlayerData().playingSong.matches("none")) {
+            Music.cancelMusic(this);
         }
     }
 
@@ -111,7 +115,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         switch(getPlayerData().location) {
             default:
             case 0:
-                return new Location(Bukkit.getWorld("hub"), -3, 70, -70, 180, 0);
+                return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3, 70, -70, 180, 0);
         }
     }
 
@@ -137,12 +141,6 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
             case SUBLOC_VILLAGE: // village
                 return Utility.colorize("&bVillage");
         }
-    }
-
-    public VanillaItemData getVanillaItemData() {
-        VanillaItemData itemData = new VanillaItemData();
-        itemData.importData(getBukkitPlayer().getInventory().getItemInMainHand());
-        return itemData;
     }
 
     public SandboxItem getItemInHand(boolean mainHand) {
@@ -174,7 +172,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
             getBukkitPlayer().removePotionEffect(effect.getType());
         }
 
-        sendMessage("&cYou died and lost " + playerData.coins + " coins!");
+        sendMessage("&cYou died and lost " + getPlayerData().coins + " coins!");
     }
 
     /*

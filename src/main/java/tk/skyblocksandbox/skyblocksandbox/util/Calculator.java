@@ -7,7 +7,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
-import tk.skyblocksandbox.skyblocksandbox.item.VanillaItemData;
+import tk.skyblocksandbox.skyblocksandbox.deprecated.VanillaItemData;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
@@ -83,9 +84,9 @@ public final class Calculator {
         /*
          * Variables
          */
-        VanillaItemData itemData = sbPlayer.getVanillaItemData();
+        SandboxItem sbItem = sbPlayer.getItemInHand(true);
 
-        int weaponDamage = itemData.baseDamage;
+        int weaponDamage = sbItem.getItemData().finalDamage();
         int combatSkillLevel = 60/* sbPlayer().getPlayerData().skillCombatLevel */; // TODO: Skills
         int criticalDamage = 1;
         if(Math.random() < (sbPlayer.getPlayerData().critChance / 100.0f)) {

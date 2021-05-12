@@ -10,4 +10,8 @@ public interface ICustomPlayer {
 
     public void sendMessages(String... messages);
 
+    public void onRegister();
+
+    public void onUnregister();
+
 }

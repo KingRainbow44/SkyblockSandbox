@@ -44,6 +44,7 @@ public abstract class SandboxItem {
 
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE);
         }
+        item.setItemMeta(meta);
         // Item Meta - END \\
 
         // NBT Tags - START \\
@@ -77,6 +78,7 @@ public abstract class SandboxItem {
         nbt.setInteger("bonusMagicFind", 0);
         nbt.setInteger("bonusPetLuck", 0);
         nbt.setInteger("bonusAbilityDamage", 0);
+        nbt.setInteger("bonusFerocity", 0);
         nbt.setInteger("bonusFarmingFortune", 0);
 
         //<editor-fold desc="Enchantments">

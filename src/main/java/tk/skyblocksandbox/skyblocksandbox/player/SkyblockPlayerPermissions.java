@@ -3,10 +3,14 @@ package tk.skyblocksandbox.skyblocksandbox.player;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +57,7 @@ public final class SkyblockPlayerPermissions {
         permissions.addProperty("commandSummon", commandSummon);
         permissions.addProperty("commandSetBlock", commandSetBlock);
 
-        return Base64.getUrlEncoder().encodeToString(permissions.toString().getBytes());
+        return Base64.getUrlEncoder().encodeToString(permissions.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     public void importData(Object previousData) {
@@ -61,7 +65,9 @@ public final class SkyblockPlayerPermissions {
         if(previousData.toString() == null || previousData.toString().equals("{}")) {
             return;
         } else {
-            rawData = previousData.toString();
+            rawData = StringEscapeUtils.unescapeJava(previousData.toString()
+                    .substring(1)
+                    .substring(0, previousData.toString().length() - 2));
         }
 
         byte[] decodedBytes = Base64.getUrlDecoder().decode(rawData);

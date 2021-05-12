@@ -14,6 +14,8 @@
 /*  14 */     return con;
 /*     */   }
 /*     */   private static Connection con;
+
+            private static boolean attempted = false;
 /*     */   public static void setConnection(String host, String user, String password, String database, String port) {
 /*  18 */     if (host == null || user == null || password == null || database == null) {
 /*     */       return;
@@ -23,6 +25,12 @@
 /*  23 */       con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=" + Config.getSSL(), user, password);
 /*  25 */     } catch (Exception e) {
 /*  26 */       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "SQL Connect Error: " + e.getMessage());
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Attempting to reconnect...");
+
+                if(!attempted) {
+                    attempted = true;
+                    connect();
+                }
 /*     */     } 
 /*     */   }
 /*     */   

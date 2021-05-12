@@ -15,7 +15,7 @@ public class SkyblockItemData {
 
     public boolean isMaterial = false;
 
-    public int rarity = SkyblockItem.COMMON;
+    public int rarity = SandboxItem.COMMON;
 
     public int baseDamage = 0;
     public int baseStrength = 0;
@@ -32,6 +32,7 @@ public class SkyblockItemData {
     public int basePetLuck = 0;
     public int baseAbilityDamage = 0;
     public int baseFerocity = 0;
+    public int baseFarmingFortune = 0;
 
     public int fraggedDamage = 0;
     public int fraggedStrength = 0;
@@ -48,6 +49,7 @@ public class SkyblockItemData {
     public int fraggedPetLuck = 0;
     public int fraggedAbilityDamage = 0;
     public int fraggedFerocity = 0;
+    public int fraggedFarmingFortune = 0;
 
     /*
      * Abilities

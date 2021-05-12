@@ -26,6 +26,7 @@ public final class Configuration {
     private void databaseSetup() {
         if(!configuration.getString("databasePassword").matches("defaultPasswordYouShouldChange")) {
             noDatabaseConfig = false;
+            databaseEnabled = true;
         }
     }
 
@@ -63,7 +64,7 @@ public final class Configuration {
     /*
      * Copyright-ed Content
      */
-    public String hubWorld = "hub";
+    public String hubWorld = "world";
 
     public void contentSetup() {
         hubWorld = configuration.getString("hubWorld");

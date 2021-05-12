@@ -37,16 +37,6 @@ public final class PlayerListener implements Listener {
         Player player = event.getPlayer();
         CustomPlayerManager playerManager = SkyblockSandbox.getApi().getPlayerManager();
 
-        ICustomPlayer customPlayer = playerManager.isCustomPlayer(player);
-        if(!(customPlayer instanceof DungeonPlayer)) return;
-
-        SkyblockPlayer sbPlayer = (SkyblockPlayer) customPlayer;
-
-        sbPlayer.saveData();
-        if(!sbPlayer.getPlayerData().playingSong.matches("none")) {
-            Music.cancelMusic(sbPlayer);
-        }
-
         playerManager.removePlayer(player);
         event.setQuitMessage(Utility.colorize("&c[-] " + player.getDisplayName()));
     }

@@ -1,8 +1,11 @@
-package tk.skyblocksandbox.skyblocksandbox.item;
+package tk.skyblocksandbox.skyblocksandbox.deprecated;
 
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.deprecated.SkyblockItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 
+@Deprecated
 public final class VanillaItemData extends SkyblockItemData {
 
     public String id = "";

@@ -11,10 +11,15 @@ public final class CustomPlayerManager {
     private final Map<UUID, ICustomPlayer> players = new HashMap<>();
 
     public void addPlayer(Player player, ICustomPlayer customPlayer) {
+        customPlayer.onRegister();
         players.put(player.getUniqueId(), customPlayer);
     }
 
     public void removePlayer(Player player) {
+        if(isCustomPlayer(player) != null) {
+            ICustomPlayer customPlayer = isCustomPlayer(player);
+            customPlayer.onUnregister();
+        }
         players.remove(player.getUniqueId());
     }
 

@@ -25,5 +25,12 @@ public abstract class CustomPlayer implements ICustomPlayer {
         }
     }
 
+    public void onRegister() {
+
+    }
+
+    public void onUnregister() {
+
+    }
 
 }

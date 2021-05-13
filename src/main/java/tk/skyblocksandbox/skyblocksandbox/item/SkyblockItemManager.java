@@ -1,8 +1,11 @@
 package tk.skyblocksandbox.skyblocksandbox.item;
 
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
+import tk.skyblocksandbox.skyblocksandbox.item.weapons.AxeOfTheShredded;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.Hyperion;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.MidasStaff;
 import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
@@ -18,8 +21,11 @@ public final class SkyblockItemManager {
         registerItem(new Hyperion());
         registerItem(new MidasStaff());
         registerItem(new Bonemerang());
+        registerItem(new AxeOfTheShredded());
 
         registerItem(new NecronsHandle());
+
+        registerItem(new NecronHelmet());
     }
 
     public void registerItem(SandboxItem item) {
@@ -39,6 +45,8 @@ public final class SkyblockItemManager {
     }
 
     public boolean isSBItemInstance(ItemStack itemStack) {
+        if(itemStack == null || itemStack.getType() == Material.AIR) return false;
+
         NBTItem nbtItem = new NBTItem(itemStack);
         if(!nbtItem.hasKey("isSkyblockItem")) return false;
         return nbtItem.getBoolean("isSkyblockItem");
@@ -47,5 +55,4 @@ public final class SkyblockItemManager {
     public Map<String, SandboxItem> getRegisteredItems() {
         return items;
     }
-
 }

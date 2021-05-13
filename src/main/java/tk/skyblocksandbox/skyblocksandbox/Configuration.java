@@ -11,6 +11,7 @@ public final class Configuration {
 
         databaseSetup();
         islandSetup();
+        contentSetup();
     }
 
     public static String[] export() {

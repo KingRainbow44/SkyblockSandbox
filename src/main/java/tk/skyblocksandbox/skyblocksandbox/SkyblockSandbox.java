@@ -15,10 +15,7 @@ import tk.skyblocksandbox.skyblocksandbox.command.admin.ItemCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.SandboxCommand;
-import tk.skyblocksandbox.skyblocksandbox.listener.DamageListener;
-import tk.skyblocksandbox.skyblocksandbox.listener.ItemListener;
-import tk.skyblocksandbox.skyblocksandbox.listener.PlayerListener;
-import tk.skyblocksandbox.skyblocksandbox.listener.WorldListener;
+import tk.skyblocksandbox.skyblocksandbox.listener.*;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModuleManager;
 import tk.skyblocksandbox.skyblocksandbox.runnable.PlayerRunnable;
@@ -96,6 +93,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         registerListener(new PlayerListener());
         registerListener(new WorldListener());
         registerListener(new DamageListener());
+        registerListener(new InventoryListener());
 
         registerCommand(new ItemCommand());
         registerCommand(new SandboxCommand());

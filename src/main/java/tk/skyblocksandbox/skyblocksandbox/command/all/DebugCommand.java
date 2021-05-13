@@ -27,7 +27,7 @@ public final class DebugCommand extends SkyblockCommand {
         switch(args.length) {
 
             case 0:
-                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity> [music_id|health|defense|intelligence|strength|damage|messages|reset] [valid integer]");
+                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill] [valid integer]");
                 return true;
 
             case 1:
@@ -42,7 +42,7 @@ public final class DebugCommand extends SkyblockCommand {
                         sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug toggle [damage|messages]");
                         return true;
                     case "entity":
-                        sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug entity [reset]");
+                        sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug entity [reset|kill]");
                         return true;
                 }
                 return true;
@@ -164,12 +164,23 @@ public final class DebugCommand extends SkyblockCommand {
                                 sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug entity [reset]");
                                 return true;
                             case "reset":
-                                sbPlayer.sendMessage("&eAttempting to reset all entities...");
+                                sbPlayer.sendMessage("&eAttempting to reset nearby entities...");
                                 for(Entity entity : sbPlayer.getBukkitPlayer().getNearbyEntities(10, 10, 10)) {
                                     if(SkyblockSandbox.getManagement().getEntityManager().getEntity(entity) == null) return true;
                                     SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
 
                                     sbEntity.setHealth(sbEntity.getEntityData().health);
+                                }
+                                return true;
+                            case "kill":
+                                sbPlayer.sendMessage("&eAttempting to kill all entities...");
+                                for(Entity entity : sbPlayer.getBukkitPlayer().getWorld().getEntities()) {
+                                    if(SkyblockSandbox.getManagement().getEntityManager().getEntity(entity) == null) {
+                                        entity.remove();
+                                    } else {
+                                        SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
+                                        sbEntity.kill(true);
+                                    }
                                 }
                                 return true;
                         }
@@ -189,20 +200,33 @@ public final class DebugCommand extends SkyblockCommand {
                         }
                         return true;
                     case "changestat":
-                        int setStat = Integer.parseInt(args[2]);
-                        switch(args[1]) {
-                            default:
-                                sbPlayer.sendMessage("&cInvalid stat! Types: health, defense, intelligence, strength");
-                                return true;
-                            case "intelligence":
-                                sbPlayer.getPlayerData().intelligence = setStat + 100;
-                                sbPlayer.getPlayerData().currentMana = sbPlayer.getPlayerData().intelligence;
-                                sbPlayer.sendMessage("&aSet intelligence to " + args[2] + "!");
-                                return true;
-                            case "strength":
-                                sbPlayer.getPlayerData().strength = setStat;
-                                sbPlayer.sendMessage("&aSet strength to " + args[2] + "!");
-                                return true;
+                        try {
+                            int setStat = Integer.parseInt(args[2]);
+                            switch(args[1]) {
+                                default:
+                                    sbPlayer.sendMessage("&cInvalid stat! Types: health, defense, intelligence, strength");
+                                    return true;
+                                case "intelligence":
+                                    sbPlayer.getPlayerData().intelligence = setStat + 100;
+                                    sbPlayer.getPlayerData().currentMana = sbPlayer.getPlayerData().intelligence;
+                                    sbPlayer.sendMessage("&aSet intelligence to " + args[2] + "!");
+                                    return true;
+                                case "strength":
+                                    sbPlayer.getPlayerData().strength = setStat;
+                                    sbPlayer.sendMessage("&aSet strength to " + args[2] + "!");
+                                    return true;
+                                case "health":
+                                    sbPlayer.getPlayerData().health = setStat;
+                                    sbPlayer.sendMessage("&aSet health to " + args[2] + "!");
+                                    return true;
+                                case "defense":
+                                    sbPlayer.getPlayerData().defense = setStat;
+                                    sbPlayer.sendMessage("&aSet defense to " + args[2] + "!");
+                                    return true;
+                            }
+                        } catch (NumberFormatException e) {
+                            sbPlayer.sendMessage("&cInvalid number! The number has to be between 0 and 2,147,483,647.");
+                            return true;
                         }
                 }
                 return true;

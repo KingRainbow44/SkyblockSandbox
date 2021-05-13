@@ -14,6 +14,7 @@ public class SkyblockItemData {
     public boolean isSkyblockMenu = false;
 
     public boolean isMaterial = false;
+    public boolean isVanilla = false;
 
     public int rarity = SandboxItem.COMMON;
 

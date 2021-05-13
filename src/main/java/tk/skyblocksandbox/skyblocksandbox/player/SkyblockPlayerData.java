@@ -125,14 +125,14 @@ public final class SkyblockPlayerData {
         /*
          * Stats
          */
-        health = arrayData.get("health").getAsInt();
+        health = arrayData.get("health").getAsInt(); currentHealth = health;
         defense = arrayData.get("defense").getAsInt();
         strength = arrayData.get("strength").getAsInt();
         speed = arrayData.get("speed").getAsInt();
         critChance = arrayData.get("critChance").getAsInt();
         critDamage = arrayData.get("critDamage").getAsInt();
         bonusAttackSpeed = arrayData.get("bonusAttackSpeed").getAsInt();
-        intelligence = arrayData.get("intelligence").getAsInt();
+        intelligence = arrayData.get("intelligence").getAsInt(); currentMana = intelligence;
         seaCreatureChance = arrayData.get("seaCreatureChance").getAsInt();
         magicFind = arrayData.get("magicFind").getAsInt();
         ferocity = arrayData.get("ferocity").getAsInt();
@@ -155,7 +155,6 @@ public final class SkyblockPlayerData {
          * Other
          */
         vanillaMaxHealth = arrayData.get("vanillaMaxHealth").getAsInt();
-        player.updateMaxHP();
     }
 
     /*
@@ -163,6 +162,28 @@ public final class SkyblockPlayerData {
      */
     public void damage(int damage) {
         currentHealth -= damage;
+    }
+
+    public void heal(int health) {
+        int finalHealth = health + currentHealth;
+        if(finalHealth > health) {
+            currentHealth = getFinalMaxHealth();
+        } else {
+            currentHealth = finalHealth;
+        }
+    }
+
+    public Integer getAbsorptionHealth() {
+        return absorptionHealth;
+    }
+
+    public void addMana(int mana) {
+        int finalMana = mana + currentMana;
+        if(finalMana > (getFinalIntelligence() + 100)) {
+            currentMana = getFinalIntelligence();
+        } else {
+            currentMana = finalMana;
+        }
     }
 
     /*

@@ -1,14 +1,15 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.item.BukkitSandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 
 public final class InventoryListener implements Listener {
 
@@ -17,51 +18,24 @@ public final class InventoryListener implements Listener {
      */
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        HumanEntity entity = event.getWhoClicked();
+    public void onInventoryPickup(EntityPickupItemEvent event) {
+        Entity entity = event.getEntity();
         if(!(entity instanceof Player)) return;
 
-        ItemStack item = event.getCurrentItem();
-        if(item == null) return;
+        Player player = (Player) entity;
 
-        if(!SkyblockSandbox.getManagement().getItemManager().isSBItemInstance(item)) {
+        ItemStack item = event.getItem().getItemStack();
+        event.getItem().remove();
 
+        if(!SandboxItemStack.isSandboxItem(item)) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.getInventory().remove(item);
+                }
+            }.runTaskLater(SkyblockSandbox.getInstance(), 5L);
+            player.getInventory().addItem(new BukkitSandboxItem(item).create());
         }
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryClickEvent event) {
-
-    }
-
-    @EventHandler
-    public void onCreativeInteraction(InventoryClickEvent event) {
-
-    }
-
-    @EventHandler
-    public void onInventoryDrag(InventoryClickEvent event) {
-
-    }
-
-    @EventHandler
-    public void onInventoryInteract(InventoryClickEvent event) {
-
-    }
-
-    @EventHandler
-    public void onInventoryMoveItem(InventoryClickEvent event) {
-
-    }
-
-    @EventHandler
-    public void onInventoryOpen(InventoryClickEvent event) {
-
-    }
-
-    @EventHandler
-    public void onInventoryPickup(EntityPickupItemEvent event) {
-
     }
 
 }

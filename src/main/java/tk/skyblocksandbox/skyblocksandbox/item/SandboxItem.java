@@ -21,9 +21,9 @@ public abstract class SandboxItem {
      * Can be wrapped unlike SkyblockItems'
      */
 
-    private final Material baseItem;
-    private final String itemName;
-    private final String internalId;
+    protected final Material baseItem;
+    protected final String itemName;
+    protected final String internalId;
 
     public SandboxItem(Material baseItem, String itemName, String internalId) {
         this.baseItem = baseItem;
@@ -33,7 +33,6 @@ public abstract class SandboxItem {
 
     public ItemStack create() {
         ItemStack item = new ItemStack(baseItem);
-        NBTItem nbt = new NBTItem(item, true);
 
         // Item Meta - START \\
         ItemMeta meta = item.getItemMeta();
@@ -47,7 +46,24 @@ public abstract class SandboxItem {
         item.setItemMeta(meta);
         // Item Meta - END \\
 
+        addNbt(item);
+
+        return item;
+    }
+
+    /*
+     * Get Methods
+     */
+
+    public String getItemId() {
+        return internalId;
+    }
+
+    protected void addNbt(ItemStack item) {
+        NBTItem nbt = new NBTItem(item, true);
+
         // NBT Tags - START \\
+        nbt.setBoolean("isVanilla", getItemData().isVanilla);
         nbt.setBoolean("isSkyblockMenu", getItemData().isSkyblockMenu);
 
         nbt.setString("itemId", internalId);
@@ -170,16 +186,6 @@ public abstract class SandboxItem {
         nbt.setInteger("turbo-pumpkins", 0);
         nbt.setInteger("turbo-melons", 0);
         // NBT Tags - END \\
-
-        return item;
-    }
-
-    /*
-     * Get Methods
-     */
-
-    public String getItemId() {
-        return internalId;
     }
 
     /*
@@ -200,6 +206,7 @@ public abstract class SandboxItem {
     public static final int LEFT_CLICK_TRIGGER = 1;
     public static final int RIGHT_CLICK_TRIGGER = 2;
     public static final int SNEAK_TRIGGER = 3;
+    public static final int FULL_SET_BONUS = 4;
 
     public static final int INTERACT_RIGHT_CLICK = 0;
     public static final int INTERACT_LEFT_CLICK = 1;

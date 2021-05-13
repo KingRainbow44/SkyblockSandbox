@@ -1,23 +1,34 @@
 package tk.skyblocksandbox.skyblocksandbox.util;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R3.ChatMessageType;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
+import net.minecraft.server.v1_16_R3.LocaleLanguage;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.text.translate.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public final class Utility {
 
@@ -167,6 +178,11 @@ public final class Utility {
             case SandboxItem.VERY_SPEICAL:
                 return ChatColor.RED;
         }
+    }
+
+    public static String getVanillaItemName(Material item) {
+        net.minecraft.server.v1_16_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(new ItemStack(item));
+        return LocaleLanguage.a().a(nmsStack.getItem().getName());
     }
 
     public static NamespacedKey key(String key) {

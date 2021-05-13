@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataType;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.seven.Necron;
+import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.six.Sadan;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -31,8 +32,8 @@ public final class SkyblockEntityManager {
     }
 
     public SkyblockEntity getEntity(Entity entity) {
-        if(DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.STRING)) return null;
-        Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entiityUUID", PersistentDataType.INTEGER);
+        if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) return null;
+        Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER);
         if(!(rawUUID instanceof Integer)) return null;
 
         return getEntity((int) rawUUID);
@@ -44,6 +45,8 @@ public final class SkyblockEntityManager {
                 throw new InvalidParameterException("The entity id: " + entityId + " is not a valid entity id.");
             case "NECRON":
                 return new Necron();
+            case "SADAN":
+                return new Sadan();
         }
     }
 

@@ -12,7 +12,10 @@ import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.decimal4j.util.DoubleRounder;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+
+import java.math.RoundingMode;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.key;
@@ -46,12 +49,6 @@ public abstract class SkyblockEntity {
             Entity entity = world.spawnEntity(location, entityType);
             entity.setCustomNameVisible(true);
 
-            if(entityType == EntityType.WITHER || entityType == EntityType.ENDER_DRAGON) {
-                BossBar bossBar = ((Boss) entity).getBossBar();
-                bossBar.setProgress(0.0f);
-                bossBar.removeAll();
-            }
-
             PersistentDataContainer data = entity.getPersistentDataContainer();
 
             data.set(key("skyblockEntity"), PersistentDataType.BYTE, (byte) 1);
@@ -65,11 +62,16 @@ public abstract class SkyblockEntity {
             if(!getEntityData().isBoss) {
                 entity.setCustomName(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
             } else {
-                entity.setCustomName(colorize("&e&l< &c&l" + getEntityData().entityName + " &e>"));
+                if(entityType == EntityType.WITHER || entityType == EntityType.ENDER_DRAGON) {
+                    BossBar bossBar = ((Boss) entity).getBossBar();
+                    bossBar.setProgress(0.0f);
+                    bossBar.setVisible(false);
+                }
+
+                entity.setCustomName(colorize("&e&l< &c&l" + getEntityData().entityName + " &e&l>"));
                 entityBossBar = Bukkit.createBossBar(colorize("&c&l" + getEntityData().entityName), BarColor.RED, BarStyle.SOLID);
-                for(Entity nearbyPlayer : world.getNearbyEntities(location, 50, 50, 50)) {
-                    if(!(nearbyPlayer instanceof Player)) return;
-                    entityBossBar.addPlayer((Player) nearbyPlayer);
+                for(Player nearbyPlayer : Bukkit.getOnlinePlayers()) {
+                    entityBossBar.addPlayer(nearbyPlayer);
                 }
             }
         }
@@ -84,6 +86,8 @@ public abstract class SkyblockEntity {
         if(entityId == -1) return;
 
         SkyblockSandbox.getManagement().getEntityManager().unregisterEntity(entityId);
+        getEntityBossBar().setVisible(false);
+        getEntityBossBar().removeAll();
     }
 
     public void remove() {
@@ -113,6 +117,13 @@ public abstract class SkyblockEntity {
 
     public abstract SkyblockEntityData getEntityData();
 
-    public void updateBossBar() {}
+    public void updateBossBar() {
+        if(getEntityBossBar() == null) return;
+
+        double progress = DoubleRounder.round((float) getEntityHealth() / (float) getEntityData().health, 2, RoundingMode.DOWN);
+        if(progress <= -0.99) progress = 0.0f;
+
+        getEntityBossBar().setProgress(progress);
+    }
 
 }

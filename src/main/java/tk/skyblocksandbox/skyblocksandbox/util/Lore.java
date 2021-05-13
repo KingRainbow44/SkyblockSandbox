@@ -185,6 +185,9 @@ public final class Lore {
                 case 3:
                     finalLore.add(line, Utility.colorize("&6Item Ability: " + item.getItemData().abilityName + " &e&lSNEAK")); line++;
                     break;
+                case 4:
+                    finalLore.add(line, Utility.colorize("&6Full Set Bonus: " + item.getItemData().abilityName)); line++;
+                    break;
             }
 
             for(String loreLine : lines) {

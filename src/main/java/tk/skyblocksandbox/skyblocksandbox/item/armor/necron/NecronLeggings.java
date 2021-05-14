@@ -1,35 +1,30 @@
 package tk.skyblocksandbox.skyblocksandbox.item.armor.necron;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
+import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
-public class NecronHelmet extends SandboxItem {
+public class NecronLeggings extends SandboxItem {
 
-    public NecronHelmet() {
-        super(Material.PLAYER_HEAD, "Necron's Helmet", SkyblockItemIds.NECRON_HELMET);
+    public NecronLeggings() {
+        super(Material.LEATHER_LEGGINGS, "Necron's Leggings", SkyblockItemIds.NECRON_LEGGINGS);
     }
 
     @Override
     public SkyblockItemData getItemData() {
         SkyblockItemData itemData = new SkyblockItemData();
 
-        itemData.itemType = HELMET;
+        itemData.itemType = LEGGINGS;
         itemData.rarity = LEGENDARY;
         itemData.isDungeonItem = true;
         itemData.hasAbility = true;
@@ -42,9 +37,9 @@ public class NecronHelmet extends SandboxItem {
                 "&7travel to and explode on nearby\n" +
                 "&7enemies.";
 
-        itemData.baseHealth = 180;
-        itemData.baseDefense = 100;
-        itemData.baseIntelligence = 30;
+        itemData.baseHealth = 230;
+        itemData.baseDefense = 125;
+        itemData.baseIntelligence = 10;
         itemData.baseCriticalDamage = 30;
         itemData.baseStrength = 40;
 
@@ -67,31 +62,14 @@ public class NecronHelmet extends SandboxItem {
         ItemStack item = new ItemStack(baseItem);
 
         // Item Meta - START \\
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
         if(meta != null) {
             meta.setUnbreakable(true);
             meta.setDisplayName(Utility.rarityToColor(getItemData().rarity) + itemName);
             meta.setLore(new ArrayList<>(getLore()));
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE);
 
-            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-            byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", "http://textures.minecraft.net/texture/a78412ee301065696237a934e812b247f8bc4269662323efcab12756f03dc3df").getBytes());
-            profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
-            Field profileField = null;
-
-            try {
-                profileField = meta.getClass().getDeclaredField("profile");
-            } catch (NoSuchFieldException | SecurityException e) {
-                e.printStackTrace();
-            }
-
-            profileField.setAccessible(true);
-
-            try {
-                profileField.set(meta, profile);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            meta.setColor(Color.fromRGB(231, 92, 60));
         }
         item.setItemMeta(meta);
         // Item Meta - END \\

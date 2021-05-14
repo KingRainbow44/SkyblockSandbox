@@ -47,6 +47,97 @@ public final class Calculator {
         }
     }
 
+    public static long damage(SkyblockPlayer sbTarget, SkyblockPlayer sbPlayer, boolean doKnockback) {
+        /*
+         * Variables
+         */
+        SandboxItem sbItem = sbPlayer.getItemInHand(true);
+
+        int weaponDamage = sbItem.getItemData().finalDamage();
+        int combatSkillLevel = 60/* sbPlayer().getPlayerData().skillCombatLevel */; // TODO: Skills
+        int criticalDamage = 1;
+        if(Math.random() < (sbPlayer.getPlayerData().critChance / 100.0f)) {
+            criticalDamage = sbPlayer.getPlayerData().critDamage / 100;
+        }
+
+        // double giantKiller = ((float) entity.getEntityHealth() - sbPlayer.getPlayerData().currentHealth) / sbPlayer.getPlayerData().currentHealth;
+        double enchantmentBonus = 0; // TODO: Enchantments
+        int weaponBonus = 0;
+        int armorBonus = 1;
+
+        int finalStrength = sbPlayer.getPlayerData().getFinalStrength();
+
+        /*
+         * Base Damage = (5 + WeaponDamage + [Strength / 5]) * (1 + [Strength / 100])
+         */
+        int strengthPart1 = finalStrength / 5;
+        int strengthPart2 = finalStrength / 100;
+        int baseDamage = (5 + weaponDamage + strengthPart1) * (1 + strengthPart2);
+
+        /*
+         * Damage Multiplier = 1 + (Combat Level * 0.04) + Enchantment Bonus + Weapon Bonus
+         */
+        double damageMultiplier = 1 + (combatSkillLevel * 0.04) + enchantmentBonus + weaponBonus;
+
+        /*
+         * Final Damage = Base Damage * Damage Multiplier * Armor Bonus * (1 + CritDamage)
+         */
+        double finalDamage = baseDamage * damageMultiplier * armorBonus * criticalDamage;
+
+        /*
+         * Deal Damage
+         */
+        double damage = finalDamage;
+        float damageReduction = (float) sbTarget.getPlayerData().getFinalDefense() / (sbTarget.getPlayerData().getFinalDefense() + 100);
+
+        if(damageReduction > 0) {
+            damage = damage - (damage * damageReduction);
+        }
+
+        sbTarget.getPlayerData().damage((int) Math.round(damage));
+
+        if(doKnockback && sbTarget.getPlayerData().canTakeKnockback) {
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbTarget.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.4) ), 1L);
+        }
+
+        Damageable damageable = sbTarget.getBukkitPlayer();
+
+        damageable.damage(1);
+        damageable.setHealth(20);
+        sbTarget.getBukkitPlayer().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), sbTarget.getBukkitPlayer(), EntityDamageEvent.DamageCause.CUSTOM, 0));
+
+        if(sbTarget.getPlayerData().currentHealth <= 0) {
+            sbTarget.kill();
+        }
+
+        if(sbPlayer.getPlayerData().debugStateDamage) {
+            sbPlayer.sendMessages(
+                    "&9&m--------------------",
+                    "final damage: " + damage,
+                    "damage indicator: " + Math.round(damage),
+                    "&9&m--------------------",
+                    "weapon damage: " + weaponDamage,
+                    "weapon bonus: " + weaponBonus,
+                    "combat skill level: " + combatSkillLevel,
+                    "critical damage: (0 = not a crit): " + criticalDamage,
+                    "enchantment bonus: " + enchantmentBonus,
+                    "weapon bonus: " + weaponBonus,
+                    "armor bonus: " + armorBonus,
+                    "&9&m--------------------",
+                    "total strength (across inventory): " + finalStrength,
+                    "strength p1: " + strengthPart1,
+                    "strength p2: " + strengthPart2,
+                    "&9&m--------------------",
+                    "base damage: " + baseDamage,
+                    "damage multiplier: " + damageMultiplier,
+                    "damage before armor: " + finalDamage,
+                    "&9&m--------------------"
+            );
+        }
+
+        return Math.round(damage);
+    }
+
     public static long damage(SkyblockEntity entity, float damage, boolean doKnockback) {
         double finalDamage = damage;
         float damageReduction = entity.getEntityData().defense / (entity.getEntityData().defense + 100);

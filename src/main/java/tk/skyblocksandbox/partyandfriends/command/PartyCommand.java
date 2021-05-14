@@ -10,7 +10,7 @@ import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
-public class PartyCommand extends SkyblockCommand {
+public final class PartyCommand extends SkyblockCommand {
 
     public PartyCommand() {
         super("party");
@@ -68,6 +68,9 @@ public class PartyCommand extends SkyblockCommand {
 
                         PartyManager partyManager1 = PartyModule.getPartyManager();
                         partyManager1.disbandParty(sbPlayer);
+                        return true;
+                    case "debug":
+                        sbPlayer.sendMessage("Party Permissions: " + sbPlayer.getPartyPermissions());
                         return true;
                 }
             case 2:

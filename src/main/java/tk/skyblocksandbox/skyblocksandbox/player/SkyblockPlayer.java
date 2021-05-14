@@ -10,6 +10,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import tk.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
@@ -26,12 +27,12 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
      */
     public static final int SUBLOC_NONE = -1;
     public static final int SUBLOC_VILLAGE = 0;
+    public static final int SUBLOC_DUNGEON_HUB = 1;
 
     private final SkyblockPlayerData playerData;
     private final SkyblockScoreboard scoreboard;
 
     private PartyInstance currentParty = null;
-    private int partyPermissions = 0;
 
     /*
      * Private Methods/Data Methods
@@ -55,6 +56,10 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
                 getPlayerData().importData(existingData);
             }
         }
+    }
+
+    public void onRegister() {
+        getBukkitPlayer().teleport(new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3, 70, -70, 180, 0));
     }
 
     public void onUnregister() {
@@ -89,7 +94,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     public void setPartyPermissions(int partyPermission) {
         if(!inParty()) return;
 
-        partyPermissions = partyPermission;
+        getCurrentParty().setPermissions(this, partyPermission);
     }
 
     /*
@@ -101,21 +106,23 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     }
 
     public boolean inParty() {
-        return currentParty == null;
+        return currentParty != null;
     }
 
     public int getPartyPermissions() {
         if(!inParty()) return 0;
 
-        return partyPermissions;
+        return getCurrentParty().getPlayerPermissions(this);
     }
 
     public Location getSpawn() {
         // TODO: Refactor with Public Islands.
         switch(getPlayerData().location) {
             default:
-            case 0:
+            case SUBLOC_VILLAGE:
                 return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3, 70, -70, 180, 0);
+            case SUBLOC_DUNGEON_HUB:
+                return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().dungeonHubWorld), -31, 121, 0, 90, 0);
         }
     }
 
@@ -140,6 +147,8 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
                 return Utility.colorize("&7None");
             case SUBLOC_VILLAGE: // village
                 return Utility.colorize("&bVillage");
+            case SUBLOC_DUNGEON_HUB:
+                return Utility.colorize("&cDungeon Hub");
         }
     }
 
@@ -150,13 +159,6 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
     public SkyblockScoreboard getScoreboard() {
         return scoreboard;
-    }
-
-    public void updateMaxHP() {
-        double maxHP = getPlayerData().vanillaMaxHealth;
-
-        AttributeInstance attribute = getBukkitPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        attribute.setBaseValue(maxHP);
     }
 
     public void kill() {
@@ -173,6 +175,10 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         }
 
         sendMessage("&cYou died and lost " + getPlayerData().coins + " coins!");
+        for(ICustomPlayer cPlayer : SkyblockSandbox.getApi().getPlayerManager().getPlayers().values()) {
+            if(cPlayer.equals(this)) return;
+            cPlayer.sendMessage("&7" + this.getBukkitPlayer().getDisplayName() + " died.");
+        }
     }
 
     /*
@@ -192,8 +198,24 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
      * General Methods
      */
 
+    public void teleportTo(String skyblockLocation) {
+        switch(skyblockLocation) {
+            default:
+            case SkyblockLocations.MAIN_HUB:
+                getBukkitPlayer().teleport(new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3, 70, -70, 180, 0));
+                return;
+            case SkyblockLocations.DUNGEON_HUB:
+                getBukkitPlayer().teleport(new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().dungeonHubWorld), -31, 121, 0, 90, 0));
+                return;
+        }
+    }
+
+    public String getName() {
+        return getBukkitPlayer().getDisplayName();
+    }
+
     public void updateHud() {
-        if(playerData.defense > 0) {
+        if(playerData.getFinalDefense() > 0) {
             Utility.sendActionBarMessage(getBukkitPlayer(), Utility.colorize(
                     getHudHealth() + "   " + "&a" + Math.round(playerData.getFinalDefense()) + "❈ Defense" + "   " + "&b" + getPlayerData().currentMana + "/" + playerData.getFinalIntelligence() + "✎ Mana"
             ));

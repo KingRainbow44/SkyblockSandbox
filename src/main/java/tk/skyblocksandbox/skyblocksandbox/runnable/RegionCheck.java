@@ -1,19 +1,36 @@
 package tk.skyblocksandbox.skyblocksandbox.runnable;
 
+import com.kingrainbow44.customplayer.player.ICustomPlayer;
+import org.bukkit.entity.Player;
+import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+
 public final class RegionCheck implements Runnable {
-    /**
-     * When an object implementing interface {@code Runnable} is used
-     * to create a thread, starting the thread causes the object's
-     * {@code run} method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method {@code run} is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
+
+    private int run = -1;
+
     @Override
     public void run() {
+        run++;
 
+        if(run % 20 == 0) {
+            for(ICustomPlayer customPlayer : SkyblockSandbox.getApi().getPlayerManager().getPlayers().values()) {
+                if(!(customPlayer instanceof SkyblockPlayer)) return;
+
+                Player player = customPlayer.getBukkitPlayer();
+                SkyblockPlayer sbPlayer = (SkyblockPlayer) customPlayer;
+
+                String worldName = player.getWorld().getWorldFolder().getName();
+
+                if(worldName.matches(SkyblockSandbox.getConfiguration().hubWorld)) {
+                    return;
+                }
+
+                if(worldName.matches(SkyblockSandbox.getConfiguration().dungeonHubWorld)) {
+                    sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_DUNGEON_HUB;
+                    return;
+                }
+            }
+        }
     }
 }

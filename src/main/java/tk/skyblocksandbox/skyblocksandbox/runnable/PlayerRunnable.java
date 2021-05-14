@@ -9,7 +9,7 @@ import tk.skyblocksandbox.skyblocksandbox.item.BukkitSandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
-public class PlayerRunnable implements Runnable {
+public final class PlayerRunnable implements Runnable {
 
     private int ticks = -1;
 
@@ -35,7 +35,9 @@ public class PlayerRunnable implements Runnable {
                 if(!(playerManager.isCustomPlayer(bukkitPlayer) instanceof SkyblockPlayer)) return;
                 SkyblockPlayer sbPlayer = (SkyblockPlayer) playerManager.isCustomPlayer(bukkitPlayer);
 
-                if(sbPlayer.getPlayerData().getAbsorptionHealth() == 0) sbPlayer.getPlayerData().heal((int) Math.round(0.005*sbPlayer.getPlayerData().getFinalMaxHealth() / 2));
+                sbPlayer.getScoreboard().updateScoreboard();
+
+                if(sbPlayer.getPlayerData().getAbsorptionHealth() == 0) sbPlayer.getPlayerData().heal(2);
                 sbPlayer.getPlayerData().addMana( sbPlayer.getPlayerData().intelligence / 50 );
 
                 sbPlayer.updateHud();

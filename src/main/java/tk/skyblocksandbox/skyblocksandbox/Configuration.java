@@ -65,10 +65,12 @@ public final class Configuration {
     /*
      * Copyright-ed Content
      */
-    public String hubWorld = "world";
+    public String hubWorld = "hub";
+    public String dungeonHubWorld = "dungeon_hub";
 
     public void contentSetup() {
         hubWorld = configuration.getString("hubWorld");
+        dungeonHubWorld = configuration.getString("dungeonHubWorld");
     }
 
 }

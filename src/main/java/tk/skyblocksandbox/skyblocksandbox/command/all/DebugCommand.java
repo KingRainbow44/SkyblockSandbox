@@ -2,6 +2,7 @@ package tk.skyblocksandbox.skyblocksandbox.command.all;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import tk.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
@@ -27,7 +28,7 @@ public final class DebugCommand extends SkyblockCommand {
         switch(args.length) {
 
             case 0:
-                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill] [valid integer]");
+                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill|village|dungeon_hub] [valid integer]");
                 return true;
 
             case 1:
@@ -39,10 +40,13 @@ public final class DebugCommand extends SkyblockCommand {
                         sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug changestat [health|defense|intelligence|strength] [valid integer]");
                         return true;
                     case "toggle":
-                        sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug toggle [damage|messages]");
+                        sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug toggle [damage|messages|build|infinitemana]");
                         return true;
                     case "entity":
                         sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug entity [reset|kill]");
+                        return true;
+                    case "warp":
+                        sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [village|dungeon_hub]");
                         return true;
                 }
                 return true;
@@ -137,7 +141,7 @@ public final class DebugCommand extends SkyblockCommand {
                     case "toggle":
                         switch(args[1]) {
                             default:
-                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug toggle [damage|messages]");
+                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug toggle [damage|messages|build|infinitemana]");
                                 return true;
                             case "damage":
                                 if(sbPlayer.getPlayerData().debugStateDamage) {
@@ -155,6 +159,29 @@ public final class DebugCommand extends SkyblockCommand {
                                 } else {
                                     sbPlayer.sendMessage("&aEnabled debugging info.");
                                     sbPlayer.getPlayerData().debugStateMessages = true;
+                                }
+                                return true;
+                            case "build":
+                                if(!sbPlayer.getPlayerData().getPermissionsData().buildingAllowed) {
+                                    sbPlayer.sendMessage("&cYou do not have permission to toggle build.");
+                                    return true;
+                                }
+
+                                if(sbPlayer.getPlayerData().getPermissionsData().buildingEnabled) {
+                                    sbPlayer.sendMessage("&cBuild has been disabled.");
+                                    sbPlayer.getPlayerData().getPermissionsData().buildingEnabled = false;
+                                } else {
+                                    sbPlayer.sendMessage("&aBuild has been enabled.");
+                                    sbPlayer.getPlayerData().getPermissionsData().buildingEnabled = true;
+                                }
+                                return true;
+                            case "infinitemana":
+                                if(sbPlayer.getPlayerData().infiniteMana) {
+                                    sbPlayer.sendMessage("&cInfinite Mana has been disabled.");
+                                    sbPlayer.getPlayerData().infiniteMana = false;
+                                } else {
+                                    sbPlayer.sendMessage("&aInfinite Mana has been enabled.");
+                                    sbPlayer.getPlayerData().infiniteMana = true;
                                 }
                                 return true;
                         }
@@ -182,6 +209,22 @@ public final class DebugCommand extends SkyblockCommand {
                                         sbEntity.kill(true);
                                     }
                                 }
+                                return true;
+                        }
+                    case "warp":
+                        switch(args[1]) {
+                            default:
+                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [village|dungeon_hub]");
+                                return true;
+                            case "village":
+                                sbPlayer.sendMessage("&7Warping...");
+                                sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_VILLAGE;
+                                sbPlayer.getBukkitPlayer().teleport(sbPlayer.getSpawn());
+                                return true;
+                            case "dungeon_hub":
+                                sbPlayer.sendMessage("&7Warping...");
+                                sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_DUNGEON_HUB;
+                                sbPlayer.getBukkitPlayer().teleport(sbPlayer.getSpawn());
                                 return true;
                         }
                 }

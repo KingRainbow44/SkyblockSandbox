@@ -1,13 +1,11 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
-import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -68,7 +66,7 @@ public abstract class SkyblockEntity {
                     bossBar.setVisible(false);
                 }
 
-                entity.setCustomName(colorize("&e&l< &c&l" + getEntityData().entityName + " &e&l>"));
+                entity.setCustomName(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
                 entityBossBar = Bukkit.createBossBar(colorize("&c&l" + getEntityData().entityName), BarColor.RED, BarStyle.SOLID);
                 for(Player nearbyPlayer : Bukkit.getOnlinePlayers()) {
                     entityBossBar.addPlayer(nearbyPlayer);
@@ -121,7 +119,8 @@ public abstract class SkyblockEntity {
         if(getEntityBossBar() == null) return;
 
         double progress = DoubleRounder.round((float) getEntityHealth() / (float) getEntityData().health, 2, RoundingMode.DOWN);
-        if(progress <= -0.99) progress = 0.0f;
+        if(progress < 0) progress = 0.0f;
+        if(progress > 1) progress = 1.0f;
 
         getEntityBossBar().setProgress(progress);
     }

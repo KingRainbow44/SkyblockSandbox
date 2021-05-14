@@ -4,6 +4,7 @@ import com.kingrainbow44.customplayer.PlayerAPI;
 import me.vagdedes.mysql.database.MySQL;
 import me.vagdedes.mysql.database.SQL;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
@@ -11,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import tk.skyblocksandbox.dungeonsandbox.DungeonsModule;
+import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.ItemCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
@@ -19,6 +21,7 @@ import tk.skyblocksandbox.skyblocksandbox.listener.*;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModuleManager;
 import tk.skyblocksandbox.skyblocksandbox.runnable.PlayerRunnable;
+import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
 
 public final class SkyblockSandbox extends JavaPlugin {
 
@@ -34,7 +37,6 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Item Reforges
      * - Custom Mining System (pickaxes, drills, axes, etc.)
      * - Regions
-     *
      * - Real-time updating stats system
      *  - While it isn't needed (we have getFinal_STAT_()) it would be nice to have for efficiency.
      */
@@ -43,7 +45,7 @@ public final class SkyblockSandbox extends JavaPlugin {
      * Working on:
      * - New (NBT Based) custom item system
      * - Dungeons (system, maps)
-     * - Vanilla Items -> Custom Items System
+     * - Skyblock Menu
      * - Custom Item Creator (system, menu)
      */
 
@@ -58,6 +60,7 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Custom Damage System (damage indicators & the damage calculation)
      * - Party System
      * - Custom Commands System
+     * - Vanilla Items -> Custom Items System
      */
 
     private static PlayerAPI api;
@@ -73,6 +76,7 @@ public final class SkyblockSandbox extends JavaPlugin {
 
         moduleManager = new SandboxModuleManager();
         moduleManager.addModule(new DungeonsModule());
+        moduleManager.addModule(new PartyModule());
 
         moduleManager.callModules(SandboxModule.LOAD_ON_PLUGIN);
     }
@@ -87,6 +91,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         initializeConfig();
         initializeDatabase();
         initializeDependencies();
+        initializeWorlds();
         bukkitStats();
 
         registerListener(new ItemListener());
@@ -101,6 +106,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         registerCommand(new SummonCommand());
 
         registerRunnable(new PlayerRunnable(), 1L);
+        registerRunnable(new RegionCheck(), 1L);
 
         moduleManager.enableModules();
 
@@ -152,15 +158,22 @@ public final class SkyblockSandbox extends JavaPlugin {
         }
     }
 
+    private void initializeWorlds() {
+        Configuration configuration = getConfiguration();
+
+        new WorldCreator(configuration.hubWorld).createWorld();
+        new WorldCreator(configuration.dungeonHubWorld).createWorld();
+    }
+
     /*
      * Register Methods
      */
 
-    private void registerListener(Listener listener) {
+    public void registerListener(Listener listener) {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    private void registerCommand(Command command) {
+    public void registerCommand(Command command) {
         SimpleCommandMap simpleCommandMap = ((CraftServer) getServer()).getCommandMap();
         simpleCommandMap.register(getDescription().getName(), command);
     }

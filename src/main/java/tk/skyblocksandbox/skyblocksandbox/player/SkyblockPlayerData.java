@@ -103,7 +103,7 @@ public final class SkyblockPlayerData {
         /*
          * Other
          */
-        playerData.addProperty("vanillaMaxHealth", vanillaMaxHealth);
+        playerData.addProperty("infiniteMana", infiniteMana);
 
         return Base64.getUrlEncoder().encodeToString(playerData.toString().getBytes(StandardCharsets.UTF_8));
     }
@@ -154,7 +154,7 @@ public final class SkyblockPlayerData {
         /*
          * Other
          */
-        vanillaMaxHealth = arrayData.get("vanillaMaxHealth").getAsInt();
+        infiniteMana = arrayData.get("infiniteMana").getAsBoolean();
     }
 
     /*
@@ -179,7 +179,7 @@ public final class SkyblockPlayerData {
 
     public void addMana(int mana) {
         int finalMana = mana + currentMana;
-        if(finalMana > (getFinalIntelligence() + 100)) {
+        if(finalMana > getFinalIntelligence()) {
             currentMana = getFinalIntelligence();
         } else {
             currentMana = finalMana;
@@ -241,7 +241,7 @@ public final class SkyblockPlayerData {
     }
 
     public Integer getFinalDefense() {
-        int finalStat = strength;
+        int finalStat = defense;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
         boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;

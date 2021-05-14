@@ -8,6 +8,8 @@ import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 public abstract class SkyblockCommand extends Command {
 
+    protected static final String UNKNOWN_COMMAND = "Unknown command. Type \"/help\" for help.";
+
     protected SkyblockCommand(String name) {
         super(name);
     }

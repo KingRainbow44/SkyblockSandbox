@@ -28,4 +28,5 @@ oneIslandServer: true
 privateIslandsServer: false
 
 # Content Configuration:
-hubWorld: "world"
+hubWorld: "hub"
+dungeonHubWorld: "dungeon_hub"

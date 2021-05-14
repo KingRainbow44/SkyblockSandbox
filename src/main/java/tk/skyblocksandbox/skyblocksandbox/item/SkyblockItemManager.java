@@ -3,7 +3,10 @@ package tk.skyblocksandbox.skyblocksandbox.item;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronBoots;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronChestplate;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.AxeOfTheShredded;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.Hyperion;
@@ -26,6 +29,9 @@ public final class SkyblockItemManager {
         registerItem(new NecronsHandle());
 
         registerItem(new NecronHelmet());
+        registerItem(new NecronChestplate());
+        registerItem(new NecronLeggings());
+        registerItem(new NecronBoots());
     }
 
     public void registerItem(SandboxItem item) {

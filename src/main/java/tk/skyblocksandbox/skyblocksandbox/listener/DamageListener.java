@@ -20,6 +20,9 @@ public final class DamageListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if(event.getCause() == EntityDamageEvent.DamageCause.CUSTOM) return; // This means that the damage was from our custom damage system. Don't double damage.
+        if(event.getCause() == EntityDamageEvent.DamageCause.WITHER) { // This is a check for the wither effect. Which can cause double death.
+            event.setCancelled(true);
+        }
 
         Entity entity = event.getEntity();
         double damage = event.getDamage();
@@ -29,10 +32,15 @@ public final class DamageListener implements Listener {
         // SkyblockEntity was damaged by a SkyblockPlayer.
         if(event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event;
-            if(entity instanceof Player) return;
 
             Entity damager = damageEvent.getDamager();
             if(!(damager instanceof Player)) return;
+
+            if(entity instanceof Player) {
+//                Calculator.damage((SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity), (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) damager), true); // TODO: Maybe add setting?
+                event.setCancelled(true);
+                return;
+            }
 
             Object rawPlayer = playerManager.isCustomPlayer((Player) damager);
             if(!(rawPlayer instanceof SkyblockPlayer)) return;

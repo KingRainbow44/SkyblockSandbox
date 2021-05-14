@@ -26,6 +26,7 @@ public final class PartyManager {
 
         parties.remove(sbLeader.getBukkitPlayer().getUniqueId());
         for(SkyblockPlayer members : party.getMembers()) {
+            members.setCurrentParty(null);
             members.sendMessages(
                     "&9&m-----------------------------",
                     "&eThe party was disbanded by " + sbLeader.getBukkitPlayer().getDisplayName(),

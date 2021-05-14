@@ -110,7 +110,10 @@ public final class AxeOfTheShredded extends SandboxItem {
                     if(e instanceof Damageable && e != player) {
                         Damageable entity = (Damageable) e;
                         if(entity instanceof ArmorStand) return;
-                        if(entity instanceof Player) return;
+                        if(entity instanceof Player) {
+//                            Calculator.damage((SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity), sbPlayer, false);
+                            return;
+                        }
 
                         SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
                         if(sbEntity == null) return;

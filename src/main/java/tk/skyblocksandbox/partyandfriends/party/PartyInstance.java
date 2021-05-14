@@ -3,8 +3,6 @@ package tk.skyblocksandbox.partyandfriends.party;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -17,12 +15,14 @@ public final class PartyInstance {
     private final List<SkyblockPlayer> partyMembers = new ArrayList<>();
     private final List<SkyblockPlayer> invitedPlayers = new ArrayList<>();
 
+    private final Map<SkyblockPlayer, Integer> permissions = new HashMap<>();
+
     public PartyInstance(SkyblockPlayer sbLeader) {
         leader = sbLeader;
         partyMembers.add(sbLeader);
+        permissions.put(sbLeader, 2);
 
         sbLeader.setCurrentParty(this);
-        sbLeader.setPartyPermissions(2); // Permissions: 0 - Basic Permissions; 1 - Moderator Permissions; 2 - Leader Permissions
     }
 
     public void dispatchInvite(SkyblockPlayer inviter, SkyblockPlayer toInvite) {
@@ -43,17 +43,19 @@ public final class PartyInstance {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(inParty(toInvite)) return;
+
                 invitedPlayers.remove(toInvite);
                 toInvite.sendMessages(
                         "&9&m-----------------------------",
-                        "&eThe party invite from " + inviter.getBukkitPlayer().getDisplayName() + "has expired.",
+                        "&eThe party invite from " + inviter.getBukkitPlayer().getDisplayName() + " has expired.",
                         "&9&m-----------------------------"
                 );
 
                 for(SkyblockPlayer member : partyMembers) {
                     member.sendMessages(
                             "&9&m-----------------------------",
-                            "&eThe party invite to " + toInvite.getBukkitPlayer().getDisplayName() + "has expired",
+                            "&eThe party invite to " + toInvite.getBukkitPlayer().getDisplayName() + " has expired",
                             "&9&m-----------------------------"
                     );
                 }
@@ -109,6 +111,7 @@ public final class PartyInstance {
         );
 
         for(SkyblockPlayer member : partyMembers) {
+            if(member == player) return;
             member.sendMessages(
                     "&9&m-----------------------------",
                     "&e" + player.getBukkitPlayer().getDisplayName() + " has left the party.",
@@ -152,6 +155,16 @@ public final class PartyInstance {
         return partyMembers;
     }
 
+    public void sendMessages(String... messages) {
+        for(SkyblockPlayer member : getMembers()) {
+            member.sendMessages(messages);
+        }
+    }
+
+    public void setPermissions(SkyblockPlayer player, int permission) {
+        permissions.put(player, permission);
+    }
+
     /*
      * Get Functions
      */
@@ -166,6 +179,10 @@ public final class PartyInstance {
 
     public boolean hasInvite(SkyblockPlayer player) {
         return invitedPlayers.contains(player);
+    }
+
+    public int getPlayerPermissions(SkyblockPlayer player) {
+        return permissions.getOrDefault(player, 0);
     }
 
 }

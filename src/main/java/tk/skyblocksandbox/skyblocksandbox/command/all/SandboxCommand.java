@@ -115,6 +115,10 @@ public final class SandboxCommand extends SkyblockCommand {
                                 playerPermissions.commandSetBlock = true;
                                 sender.sendMessage(Utility.colorize("&aGranted " + player.getDisplayName() + " the permission of using '&e/setblock&a'."));
                                 return true;
+                            case "sandbox.build":
+                                playerPermissions.buildingAllowed = true;
+                                sender.sendMessage(Utility.colorize("&aGranted " + player.getDisplayName() + " the permission of building."));
+                                return true;
                         }
                     case "remove":
                     case "revoke":
@@ -138,6 +142,10 @@ public final class SandboxCommand extends SkyblockCommand {
                             case "command.setblock":
                                 playerPermissions.commandSetBlock = false;
                                 sender.sendMessage(Utility.colorize("&cRevoked " + player.getDisplayName() + "'s permission of using '&e/setblock&c'."));
+                                return true;
+                            case "sandbox.build":
+                                playerPermissions.buildingAllowed = false;
+                                sender.sendMessage(Utility.colorize("&cRevoked " + player.getDisplayName() + "'s permission of building."));
                                 return true;
                         }
                 }

@@ -42,8 +42,7 @@ public abstract class SandboxModule {
     }
 
     public final void registerCommand(SkyblockCommand command) {
-        SimpleCommandMap simpleCommandMap = ((CraftServer) SkyblockSandbox.getInstance().getServer()).getCommandMap();
-        simpleCommandMap.register(SkyblockSandbox.getInstance().getDescription().getName(), command);
+        SkyblockSandbox.getInstance().registerCommand(command);
     }
 
     /*

@@ -23,5 +23,8 @@ public final class SkyblockItemIds {
      * Helmets
      */
     public static final String NECRON_HELMET = "NECRON_HELMET";
+    public static final String NECRON_CHESTPLATE = "NECRON_CHESTPLATE";
+    public static final String NECRON_LEGGINGS = "NECRON_LEGGINGS";
+    public static final String NECRON_BOOTS = "NECRON_BOOTS";
 
 }

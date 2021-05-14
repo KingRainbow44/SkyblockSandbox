@@ -6,10 +6,10 @@ import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public final class HubScoreboard extends SkyblockScoreboard {
+public final class DungeonsScoreboard extends SkyblockScoreboard {
 
-    public HubScoreboard(SkyblockPlayer player) {
-        super("skyblock.hub", player);
+    public DungeonsScoreboard(SkyblockPlayer player) {
+        super("skyblock.dungeon", player);
     }
 
     public void setScoreboard() {
@@ -17,7 +17,7 @@ public final class HubScoreboard extends SkyblockScoreboard {
         LocalDateTime dateTime = LocalDateTime.now();
         if(sbPlayer.getBits() > 0) {
             board.setAll(
-                    Utility.colorize("&7" + dtf.format(dateTime) + " &8mini1A"),
+                    Utility.colorize("&7" + dtf.format(dateTime) + "&8mini1A"),
                     Utility.colorize("&e "),
                     Utility.colorize(" &fEarly Summer 1st"),
                     Utility.colorize(" &70:00 am &e☀"),
@@ -30,7 +30,7 @@ public final class HubScoreboard extends SkyblockScoreboard {
             );
         } else {
             board.setAll(
-                    Utility.colorize("&7" + dtf.format(dateTime) + " &8mini1A"),
+                    Utility.colorize("&7" + dtf.format(dateTime) + "&8mini1A"),
                     Utility.colorize("&e "),
                     Utility.colorize(" &fEarly Summer 1st"),
                     Utility.colorize(" &70:00 am &e☀"),
@@ -51,13 +51,10 @@ public final class HubScoreboard extends SkyblockScoreboard {
             if(board.getLines().size() == 9) setScoreboard();
             board.set(Utility.colorize("&fBits: &b" + Utility.commafy("" + sbPlayer.getBits())), 3);
             board.set(Utility.colorize("&fPiggy: &6" + Utility.commafy("" + sbPlayer.getCoins())), 4);
-
-            board.set(Utility.colorize("&7" + dtf.format(dateTime) + " &8mini1A"), 10);
-            board.set(Utility.colorize(" &7⏣ " + sbPlayer.getLocation(true)), 6);
+            board.set(Utility.colorize("&7" + dtf.format(dateTime) + "&8mini1A"), 10);
         } else {
             board.set(Utility.colorize("&fPiggy: &6" + Utility.commafy("" + sbPlayer.getCoins())), 3);
-            board.set(Utility.colorize("&7" + dtf.format(dateTime) + " &8mini1A"), 9);
-            board.set(Utility.colorize(" &7⏣ " + sbPlayer.getLocation(true)), 5);
+            board.set(Utility.colorize("&7" + dtf.format(dateTime) + "&8mini1A"), 9);
         }
     }
 

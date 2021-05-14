@@ -27,4 +27,7 @@ public final class CustomPlayerManager {
         return players.getOrDefault(player.getUniqueId(), null);
     }
 
+    public Map<UUID, ICustomPlayer> getPlayers() {
+        return players;
+    }
 }

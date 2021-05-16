@@ -4,8 +4,10 @@ import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataType;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one.Bonzo;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.seven.Necron;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.six.Sadan;
+import tk.skyblocksandbox.skyblocksandbox.entity.fishing.Yeti;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -47,6 +49,10 @@ public final class SkyblockEntityManager {
                 return new Necron();
             case "SADAN":
                 return new Sadan();
+            case "BONZO":
+                return new Bonzo();
+            case "YETI":
+                return new Yeti();
         }
     }
 

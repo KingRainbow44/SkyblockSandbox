@@ -1,8 +1,13 @@
 package tk.skyblocksandbox.skyblocksandbox.command.all;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import tk.skyblocksandbox.area.SkyblockLocations;
+import org.bukkit.entity.Player;
+import tk.skyblocksandbox.dungeonsandbox.generator.VoidGenerator;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
@@ -28,7 +33,7 @@ public final class DebugCommand extends SkyblockCommand {
         switch(args.length) {
 
             case 0:
-                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill|village|dungeon_hub] [valid integer]");
+                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill|foldername|village|dungeon_hub] [valid integer]");
                 return true;
 
             case 1:
@@ -46,7 +51,7 @@ public final class DebugCommand extends SkyblockCommand {
                         sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug entity [reset|kill]");
                         return true;
                     case "warp":
-                        sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [village|dungeon_hub]");
+                        sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [foldername|village|dungeon_hub]");
                         return true;
                 }
                 return true;
@@ -58,78 +63,32 @@ public final class DebugCommand extends SkyblockCommand {
                             sbPlayer.sendMessage("&eAttempting to play '" + args[1] + "'...");
                         }
 
-                        boolean played;
-                        switch(args[1]) {
-                            default:
-                                sbPlayer.sendMessage("&cInvalid argument! The music id is invalid.");
-                                return true;
-                            case "stop":
-                                sbPlayer.sendMessage("&eAttempting to cancel music...");
-                                if(Music.cancelMusic(sbPlayer)) {
-                                    sbPlayer.sendMessage("&aSuccessfully canceled music!");
-                                }
-                                return true;
-                            case "dungeon_drama":
-                                played = Music.playMusic(sbPlayer, Music.DUNGEON_DRAMA);
-                                break;
-                            case "the_watcher":
-                                played = Music.playMusic(sbPlayer, Music.THE_WATCHER);
-                                break;
-                            case "sky_of_trees":
-                                played = Music.playMusic(sbPlayer, Music.SKY_OF_TREES);
-                                break;
-                            case "breathless_encounter":
-                                played = Music.playMusic(sbPlayer, Music.BREATHLESS_ENCOUNTER);
-                                break;
-                            case "blastin_banter_battle":
-                                played = Music.playMusic(sbPlayer, Music.BLASTIN_BANTER_BATTLE);
-                                break;
-                            case "mythic_warfare":
-                                played = Music.playMusic(sbPlayer, Music.MYTHIC_WARFARE);
-                                break;
+                        if ("stop".equals(args[1])) {
+                            sbPlayer.sendMessage("&eAttempting to cancel music...");
+                            if (Music.cancelMusic(sbPlayer)) {
+                                sbPlayer.sendMessage("&aSuccessfully canceled music!");
+                            }
+                            return true;
                         }
 
-                        if(!played) {
+                        if (!Music.playMusic(sbPlayer, args[1])) {
                             sbPlayer.sendMessage("&cFailed to play '" + args[1] + "'.");
                         } else {
                             sbPlayer.sendMessage("&aPlaying song: '" + args[1] + "'!");
                         }
-                        return true;
                     case "playall":
-                        sbPlayer.sendMessage("&eAttempting to play '" + args[1] + "'...");
-
-                        boolean played2;
-                        switch(args[1]) {
-                            default:
-                                sbPlayer.sendMessage("&cInvalid argument! The music id is invalid.");
-                                return true;
-                            case "stop":
-                                sbPlayer.sendMessage("&eAttempting to cancel music...");
-                                if(Music.cancelMusic(sbPlayer)) {
-                                    sbPlayer.sendMessage("&aSuccessfully canceled music!");
-                                }
-                                return true;
-                            case "dungeon_drama":
-                                played2 = Music.playMusicAll(Music.DUNGEON_DRAMA);
-                                break;
-                            case "the_watcher":
-                                played2 = Music.playMusicAll(Music.THE_WATCHER);
-                                break;
-                            case "sky_of_trees":
-                                played2 = Music.playMusicAll(Music.SKY_OF_TREES);
-                                break;
-                            case "breathless_encounter":
-                                played2 = Music.playMusicAll(Music.BREATHLESS_ENCOUNTER);
-                                break;
-                            case "blastin_banter_battle":
-                                played2 = Music.playMusicAll(Music.BLASTIN_BANTER_BATTLE);
-                                break;
-                            case "mythic_warfare":
-                                played2 = Music.playMusicAll(Music.MYTHIC_WARFARE);
-                                break;
+                        if(!args[1].matches("stop")) {
+                            sbPlayer.sendMessage("&eAttempting to play '" + args[1] + "'...");
                         }
 
-                        if(!played2) {
+                        if ("stop".equals(args[1])) {
+                            sbPlayer.sendMessage("&eAttempting to cancel music...");
+                            if (Music.cancelMusic(sbPlayer)) {
+                                sbPlayer.sendMessage("&aSuccessfully canceled music!");
+                            }
+                            return true;
+                        }
+                        if (!Music.playMusicAll(args[1])) {
                             sbPlayer.sendMessage("&cFailed to play '" + args[1] + "'.");
                         } else {
                             sbPlayer.sendMessage("&aPlaying song: '" + args[1] + "'!");
@@ -202,6 +161,8 @@ public final class DebugCommand extends SkyblockCommand {
                             case "kill":
                                 sbPlayer.sendMessage("&eAttempting to kill all entities...");
                                 for(Entity entity : sbPlayer.getBukkitPlayer().getWorld().getEntities()) {
+                                    if(entity instanceof Player) return true;
+
                                     if(SkyblockSandbox.getManagement().getEntityManager().getEntity(entity) == null) {
                                         entity.remove();
                                     } else {
@@ -212,17 +173,26 @@ public final class DebugCommand extends SkyblockCommand {
                                 return true;
                         }
                     case "warp":
+                        sbPlayer.sendMessage("&7Warping...");
                         switch(args[1]) {
                             default:
-                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [village|dungeon_hub]");
+                                String worldName = args[1];
+                                World world = Bukkit.getWorld(worldName);
+
+                                if(world == null) {
+                                    WorldCreator worldCreator = new WorldCreator(worldName);
+                                    worldCreator.generator(new VoidGenerator());
+                                    world = worldCreator.createWorld();
+                                }
+
+                                sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_NONE;
+                                sbPlayer.getBukkitPlayer().teleport(new Location(world, 0, 0,0));
                                 return true;
                             case "village":
-                                sbPlayer.sendMessage("&7Warping...");
                                 sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_VILLAGE;
                                 sbPlayer.getBukkitPlayer().teleport(sbPlayer.getSpawn());
                                 return true;
                             case "dungeon_hub":
-                                sbPlayer.sendMessage("&7Warping...");
                                 sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_DUNGEON_HUB;
                                 sbPlayer.getBukkitPlayer().teleport(sbPlayer.getSpawn());
                                 return true;

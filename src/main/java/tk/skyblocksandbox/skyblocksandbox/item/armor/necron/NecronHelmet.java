@@ -69,7 +69,6 @@ public class NecronHelmet extends SandboxItem {
         // Item Meta - START \\
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         if(meta != null) {
-            meta.setUnbreakable(true);
             meta.setDisplayName(Utility.rarityToColor(getItemData().rarity) + itemName);
             meta.setLore(new ArrayList<>(getLore()));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DYE);

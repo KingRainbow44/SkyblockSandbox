@@ -33,7 +33,7 @@ public final class Calculator {
         sbPlayer.getPlayerData().damage((int) Math.round(finalDamage));
 
         if(doKnockback && sbPlayer.getPlayerData().canTakeKnockback) {
-            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbPlayer.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(-0.4) ), 1L);
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbPlayer.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(-0.2) ), 1L);
         }
 
         sbPlayer.updateHud();
@@ -97,7 +97,7 @@ public final class Calculator {
         sbTarget.getPlayerData().damage((int) Math.round(damage));
 
         if(doKnockback && sbTarget.getPlayerData().canTakeKnockback) {
-            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbTarget.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.4) ), 1L);
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbTarget.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.2) ), 1L);
         }
 
         Damageable damageable = sbTarget.getBukkitPlayer();
@@ -149,7 +149,7 @@ public final class Calculator {
         entity.damage(Math.round(damage));
 
         if(doKnockback && entity.getEntityData().canTakeKnockback) {
-            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> entity.getBukkitEntity().setVelocity( entity.getBukkitEntity().getLocation().getDirection().multiply(-0.4) ), 1L);
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> entity.getBukkitEntity().setVelocity( entity.getBukkitEntity().getLocation().getDirection().multiply(-0.2) ), 1L);
         }
 
         if(entity.getEntityData().isBoss) {
@@ -221,7 +221,7 @@ public final class Calculator {
         entity.damage(Math.round(damage));
 
         if(doKnockback && entity.getEntityData().canTakeKnockback) {
-            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> entity.getBukkitEntity().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.4) ), 1L);
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> entity.getBukkitEntity().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.2) ), 1L);
         }
 
         if(entity.getEntityData().isBoss) {

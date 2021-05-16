@@ -114,8 +114,10 @@ run/
 
 # Legal
 src/main/resources/nbs/
+src/main/resources/schematics/
+src/main/resources/deprecated_code/
 libs/
 
 # Others
-src/main/java/com/kingrainbow44/
+src/main/java/com/
 src/main/java/me/

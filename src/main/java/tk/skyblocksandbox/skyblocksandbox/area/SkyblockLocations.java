@@ -1,4 +1,4 @@
-package tk.skyblocksandbox.area;
+package tk.skyblocksandbox.skyblocksandbox.area;
 
 public final class SkyblockLocations {
 

@@ -1,5 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -8,10 +10,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.decimal4j.util.DoubleRounder;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 
 import java.math.RoundingMode;
 
@@ -22,7 +26,8 @@ public abstract class SkyblockEntity {
 
     private final EntityType entityType;
 
-    private Entity entity;
+    private LivingEntity entity;
+
     protected BossBar entityBossBar = null;
     private int entityId = -1;
 
@@ -38,9 +43,38 @@ public abstract class SkyblockEntity {
 
         this.currentHealth = getEntityData().health;
 
-        if(getEntityData().isNpc) {
-            // TODO: Handle NPC entities.
-            return;
+        if(entityType == EntityType.PLAYER) {
+            SkyblockNPC npc;
+
+            if(getEntityData().isBoss) {
+                npc = new SkyblockNPC(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
+            } else {
+                npc = new SkyblockNPC(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
+            }
+
+            npc.getNpc().spawn(location);
+
+            entity = (LivingEntity) npc.getNpc().getEntity();
+            npc.setEntityData(getEntityData());
+
+            SkinTrait skinTrait = npc.getNpc().getOrAddTrait(SkinTrait.class);
+            skinTrait.setSkinPersistent(getEntityData().skinName, getEntityData().skinSignature, getEntityData().skinData);
+
+            npc.getNpc().setProtected(false);
+
+            PersistentDataContainer data = entity.getPersistentDataContainer();
+            data.set(key("skyblockEntity"), PersistentDataType.BYTE, (byte) 1);
+            data.set(key("entityUUID"), PersistentDataType.INTEGER, entityId);
+            data.set(key("damage"), PersistentDataType.INTEGER, getEntityData().damage);
+
+            if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
+
+            if(getEntityData().isBoss) {
+                entityBossBar = Bukkit.createBossBar(colorize("&c&l" + getEntityData().entityName), BarColor.RED, BarStyle.SOLID);
+                for(Player nearbyPlayer : Bukkit.getOnlinePlayers()) {
+                    entityBossBar.addPlayer(nearbyPlayer);
+                }
+            }
         } else {
             World world = location.getWorld();
 
@@ -53,7 +87,7 @@ public abstract class SkyblockEntity {
             data.set(key("entityUUID"), PersistentDataType.INTEGER, entityId);
             data.set(key("damage"), PersistentDataType.INTEGER, getEntityData().damage);
 
-            this.entity = entity;
+            this.entity = (LivingEntity) entity;
 
             if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
 
@@ -90,7 +124,7 @@ public abstract class SkyblockEntity {
 
     public void remove() {
         if(entityId == -1) return;
-        ((Damageable) entity).setHealth(0);
+        entity.setHealth(0);
     }
 
     public void damage(long damage) {
@@ -109,7 +143,7 @@ public abstract class SkyblockEntity {
         return entityId;
     }
 
-    public Entity getBukkitEntity() {
+    public LivingEntity getBukkitEntity() {
         return entity;
     }
 
@@ -125,4 +159,15 @@ public abstract class SkyblockEntity {
         getEntityBossBar().setProgress(progress);
     }
 
+    /*
+     * Static Methods
+     */
+
+    public static SkyblockEntity getSkyblockEntityFromNPC(NPC npc) {
+        Entity entity = npc.getEntity();
+        PersistentDataContainer data = entity.getPersistentDataContainer();
+
+        if(!data.has(key("entityUUID"), PersistentDataType.INTEGER)) return null;
+        return SkyblockSandbox.getManagement().getEntityManager().getEntity(data.get(key("entityUUID"), PersistentDataType.INTEGER));
+    }
 }

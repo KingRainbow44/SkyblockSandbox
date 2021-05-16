@@ -19,13 +19,6 @@ public final class Music {
 
     private static final Map<String, RadioSongPlayer> songs = new HashMap<>();
 
-    public static final String DUNGEON_DRAMA = "DUNGEON_DRAMA";
-    public static final String THE_WATCHER = "THE_WATCHER";
-    public static final String SKY_OF_TREES = "SKY_OF_TREES";
-    public static final String BREATHLESS_ENCOUNTER = "BREATHLESS_ENCOUNTER";
-    public static final String BLASTIN_BANTER_BATTLE = "BLASTIN_BANTER_BATTLE";
-    public static final String MYTHIC_WARFARE = "MYTHIC_WARFARE";
-
     public static void initRSP(String songId, Song song) {
         RadioSongPlayer rsp = new RadioSongPlayer(song);
 
@@ -42,44 +35,17 @@ public final class Music {
     }
 
     public static boolean playMusic(SkyblockPlayer player, String nbs) {
-        Song song;
-        String songId;
-        switch(nbs) {
-            default:
-                return false;
-            case DUNGEON_DRAMA:
-                songId = "dungeon_drama";
-                song = getNbsByName(songId);
-                break;
-            case THE_WATCHER:
-                songId = "the_watcher";
-                song = getNbsByName(songId);
-                break;
-            case SKY_OF_TREES:
-                songId = "sky_of_trees";
-                song = getNbsByName(songId);
-                break;
-            case BREATHLESS_ENCOUNTER:
-                songId = "breathless_encounter";
-                song = getNbsByName(songId);
-                break;
-            case BLASTIN_BANTER_BATTLE:
-                songId = "bastin_banter_battle";
-                song = getNbsByName(songId);
-                break;
-            case MYTHIC_WARFARE:
-                songId = "mythic_warfare";
-                song = getNbsByName(songId);
-                break;
-        }
+        if(!new File(SkyblockSandbox.getInstance().getDataFolder() + "/nbs/" + Utility.changeCase(nbs, false) + ".nbs").exists()) return false;
+
+        Song song = getNbsByName(nbs);
 
         if(song == null) return false;
 
-        if(songs.getOrDefault(songId, null) == null) {
-            initRSP(songId, song);
+        if(songs.getOrDefault(nbs, null) == null) {
+            initRSP(nbs, song);
         }
 
-        RadioSongPlayer rsp = songs.getOrDefault(songId, null);
+        RadioSongPlayer rsp = songs.getOrDefault(nbs, null);
         if(rsp == null) return false;
 
         if(!player.getPlayerData().playingSong.equals("none")) {
@@ -87,7 +53,7 @@ public final class Music {
         }
 
         rsp.addPlayer(player.getBukkitPlayer());
-        player.getPlayerData().playingSong = songId;
+        player.getPlayerData().playingSong = nbs;
 
         for(UUID uuid : rsp.getPlayerUUIDs()) {
             if(uuid.equals(player.getBukkitPlayer().getUniqueId())) {
@@ -99,12 +65,14 @@ public final class Music {
     }
 
     public static boolean playMusicAll(String nbs) {
+        if(!new File(SkyblockSandbox.getInstance().getDataFolder() + "/nbs/" + Utility.changeCase(nbs, false) + ".nbs").exists()) return false;
+
         for(Player player : Bukkit.getOnlinePlayers()) {
             ICustomPlayer customPlayer = SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(player);
             if(!(customPlayer instanceof SkyblockPlayer)) return false;
 
             SkyblockPlayer sbPlayer = (SkyblockPlayer) customPlayer;
-            playMusic(sbPlayer, nbs);
+            if(!playMusic(sbPlayer, nbs)) return false;
         }
 
         return true;

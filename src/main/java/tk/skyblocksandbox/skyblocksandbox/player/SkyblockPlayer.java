@@ -3,14 +3,14 @@ package tk.skyblocksandbox.skyblocksandbox.player;
 import com.kingrainbow44.customplayer.player.CustomPlayer;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import me.vagdedes.mysql.database.SQL;
+import net.minecraft.server.v1_16_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
-import tk.skyblocksandbox.area.SkyblockLocations;
+import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
@@ -32,6 +32,8 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     private final SkyblockPlayerData playerData;
     private final SkyblockScoreboard scoreboard;
 
+    private final PlayerConnection playerConnection;
+
     private PartyInstance currentParty = null;
 
     /*
@@ -40,6 +42,8 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
     public SkyblockPlayer(Player player) {
         super(player);
+
+        playerConnection = ((CraftPlayer) player).getHandle().playerConnection;
 
         playerData = new SkyblockPlayerData(this);
         scoreboard = new HubScoreboard(this);
@@ -100,6 +104,13 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     /*
      * Get Methods
      */
+
+    /**
+     * @return PlayerConnection - An NMS method used for sending NPC head rotation packets.
+     */
+    public PlayerConnection getPlayerConnection() {
+        return playerConnection;
+    }
 
     public PartyInstance getCurrentParty() {
         return currentParty;
@@ -239,5 +250,13 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
             sendMessage("&cYou do not have enough mana!");
             return false;
         }
+    }
+
+    /*
+     * Static Methods
+     */
+
+    public static SkyblockPlayer getSkyblockPlayer(Player player) {
+        return (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(player);
     }
 }

@@ -3,6 +3,8 @@ package tk.skyblocksandbox.skyblocksandbox;
 import com.kingrainbow44.customplayer.PlayerAPI;
 import me.vagdedes.mysql.database.MySQL;
 import me.vagdedes.mysql.database.SQL;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.trait.TraitInfo;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
@@ -20,6 +22,7 @@ import tk.skyblocksandbox.skyblocksandbox.command.all.SandboxCommand;
 import tk.skyblocksandbox.skyblocksandbox.listener.*;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModuleManager;
+import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.runnable.PlayerRunnable;
 import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
 
@@ -36,17 +39,16 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Bazaar (menu, system)
      * - Item Reforges
      * - Custom Mining System (pickaxes, drills, axes, etc.)
-     * - Regions
      * - Real-time updating stats system
      *  - While it isn't needed (we have getFinal_STAT_()) it would be nice to have for efficiency.
      */
 
     /*
      * Working on:
-     * - New (NBT Based) custom item system
      * - Dungeons (system, maps)
      * - Skyblock Menu
      * - Custom Item Creator (system, menu)
+     * - Regions
      */
 
     /*
@@ -60,6 +62,7 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Custom Damage System (damage indicators & the damage calculation)
      * - Party System
      * - Custom Commands System
+     * - New (NBT Based) custom item system
      * - Vanilla Items -> Custom Items System
      */
 
@@ -151,10 +154,19 @@ public final class SkyblockSandbox extends JavaPlugin {
     private void initializeDependencies() {
         Plugin protocolLib = getServer().getPluginManager().getPlugin("ProtocolLib");
         Plugin noteblockApi = getServer().getPluginManager().getPlugin("NoteBlockAPI");
+        Plugin worldEdit = getServer().getPluginManager().getPlugin("FastAsyncWorldEdit");
+        Plugin citizens2 = getServer().getPluginManager().getPlugin("Citizens");
 
-        if(protocolLib == null || noteblockApi == null) {
-            getLogger().severe("Either ProtocolLib or NoteblockAPI has NOT been loaded. Please install the plugin(s) ASAP.");
+        if(protocolLib == null || noteblockApi == null || worldEdit == null) {
+            getLogger().severe("Either ProtocolLib, NoteBlockAPI, or WorldEdit has NOT been loaded. Please install the plugin(s) ASAP.");
             getServer().getPluginManager().disablePlugin(this);
+        }
+
+        if(citizens2 == null) {
+            getLogger().severe("Citizens has NOT been loaded. Please install the plugin(s) ASAP.");
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(SkyblockEntityTrait.class).withName("SkyblockEntity"));
         }
     }
 

@@ -1,5 +1,12 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 public final class SkyblockEntityData {
 
     /*
@@ -17,6 +24,7 @@ public final class SkyblockEntityData {
     /*
      * Flags
      */
+    public boolean isHostile = true;
     public boolean isNpc = false;
     public boolean isBoss = false;
     public boolean isUndead = false;
@@ -25,8 +33,79 @@ public final class SkyblockEntityData {
     public boolean canTakeKnockback = true;
 
     /*
+     * Skin Data
+     */
+    public String skinName = ""; // The Player Name. The Player who owns the skin.
+    public String skinSignature = ""; // The Skin Signature. Received from https://mineskin.org/.
+    public String skinData = ""; // The Skin Data. The JSON Data from Base64 decoding profile data.
+
+    /*
      * Variables
      */
     public String entityName = "";
+
+    /*
+     * SkyblockEntity Trait
+     */
+
+    @Override
+    public String toString() {
+        JsonObject entityData = new JsonObject();
+
+        entityData.addProperty("health", health);
+        entityData.addProperty("defense", defense);
+        entityData.addProperty("damage", damage);
+        entityData.addProperty("speed", speed);
+
+        entityData.addProperty("level", level);
+        entityData.addProperty("entityName", entityName);
+        entityData.addProperty("vanillaHealth", vanillaHealth);
+
+        entityData.addProperty("isHostile", isHostile);
+        entityData.addProperty("isNpc", isNpc);
+        entityData.addProperty("isBoss", isBoss);
+        entityData.addProperty("isUndead", isUndead);
+        entityData.addProperty("isArthropod", isArthropod);
+        entityData.addProperty("canTakeKnockback", canTakeKnockback);
+
+        entityData.addProperty("skinName", skinName);
+        entityData.addProperty("skinSignature", skinSignature);
+        entityData.addProperty("skinData", skinData);
+
+        return entityData.toString();
+    }
+
+    public static SkyblockEntityData parse(String entityData) {
+        SkyblockEntityData parsedData = new SkyblockEntityData();
+
+        if(entityData == null || entityData.equals("{}")) {
+            return parsedData;
+        }
+
+        JsonElement decodedData = new JsonParser().parse(entityData);
+        JsonObject arrayData = decodedData.getAsJsonObject();
+
+        parsedData.health = arrayData.get("health").getAsInt();
+        parsedData.defense = arrayData.get("defense").getAsInt();
+        parsedData.damage = arrayData.get("damage").getAsInt();
+        parsedData.speed = arrayData.get("speed").getAsInt();
+
+        parsedData.level = arrayData.get("level").getAsInt();
+        parsedData.entityName = arrayData.get("entityName").getAsString();
+        parsedData.vanillaHealth = arrayData.get("vanillaHealth").getAsInt();
+
+        parsedData.isHostile = arrayData.get("isHostile").getAsBoolean();
+        parsedData.isNpc = arrayData.get("isNpc").getAsBoolean();
+        parsedData.isBoss = arrayData.get("isBoss").getAsBoolean();
+        parsedData.isUndead = arrayData.get("isUndead").getAsBoolean();
+        parsedData.isArthropod = arrayData.get("isArthropod").getAsBoolean();
+        parsedData.canTakeKnockback = arrayData.get("canTakeKnockback").getAsBoolean();
+
+        parsedData.skinName = arrayData.get("skinName").getAsString();
+        parsedData.skinSignature = arrayData.get("skinSignature").getAsString();
+        parsedData.skinData = arrayData.get("skinData").getAsString();
+
+        return parsedData;
+    }
 
 }

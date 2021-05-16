@@ -1,6 +1,13 @@
 package tk.skyblocksandbox.dungeonsandbox.catacombs;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.World;
+import org.bukkit.Location;
+import org.bukkit.WorldCreator;
 import tk.skyblocksandbox.dungeonsandbox.dungeon.Dungeon;
+import tk.skyblocksandbox.dungeonsandbox.generator.VoidGenerator;
+import tk.skyblocksandbox.skyblocksandbox.util.Schematic;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 public final class FloorOne extends Dungeon {
 
@@ -13,7 +20,17 @@ public final class FloorOne extends Dungeon {
      */
     @Override
     public void initializeDungeon() {
+        String dungeonToken = Utility.generateRandomString();
+        WorldCreator worldCreator = new WorldCreator(dungeonToken);
+        worldCreator.generator(new VoidGenerator());
 
+        org.bukkit.World bukkitWorld = worldCreator.createWorld();
+        World world = BukkitAdapter.adapt(bukkitWorld);
+
+        Schematic.pasteSchematic(
+                new Location(bukkitWorld, 0, 80, 0),
+                "entrance"
+        );
     }
 
     /**

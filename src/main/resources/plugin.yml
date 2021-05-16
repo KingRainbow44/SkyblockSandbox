@@ -2,7 +2,7 @@ name: SkyblockSandbox
 version: ${project.version}
 main: tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox
 api-version: 1.16
-depend: [ ProtocolLib, NoteBlockAPI ]
+depend: [ ProtocolLib, NoteBlockAPI, FastAsyncWorldEdit, Citizens ]
 authors: [ KingRainbow44 ]
 description: A Hypixel Skyblock Sandbox
 website: https://skyblocksandbox.tk

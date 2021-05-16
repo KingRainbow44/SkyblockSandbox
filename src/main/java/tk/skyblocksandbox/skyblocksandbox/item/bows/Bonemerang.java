@@ -74,11 +74,6 @@ public final class Bonemerang extends SandboxItem {
 
         NBTItem nbtItem = new NBTItem(bone, true);
 
-        float pitch = bukkitPlayer.getLocation().getPitch();
-        float yaw = bukkitPlayer.getLocation().getYaw();
-
-        final Vector[] afterTeleport = {null};
-
         stand.setInvisible(true);
         stand.setInvulnerable(true);
         stand.setGravity(false);
@@ -155,12 +150,12 @@ public final class Bonemerang extends SandboxItem {
                     if(e instanceof Damageable && e != player.getBukkitPlayer()) {
                         Damageable entity = (Damageable) e;
                         if(entity instanceof ArmorStand) return;
-                        if(entity instanceof Player) return;
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
                         SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
                         if(sbEntity == null) return;
 
-                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 0));
+                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.CUSTOM, 0));
                         Calculator.damage(sbEntity, player, true);
                         if(back) {
                             Calculator.damage(sbEntity, player, true);

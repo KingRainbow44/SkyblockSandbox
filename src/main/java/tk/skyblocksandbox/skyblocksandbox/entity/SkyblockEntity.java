@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
@@ -10,12 +11,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.decimal4j.util.DoubleRounder;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
+import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 
 import java.math.RoundingMode;
 
@@ -56,6 +57,7 @@ public abstract class SkyblockEntity {
 
             entity = (LivingEntity) npc.getNpc().getEntity();
             npc.setEntityData(getEntityData());
+            npc.setEntityId(entityId);
 
             SkinTrait skinTrait = npc.getNpc().getOrAddTrait(SkinTrait.class);
             skinTrait.setSkinPersistent(getEntityData().skinName, getEntityData().skinSignature, getEntityData().skinData);
@@ -64,7 +66,7 @@ public abstract class SkyblockEntity {
 
             PersistentDataContainer data = entity.getPersistentDataContainer();
             data.set(key("skyblockEntity"), PersistentDataType.BYTE, (byte) 1);
-            data.set(key("entityUUID"), PersistentDataType.INTEGER, entityId);
+            data.set(key("entityUUID"), PersistentDataType.INTEGER, entityId); // Redundancy (for other methods that use legacy "entityUUID".)
             data.set(key("damage"), PersistentDataType.INTEGER, getEntityData().damage);
 
             if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
@@ -114,12 +116,21 @@ public abstract class SkyblockEntity {
     }
 
     public void kill(boolean death) {
-        if(death) remove();
         if(entityId == -1) return;
 
         SkyblockSandbox.getManagement().getEntityManager().unregisterEntity(entityId);
-        getEntityBossBar().setVisible(false);
-        getEntityBossBar().removeAll();
+        if(getEntityData().isBoss) {
+            getEntityBossBar().setVisible(false);
+            getEntityBossBar().removeAll();
+        }
+
+        if(entity.hasMetadata("NPC")) {
+            NPC entityNPC = CitizensAPI.getNPCRegistry().getNPC(entity);
+            entityNPC.destroy();
+            return;
+        }
+
+        if(death) remove();
     }
 
     public void remove() {
@@ -164,10 +175,7 @@ public abstract class SkyblockEntity {
      */
 
     public static SkyblockEntity getSkyblockEntityFromNPC(NPC npc) {
-        Entity entity = npc.getEntity();
-        PersistentDataContainer data = entity.getPersistentDataContainer();
-
-        if(!data.has(key("entityUUID"), PersistentDataType.INTEGER)) return null;
-        return SkyblockSandbox.getManagement().getEntityManager().getEntity(data.get(key("entityUUID"), PersistentDataType.INTEGER));
+        SkyblockEntityTrait entityTrait = npc.getOrAddTrait(SkyblockEntityTrait.class);
+        return SkyblockSandbox.getManagement().getEntityManager().getEntity(entityTrait.getEntityId());
     }
 }

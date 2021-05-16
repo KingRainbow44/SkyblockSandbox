@@ -33,7 +33,7 @@ public final class DebugCommand extends SkyblockCommand {
         switch(args.length) {
 
             case 0:
-                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill|foldername|village|dungeon_hub] [valid integer]");
+                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill|check|foldername|village|dungeon_hub] [valid integer]");
                 return true;
 
             case 1:
@@ -147,7 +147,7 @@ public final class DebugCommand extends SkyblockCommand {
                     case "entity":
                         switch(args[1]) {
                             default:
-                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug entity [reset]");
+                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug entity [reset|kill|check] [entity id]");
                                 return true;
                             case "reset":
                                 sbPlayer.sendMessage("&eAttempting to reset nearby entities...");
@@ -170,6 +170,9 @@ public final class DebugCommand extends SkyblockCommand {
                                         sbEntity.kill(true);
                                     }
                                 }
+                                return true;
+                            case "check":
+                                sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug entity check [entity id]");
                                 return true;
                         }
                     case "warp":
@@ -241,6 +244,25 @@ public final class DebugCommand extends SkyblockCommand {
                             sbPlayer.sendMessage("&cInvalid number! The number has to be between 0 and 2,147,483,647.");
                             return true;
                         }
+                    case "entity":
+                        switch(args[1]) {
+                            case "check":
+                                try {
+                                    int entityId = Integer.parseInt(args[2]);
+                                    SkyblockEntity entity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entityId);
+
+                                    if(entity != null) {
+                                        sbPlayer.sendMessage("&aEntity is valid.");
+                                        sbPlayer.getBukkitPlayer().teleport(entity.getBukkitEntity().getLocation());
+                                    } else {
+                                        sbPlayer.sendMessage("&cEntity is invalid.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    sbPlayer.sendMessage("&cInvalid number! The number has to be between 0 and 2,147,483,647.");
+                                    return true;
+                                }
+                        }
+                        return true;
                 }
                 return true;
         }

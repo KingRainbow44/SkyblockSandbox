@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
 import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataType;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
@@ -34,10 +35,15 @@ public final class SkyblockEntityManager {
     }
 
     public SkyblockEntity getEntity(Entity entity) {
-        if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) return null;
+        if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) {
+            Bukkit.getLogger().info("no entityuuid");
+            return null;
+        }
         Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER);
-        if(!(rawUUID instanceof Integer)) return null;
-
+        if(!(rawUUID instanceof Integer)) {
+            Bukkit.getLogger().info("not integer");
+            return null;
+        }
         return getEntity((int) rawUUID);
     }
 

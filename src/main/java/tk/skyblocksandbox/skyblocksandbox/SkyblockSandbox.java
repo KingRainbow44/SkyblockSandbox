@@ -28,12 +28,11 @@ import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
 
 public final class SkyblockSandbox extends JavaPlugin {
 
-    private final static String version = "v0.1-development";
+    private final static String version = "v0.3-development";
 
     /*
      * Skyblock Sandbox To-Do List:
      * - Player Storage (ender chest, backpacks)
-     * - Custom NPCs System
      * - Custom Enchants (e-table, anvil, enchantments)
      * - Auctions (display, menu)
      * - Bazaar (menu, system)

@@ -110,7 +110,7 @@ public final class AxeOfTheShredded extends SandboxItem {
                     if(e instanceof Damageable && e != player) {
                         Damageable entity = (Damageable) e;
                         if(entity instanceof ArmorStand) return;
-                        if(entity instanceof Player) {
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) {
 //                            Calculator.damage((SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity), sbPlayer, false);
                             return;
                         }
@@ -118,7 +118,7 @@ public final class AxeOfTheShredded extends SandboxItem {
                         SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
                         if(sbEntity == null) return;
 
-                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player, e, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 0));
+                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player, e, EntityDamageEvent.DamageCause.CUSTOM, 0));
                         Calculator.damage(sbEntity, sbPlayer, true);
                     }
                 }

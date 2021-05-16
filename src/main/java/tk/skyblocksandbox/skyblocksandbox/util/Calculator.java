@@ -38,8 +38,7 @@ public final class Calculator {
 
         sbPlayer.updateHud();
 
-        player.damage(1);
-        player.setHealth(sbPlayer.getPlayerData().vanillaMaxHealth);
+        player.damage(0);
         player.setLastDamageCause(new EntityDamageEvent(player, EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbPlayer.getPlayerData().currentHealth <= 0) {
@@ -102,8 +101,7 @@ public final class Calculator {
 
         Damageable damageable = sbTarget.getBukkitPlayer();
 
-        damageable.damage(1);
-        damageable.setHealth(20);
+        damageable.damage(0);
         sbTarget.getBukkitPlayer().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), sbTarget.getBukkitPlayer(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbTarget.getPlayerData().currentHealth <= 0) {
@@ -158,10 +156,9 @@ public final class Calculator {
             entity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entity.getEntityData().level +"&8] &c" + entity.getEntityData().entityName + " &a" + Math.round(entity.getEntityData().health) + "/" + Math.round(entity.getEntityData().health) + "&c❤"));
         }
 
-        Damageable damageable = (Damageable) entity.getBukkitEntity();
+        Damageable damageable = entity.getBukkitEntity();
 
-        damageable.damage(1);
-        damageable.setHealth(entity.getEntityData().vanillaHealth);
+        damageable.damage(0);
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageEvent(entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(entity.getEntityHealth() <= 0) {
@@ -230,10 +227,9 @@ public final class Calculator {
             entity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entity.getEntityData().level +"&8] &c" + entity.getEntityData().entityName + " &a" + Math.round(entity.getEntityData().health) + "/" + Math.round(entity.getEntityData().health) + "&c❤"));
         }
 
-        Damageable damageable = (Damageable) entity.getBukkitEntity();
+        Damageable damageable = entity.getBukkitEntity();
 
-        damageable.damage(1);
-        damageable.setHealth(entity.getEntityData().vanillaHealth);
+        damageable.damage(0);
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(entity.getEntityHealth() <= 0) {

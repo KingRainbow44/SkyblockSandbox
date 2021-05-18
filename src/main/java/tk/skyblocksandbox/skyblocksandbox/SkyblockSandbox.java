@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox;
 
 import com.kingrainbow44.customplayer.PlayerAPI;
+import fr.minuskube.inv.InventoryManager;
 import me.vagdedes.mysql.database.MySQL;
 import me.vagdedes.mysql.database.SQL;
 import net.citizensnpcs.api.CitizensAPI;
@@ -89,6 +90,8 @@ public final class SkyblockSandbox extends JavaPlugin {
         api.initialize();
 
         management = new SkyblockManager();
+        management.setInventoryManager(new InventoryManager(this));
+        management.getInventoryManager().init();
 
         initializeConfig();
         initializeDatabase();

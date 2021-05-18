@@ -27,6 +27,8 @@ public final class DungeonManager {
                     "&9&m-----------------------------"
             );
         }
+
+        dungeonType.warpParty(party);
     }
 
     public void destroy(PartyInstance party, boolean forcibly) {

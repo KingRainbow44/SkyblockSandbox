@@ -6,9 +6,9 @@ public interface ICustomPlayer {
 
     public Player getBukkitPlayer();
 
-    public void sendMessage(String message);
+    public void sendMessage(Object message);
 
-    public void sendMessages(String... messages);
+    public void sendMessages(Object... messages);
 
     public void onRegister();
 

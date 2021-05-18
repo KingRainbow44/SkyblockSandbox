@@ -1,5 +1,6 @@
 package com.kingrainbow44.customplayer.player;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -15,12 +16,16 @@ public abstract class CustomPlayer implements ICustomPlayer {
         return bukkitPlayer;
     }
 
-    public void sendMessage(String message) {
-        bukkitPlayer.sendMessage(message.replace('&', ChatColor.COLOR_CHAR));
+    public void sendMessage(Object message) {
+        if(message instanceof String) {
+            bukkitPlayer.sendMessage(message.toString().replace('&', ChatColor.COLOR_CHAR));
+        } else if (message instanceof TextComponent) {
+            bukkitPlayer.spigot().sendMessage((TextComponent) message);
+        }
     }
 
-    public void sendMessages(String... messages) {
-        for(String message : messages) {
+    public void sendMessages(Object... messages) {
+        for(Object message : messages) {
             sendMessage(message);
         }
     }

@@ -79,7 +79,7 @@ public final class DamageListener implements Listener {
             if(!(rawPlayer instanceof SkyblockPlayer)) return;
             SkyblockPlayer sbPlayer = (SkyblockPlayer) rawPlayer;
 
-            Calculator.damage(sbPlayer, (float) damage, true, false);
+            Calculator.damage(sbPlayer, (float) damage, true);
             event.setCancelled(true);
             return;
         }

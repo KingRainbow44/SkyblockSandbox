@@ -20,7 +20,7 @@ public final class Calculator {
      * Used for doing calculations during, for example, damage.
      */
 
-    public static void damage(SkyblockPlayer sbPlayer, float damage, boolean doKnockback, boolean trueDamage) {
+    public static void damage(SkyblockPlayer sbPlayer, float damage, boolean doKnockback) {
         Player player = sbPlayer.getBukkitPlayer();
 
         double finalDamage = damage;
@@ -38,7 +38,7 @@ public final class Calculator {
 
         sbPlayer.updateHud();
 
-        player.damage(0);
+        sbPlayer.hurt(Utility.getRandomPlayer());
         player.setLastDamageCause(new EntityDamageEvent(player, EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbPlayer.getPlayerData().currentHealth <= 0) {
@@ -99,9 +99,7 @@ public final class Calculator {
             Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbTarget.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.2) ), 1L);
         }
 
-        Damageable damageable = sbTarget.getBukkitPlayer();
-
-        damageable.damage(0);
+        sbTarget.hurt(sbPlayer.getBukkitPlayer());
         sbTarget.getBukkitPlayer().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), sbTarget.getBukkitPlayer(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbTarget.getPlayerData().currentHealth <= 0) {
@@ -156,9 +154,7 @@ public final class Calculator {
             entity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entity.getEntityData().level +"&8] &c" + entity.getEntityData().entityName + " &a" + Math.round(entity.getEntityData().health) + "/" + Math.round(entity.getEntityData().health) + "&c❤"));
         }
 
-        Damageable damageable = entity.getBukkitEntity();
-
-        damageable.damage(0);
+        entity.hurt(Utility.getRandomPlayer());
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageEvent(entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(entity.getEntityHealth() <= 0) {
@@ -227,9 +223,7 @@ public final class Calculator {
             entity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entity.getEntityData().level +"&8] &c" + entity.getEntityData().entityName + " &a" + Math.round(entity.getEntityData().health) + "/" + Math.round(entity.getEntityData().health) + "&c❤"));
         }
 
-        Damageable damageable = entity.getBukkitEntity();
-
-        damageable.damage(0);
+        entity.hurt(sbPlayer.getBukkitPlayer());
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(entity.getEntityHealth() <= 0) {

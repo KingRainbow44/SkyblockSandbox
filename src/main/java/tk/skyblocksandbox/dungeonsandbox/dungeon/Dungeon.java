@@ -1,6 +1,11 @@
 package tk.skyblocksandbox.dungeonsandbox.dungeon;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import tk.skyblocksandbox.dungeonsandbox.catacombs.FloorOne;
+import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
+import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 public abstract class Dungeon {
 
@@ -10,6 +15,9 @@ public abstract class Dungeon {
     private final boolean isMasterMode;
 
     public static final String CATACOMBS = "THE_CATACOMBS";
+
+    protected String dungeonToken = "";
+    protected boolean dungeonGenerationFinished = false;
 
     public Dungeon(String friendlyName, String internalName, int dungeonFloor, boolean masterMode) {
         this.friendlyName = friendlyName;
@@ -32,6 +40,15 @@ public abstract class Dungeon {
 
     public boolean isMasterModeFloor() {
         return isMasterMode;
+    }
+
+    public void warpParty(PartyInstance party) {
+        if(!dungeonGenerationFinished) return;
+        World world = Bukkit.getWorld(dungeonToken);
+
+        for(SkyblockPlayer member : party.getMembers()) {
+            member.getBukkitPlayer().teleport(new Location(world, 0, 81, 0));
+        }
     }
 
     /*

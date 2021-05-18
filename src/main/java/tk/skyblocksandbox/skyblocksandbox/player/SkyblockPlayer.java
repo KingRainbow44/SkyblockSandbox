@@ -1,5 +1,8 @@
 package tk.skyblocksandbox.skyblocksandbox.player;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
 import com.kingrainbow44.customplayer.player.CustomPlayer;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import me.vagdedes.mysql.database.SQL;
@@ -19,6 +22,8 @@ import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.util.Music;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
@@ -249,6 +254,23 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         } else {
             sendMessage("&cYou do not have enough mana!");
             return false;
+        }
+    }
+
+    /**
+     * Fakes the red effect on an entity using ProtocolLib.
+     * @param attacker The player hurting the entity.
+     */
+    public void hurt(Player attacker) {
+        PacketContainer entityStatus = new PacketContainer(PacketType.Play.Server.ENTITY_STATUS);
+
+        entityStatus.getIntegers().write(0, getBukkitPlayer().getEntityId());
+        entityStatus.getBytes().write(0, (byte) 2);
+
+        try {
+            ProtocolLibrary.getProtocolManager().sendServerPacket(attacker, entityStatus);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 

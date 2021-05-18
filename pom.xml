@@ -122,14 +122,20 @@
             <id>everything</id>
             <url>https://repo.citizensnpcs.co/</url>
         </repository>
+
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>1.16.5</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.16.5.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -137,14 +143,6 @@
             <artifactId>bukkit</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bukkitmc</groupId>
-            <artifactId>craftbukkitapi</artifactId>
-            <version>1.16.5</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/libs/craftbukkit-1.16.5.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -206,6 +204,12 @@
             <version>2.0.27-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.6.0</version>
         </dependency>
     </dependencies>
 </project>

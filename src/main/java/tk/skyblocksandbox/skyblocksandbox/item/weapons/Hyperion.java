@@ -139,7 +139,7 @@ public final class Hyperion extends SandboxItem {
                     SkyblockPlayer sbTarget = (SkyblockPlayer) rawTarget;
 
                     if(sbTarget.getPlayerData().canTakeAbilityDamage) {
-                        Calculator.damage(sbTarget, damage, false, false);
+                        Calculator.damage(sbTarget, damage, false);
                         entityCount++;
                     }
                 }else{

@@ -2,6 +2,7 @@ package tk.skyblocksandbox.dungeonsandbox.catacombs;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.world.World;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldCreator;
 import tk.skyblocksandbox.dungeonsandbox.dungeon.Dungeon;
@@ -27,10 +28,13 @@ public final class FloorOne extends Dungeon {
         org.bukkit.World bukkitWorld = worldCreator.createWorld();
         World world = BukkitAdapter.adapt(bukkitWorld);
 
-        Schematic.pasteSchematic(
+        // Entrance
+        boolean pasted = Schematic.pasteSchematic(
                 new Location(bukkitWorld, 0, 80, 0),
                 "entrance"
-        );
+        ); if(!pasted) Bukkit.getLogger().warning("Unable to paste entrance.schem, check CONSOLE for more details.");
+
+        // First Room
     }
 
     /**

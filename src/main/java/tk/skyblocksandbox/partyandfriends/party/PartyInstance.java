@@ -65,7 +65,7 @@ public final class PartyInstance {
         toInvite.sendMessages(
                 "&9&m-----------------------------",
                 "&e" + inviter.getBukkitPlayer().getDisplayName() + " has invited you to join their party!",
-                "&eYou have &c60 &eseconds to accept. " + text,
+                "&eYou have &c60 &eseconds to accept. " + text.toLegacyText(),
                 "&9&m-----------------------------"
         );
 
@@ -157,7 +157,7 @@ public final class PartyInstance {
 
     public void sendMessages(String... messages) {
         for(SkyblockPlayer member : getMembers()) {
-            member.sendMessages(messages);
+            member.sendMessages((Object) messages);
         }
     }
 

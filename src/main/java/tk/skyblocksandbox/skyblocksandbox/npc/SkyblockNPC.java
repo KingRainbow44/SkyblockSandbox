@@ -15,6 +15,7 @@ import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
 
@@ -110,9 +111,7 @@ public final class SkyblockNPC {
             sbEntity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entityData.level +"&8] &c" + entityData.entityName + " &a" + Math.round(entityData.health) + "/" + Math.round(entityData.health) + "&c❤"));
         }
 
-        Damageable damageable = (LivingEntity) npc.getEntity();
-
-        damageable.damage(0);
+        sbEntity.hurt(sbPlayer.getBukkitPlayer());
         npc.getEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), npc.getEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbEntity.getEntityHealth() <= 0) {
@@ -175,9 +174,7 @@ public final class SkyblockNPC {
             sbEntity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entityData.level +"&8] &c" + entityData.entityName + " &a" + Math.round(entityData.health) + "/" + Math.round(entityData.health) + "&c❤"));
         }
 
-        Damageable damageable = (LivingEntity) npc.getEntity();
-
-        damageable.damage(0);
+        sbEntity.hurt(Utility.getRandomPlayer());
         npc.getEntity().setLastDamageCause(new EntityDamageEvent(npc.getEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbEntity.getEntityHealth() <= 0) {

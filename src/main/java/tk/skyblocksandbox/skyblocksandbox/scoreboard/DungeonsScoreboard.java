@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class DungeonsScoreboard extends SkyblockScoreboard {
 
+    // ✗
     public DungeonsScoreboard(SkyblockPlayer player) {
         super("skyblock.dungeon", player);
     }

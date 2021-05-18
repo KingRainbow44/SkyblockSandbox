@@ -1,5 +1,8 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
@@ -18,6 +21,7 @@ import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.RoundingMode;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
@@ -136,6 +140,23 @@ public abstract class SkyblockEntity {
     public void remove() {
         if(entityId == -1) return;
         entity.setHealth(0);
+    }
+
+    /**
+     * Fakes the red effect on an entity using ProtocolLib.
+     * @param attacker The player hurting the entity.
+     */
+    public void hurt(Player attacker) {
+//        PacketContainer entityStatus = new PacketContainer(PacketType.Play.Server.ENTITY_STATUS);
+//
+//        entityStatus.getIntegers().write(0, entity.getEntityId());
+//        entityStatus.getBytes().write(0, (byte) 2);
+//
+//        try {
+//            ProtocolLibrary.getProtocolManager().sendServerPacket(attacker, entityStatus);
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void damage(long damage) {

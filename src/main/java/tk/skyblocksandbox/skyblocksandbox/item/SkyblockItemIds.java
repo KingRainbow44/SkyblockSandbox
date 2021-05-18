@@ -8,6 +8,7 @@ public final class SkyblockItemIds {
     public static final String HYPERION = "HYPERION";
     public static final String MIDAS_STAFF = "MIDAS_STAFF";
     public static final String AXE_OF_THE_SHREDDED = "AXE_OF_THE_SHREDDED";
+    public static final String GIANTS_SWORD = "GIANTS_SWORD";
 
     /*
      * Materials

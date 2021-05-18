@@ -9,6 +9,7 @@ import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.AxeOfTheShredded;
+import tk.skyblocksandbox.skyblocksandbox.item.weapons.GiantsSword;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.Hyperion;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.MidasStaff;
 import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
@@ -25,6 +26,7 @@ public final class SkyblockItemManager {
         registerItem(new MidasStaff());
         registerItem(new Bonemerang());
         registerItem(new AxeOfTheShredded());
+        registerItem(new GiantsSword());
 
         registerItem(new NecronsHandle());
 

@@ -28,4 +28,9 @@ public final class SkyblockItemIds {
     public static final String NECRON_LEGGINGS = "NECRON_LEGGINGS";
     public static final String NECRON_BOOTS = "NECRON_BOOTS";
 
+    /*
+     * Misc
+     */
+    public static final String SKYBLOCK_MENU = "SKYBLOCK_MENU";
+
 }

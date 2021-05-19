@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
@@ -9,10 +10,15 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
+import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 public final class ItemListener implements Listener {
@@ -50,6 +56,58 @@ public final class ItemListener implements Listener {
             Bukkit.getPluginManager().callEvent(interactEvent);
 
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        if(event.getCurrentItem() != null) {
+            NBTItem nbtItem = new NBTItem(event.getCurrentItem(), true);
+            if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
+                if(event.getWhoClicked() instanceof Player) {
+                    SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) event.getWhoClicked());
+                    SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
+
+                    event.setCancelled(true);
+                }
+            }
+        }
+
+        if(event.getCursor() != null) {
+            NBTItem nbtItem = new NBTItem(event.getCursor(), true);
+            if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
+                if(event.getWhoClicked() instanceof Player) {
+                    SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) event.getWhoClicked());
+                    SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
+
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+        NBTItem item = new NBTItem(event.getItemDrop().getItemStack(), true);
+        if(item.hasKey("isSkyblockMenu") && item.getBoolean("isSkyblockMenu")) {
+            SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(event.getPlayer());
+            SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
+
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDrag(InventoryDragEvent event) {
+        if(event.getCursor() == null) return;
+        NBTItem item = new NBTItem(event.getCursor(), true);
+        if(item.hasKey("isSkyblockMenu") && item.getBoolean("isSkyblockMenu")) {
+            if(event.getWhoClicked() instanceof Player) {
+                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) event.getWhoClicked());
+                SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
+
+                event.setCancelled(true);
+            }
         }
     }
 

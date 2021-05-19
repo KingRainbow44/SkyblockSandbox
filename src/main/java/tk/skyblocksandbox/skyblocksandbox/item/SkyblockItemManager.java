@@ -8,6 +8,7 @@ import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronChestplate;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
+import tk.skyblocksandbox.skyblocksandbox.item.misc.SkyblockMenu;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.AxeOfTheShredded;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.GiantsSword;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.Hyperion;
@@ -34,6 +35,8 @@ public final class SkyblockItemManager {
         registerItem(new NecronChestplate());
         registerItem(new NecronLeggings());
         registerItem(new NecronBoots());
+
+        registerItem(new SkyblockMenu());
     }
 
     public void registerItem(SandboxItem item) {

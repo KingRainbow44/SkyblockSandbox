@@ -13,11 +13,14 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import tk.skyblocksandbox.partyandfriends.PartyModule;
+import tk.skyblocksandbox.partyandfriends.party.PartyManager;
 import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
+import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.util.Music;
@@ -69,6 +72,9 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
     public void onRegister() {
         getBukkitPlayer().teleport(new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3, 70, -70, 180, 0));
+
+        SandboxItem sbMenu = (SandboxItem) SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(SkyblockItemIds.SKYBLOCK_MENU);
+        getBukkitPlayer().getInventory().setItem(8, sbMenu.create());
     }
 
     public void onUnregister() {
@@ -85,6 +91,16 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
         if(!getPlayerData().playingSong.matches("none")) {
             Music.cancelMusic(this);
+        }
+
+        if(inParty()) {
+            if(getPartyPermissions() == 2) {
+                PartyManager partyManager = PartyModule.getPartyManager();
+                partyManager.disbandParty(this);
+            } else {
+                PartyInstance partyInstance = getCurrentParty();
+                partyInstance.removeMember(this);
+            }
         }
     }
 

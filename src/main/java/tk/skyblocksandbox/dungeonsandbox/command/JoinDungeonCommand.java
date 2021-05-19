@@ -7,7 +7,7 @@ import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
-public class JoinDungeonCommand extends SkyblockCommand {
+public final class JoinDungeonCommand extends SkyblockCommand {
 
     public JoinDungeonCommand() {
         super("joindungeon");

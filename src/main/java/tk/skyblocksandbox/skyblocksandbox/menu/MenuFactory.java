@@ -16,13 +16,13 @@ public final class MenuFactory {
     public MenuFactory() {
         registerMenu(MenuList.SKYBLOCK_MENU_MAIN, buildFromProvider(
                 new MainSkyblockMenu(),
-                3, 6,
+                9, 6,
                 "menu.skyblock_menu_main",
-                "Skyblock Menu", true
+                "Skyblock Menu"
         ));
     }
 
-    public SmartInventory buildFromProvider(InventoryProvider provider, int length, int width, String menuLocale, String title, boolean readOnly) {
+    public SmartInventory buildFromProvider(InventoryProvider provider, int length, int width, String menuLocale, String title) {
         SmartInventory.Builder builder = SmartInventory.builder()
                 .id(menuLocale)
                 .provider(provider)

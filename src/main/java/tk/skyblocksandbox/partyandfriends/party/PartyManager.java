@@ -29,7 +29,7 @@ public final class PartyManager {
             members.setCurrentParty(null);
             members.sendMessages(
                     "&9&m-----------------------------",
-                    "&eThe party was disbanded by " + sbLeader.getBukkitPlayer().getDisplayName(),
+                    "&eThe party was disbanded by " + sbLeader.getBukkitPlayer().getDisplayName() + "!",
                     "&9&m-----------------------------"
             );
         }

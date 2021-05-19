@@ -23,7 +23,7 @@ import java.io.IOException;
 
 public final class Schematic {
 
-    public static boolean pasteSchematic(Location location, String schematicName) {
+    public static boolean pasteSchematic(Location location, String schematicName, boolean enableLogging) {
         String schematicFinal = SkyblockSandbox.getInstance().getDataFolder().getAbsolutePath() + "/schematics/" + schematicName + ".schem";
         File schematicFile = new File(schematicFinal);
 
@@ -55,7 +55,7 @@ public final class Schematic {
             return false;
         }
 
-        Bukkit.getLogger().info(schematicName + ".schem was pasted successfully!");
+        if(enableLogging) Bukkit.getLogger().info(schematicName + ".schem was pasted successfully!");
         return true;
     }
 

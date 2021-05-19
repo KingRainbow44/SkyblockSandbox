@@ -13,7 +13,7 @@ import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 public final class PartyCommand extends SkyblockCommand {
 
     public PartyCommand() {
-        super("party");
+        super("party", new String[]{"p"}, "A replica of Hypixel's party system.");
     }
 
     @Override
@@ -42,7 +42,13 @@ public final class PartyCommand extends SkyblockCommand {
                         SkyblockPlayer invite = (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(player);
 
                         PartyManager partyManager = PartyModule.getPartyManager();
-                        partyManager.createParty(sbPlayer);
+                        if(!partyManager.createParty(sbPlayer)) {
+                            sbPlayer.sendMessages(
+                                    "&9&m-----------------------------",
+                                    "&cYour already in a party!",
+                                    "&9&m-----------------------------"
+                            );
+                        }
 
                         PartyInstance createParty = partyManager.getPartyFromPlayer(sbPlayer.getBukkitPlayer().getUniqueId());
                         createParty.dispatchInvite(sbPlayer, invite);
@@ -125,7 +131,7 @@ public final class PartyCommand extends SkyblockCommand {
                         }
 
                         PartyInstance party1 = sbPlayer.getCurrentParty();
-                        party1.removeMember((SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(kickPlayer));
+                        party1.kickMember(sbPlayer, (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(kickPlayer));
                         return true;
                 }
         }

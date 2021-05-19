@@ -21,6 +21,7 @@ import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.SandboxCommand;
 import tk.skyblocksandbox.skyblocksandbox.listener.*;
+import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModuleManager;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
@@ -39,13 +40,12 @@ public final class SkyblockSandbox extends JavaPlugin {
      * - Bazaar (menu, system)
      * - Item Reforges
      * - Custom Mining System (pickaxes, drills, axes, etc.)
-     * - Real-time updating stats system
-     *  - While it isn't needed (we have getFinal_STAT_()) it would be nice to have for efficiency.
+     * - Real-time updating stats system (While it isn't needed (we have getFinal_STAT_()) it would be nice to have for efficiency.)
      */
 
     /*
      * Working on:
-     * - Dungeons (system, maps)
+     * - Dungeons (system, generation (lazy)) TODO: Implement proper dungeon generation.
      * - Skyblock Menu
      * - Custom Item Creator (system, menu)
      * - Regions
@@ -70,6 +70,7 @@ public final class SkyblockSandbox extends JavaPlugin {
     private static SkyblockSandbox instance;
     private static SkyblockManager management;
     private static SandboxModuleManager moduleManager;
+    private static MenuFactory menuFactory;
 
     private static Configuration configuration;
 
@@ -92,6 +93,8 @@ public final class SkyblockSandbox extends JavaPlugin {
         management = new SkyblockManager();
         management.setInventoryManager(new InventoryManager(this));
         management.getInventoryManager().init();
+
+        menuFactory = new MenuFactory();
 
         initializeConfig();
         initializeDatabase();
@@ -218,5 +221,9 @@ public final class SkyblockSandbox extends JavaPlugin {
 
     public static SkyblockManager getManagement() {
         return management;
+    }
+
+    public static MenuFactory getMenuFactory() {
+        return menuFactory;
     }
 }

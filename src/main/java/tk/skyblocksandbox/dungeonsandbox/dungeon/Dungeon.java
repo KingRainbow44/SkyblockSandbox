@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import tk.skyblocksandbox.dungeonsandbox.catacombs.FloorOne;
+import tk.skyblocksandbox.dungeonsandbox.util.Generation;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -17,7 +18,12 @@ public abstract class Dungeon {
     public static final String CATACOMBS = "THE_CATACOMBS";
 
     protected String dungeonToken = "";
+    protected Generation.RoomGenerationTypes lastRoomGenerated = null;
+    protected Generation.FloorGenerationTypes floorGeneration = null;
     protected boolean dungeonGenerationFinished = false;
+
+    protected boolean bloodRoomGenerated = false;
+    protected boolean fairyRoomGenerated = false;
 
     public Dungeon(String friendlyName, String internalName, int dungeonFloor, boolean masterMode) {
         this.friendlyName = friendlyName;

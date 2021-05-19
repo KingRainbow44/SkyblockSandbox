@@ -8,10 +8,7 @@ import net.minecraft.server.v1_16_R3.LocaleLanguage;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.text.translate.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -261,6 +258,22 @@ public final class Utility {
         }
         return salt.toString();
 
+    }
+
+    public static void applyGamerules(World world) {
+        world.setGameRule(
+                GameRule.DO_MOB_SPAWNING, false
+        );
+        world.setGameRule(
+                GameRule.DO_DAYLIGHT_CYCLE, false
+        );
+        world.setGameRule(
+                GameRule.DO_FIRE_TICK, false
+        );
+
+        world.setGameRule(
+                GameRule.KEEP_INVENTORY, true
+        );
     }
 
     public static NamespacedKey key(String key) {

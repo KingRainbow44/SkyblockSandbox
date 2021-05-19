@@ -1,8 +1,11 @@
 package tk.skyblocksandbox.partyandfriends.party;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Content;
 import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -36,9 +39,16 @@ public final class PartyInstance {
         }
 
         invitedPlayers.add(toInvite);
-        TextComponent text = new TextComponent("Click here to join!");
+
+        TextComponent text = new TextComponent("Click here to join! ");
         text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept " + inviter.getBukkitPlayer().getDisplayName()));
         text.setColor(ChatColor.GOLD);
+        TextComponent text2 = new TextComponent("You have ");
+        text2.setColor(ChatColor.YELLOW);
+        TextComponent text3 = new TextComponent("60");
+        text3.setColor(ChatColor.RED);
+        TextComponent text4 = new TextComponent(" seconds to accept.");
+        text4.setColor(ChatColor.YELLOW);
 
         new BukkitRunnable() {
             @Override
@@ -64,10 +74,10 @@ public final class PartyInstance {
 
         toInvite.sendMessages(
                 "&9&m-----------------------------",
-                "&e" + inviter.getBukkitPlayer().getDisplayName() + " has invited you to join their party!",
-                "&eYou have &c60 &eseconds to accept. " + text.toLegacyText(),
-                "&9&m-----------------------------"
+                "&e" + inviter.getBukkitPlayer().getDisplayName() + " has invited you to join their party!"
         );
+        toInvite.getBukkitPlayer().spigot().sendMessage(text2, text3, text4, text);
+        toInvite.sendMessages("&9&m-----------------------------");
 
         for(SkyblockPlayer member : partyMembers) {
             member.sendMessages(
@@ -110,6 +120,8 @@ public final class PartyInstance {
                 "&9&m-----------------------------"
         );
 
+        partyMembers.remove(player);
+
         for(SkyblockPlayer member : partyMembers) {
             if(member == player) return;
             member.sendMessages(
@@ -119,7 +131,6 @@ public final class PartyInstance {
             );
         }
 
-        partyMembers.remove(player);
         player.setCurrentParty(null);
     }
 
@@ -157,7 +168,9 @@ public final class PartyInstance {
 
     public void sendMessages(String... messages) {
         for(SkyblockPlayer member : getMembers()) {
-            member.sendMessages((Object) messages);
+            for(String message : messages) {
+                member.sendMessage(message);
+            }
         }
     }
 

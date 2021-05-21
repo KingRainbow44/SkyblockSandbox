@@ -1,6 +1,8 @@
 package tk.skyblocksandbox.skyblocksandbox.item.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -51,6 +53,18 @@ public final class SkyblockMenu extends SandboxItem {
 
     @Override
     public void ability(int action, SkyblockPlayer player) {
+        Player bukkitPlayer = player.getBukkitPlayer();
+        int heldItemIndex = bukkitPlayer.getInventory().getHeldItemSlot();
+        if(heldItemIndex != 8 && bukkitPlayer.getInventory().getItem(heldItemIndex) != null && bukkitPlayer.getInventory().getItem(heldItemIndex).getType() != Material.AIR) {
+            ItemStack heldItem = bukkitPlayer.getInventory().getItem(heldItemIndex); assert heldItem != null;
+            NBTItem nbtItem = new NBTItem(heldItem);
+            if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
+                bukkitPlayer.getInventory().addItem(heldItem);
+                heldItem.setType(Material.AIR);
+                bukkitPlayer.getInventory().setItem(8, create());
+            }
+        }
+
         SkyblockSandbox.getMenuFactory().serveMenu(player, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
     }
 

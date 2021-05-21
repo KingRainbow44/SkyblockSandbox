@@ -2,21 +2,21 @@ package tk.skyblocksandbox.skyblocksandbox;
 
 import fr.minuskube.inv.InventoryManager;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityManager;
-import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemManager;
+import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemFactory;
 
 public final class SkyblockManager {
 
-    private final SkyblockItemManager itemManager;
+    private final SkyblockItemFactory itemManager;
     private final SkyblockEntityManager entityManager;
 
     private InventoryManager inventoryManager;
 
     public SkyblockManager() {
-        itemManager = new SkyblockItemManager();
+        itemManager = new SkyblockItemFactory();
         entityManager = new SkyblockEntityManager();
     }
 
-    public SkyblockItemManager getItemManager() {
+    public SkyblockItemFactory getItemManager() {
         return itemManager;
     }
 

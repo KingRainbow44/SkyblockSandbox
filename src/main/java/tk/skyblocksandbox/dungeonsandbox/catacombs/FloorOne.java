@@ -23,17 +23,22 @@ public final class FloorOne extends Dungeon {
      */
     @Override
     public void initializeDungeon() {
-        dungeonToken = Utility.generateRandomString();
+        dungeonToken = "dungeon_" + Utility.generateRandomString();
         WorldCreator worldCreator = new WorldCreator(dungeonToken);
         worldCreator.generator(new VoidGenerator());
 
         org.bukkit.World bukkitWorld = worldCreator.createWorld();
         World world = BukkitAdapter.adapt(bukkitWorld);
 
+        Generation generation = new Generation();
+
+        assert bukkitWorld != null;
         Utility.applyGamerules(bukkitWorld);
 
+        boolean pasted;
+
         // Entrance
-        boolean pasted = Schematic.pasteSchematic(
+        pasted = Schematic.pasteSchematic(
                 new Location(bukkitWorld, 0, 80, 0),
                 "entrance", false
         ); if(!pasted) {
@@ -42,6 +47,14 @@ public final class FloorOne extends Dungeon {
         } entranceGenerated = true;
 
         // First Room
+        Generation.AvailableRooms firstRoom = generation.generateRandomRoom(this);
+        pasted = Schematic.pasteSchematic(
+                new Location(bukkitWorld, 0, 80, 0),
+                generation.enumToSchematic(firstRoom), false
+        ); if(!pasted) {
+            Bukkit.getLogger().warning("Unable to paste " + firstRoom.name() + ".schem, check CONSOLE for more details.");
+            return;
+        }
 
         // Finish Generation
         dungeonGenerationFinished = true;

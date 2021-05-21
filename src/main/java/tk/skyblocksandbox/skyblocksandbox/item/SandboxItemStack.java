@@ -285,7 +285,7 @@ public final class SandboxItemStack {
 
         if(nbtItem.getBoolean("isVanilla")) return new BukkitSandboxItem(item).toSandboxItem();
 
-        SkyblockItemManager itemManager = SkyblockSandbox.getManagement().getItemManager();
+        SkyblockItemFactory itemManager = SkyblockSandbox.getManagement().getItemManager();
         return itemManager.getRegisteredItems().getOrDefault(nbtItem.getString("itemId"), null);
     }
 }

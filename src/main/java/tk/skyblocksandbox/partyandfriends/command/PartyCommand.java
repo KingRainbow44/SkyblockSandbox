@@ -22,6 +22,28 @@ public final class PartyCommand extends SkyblockCommand {
         SkyblockPlayer sbPlayer = getSkyblockPlayer(commandSender);
 
         switch(args.length) {
+            default:
+                if(!args[0].matches("chat")) return true;
+
+                if(sbPlayer.getCurrentParty() == null) {
+                    sbPlayer.sendMessages(
+                            "&9&m-----------------------------",
+                            "&cYou're not in a party!",
+                            "&9&m-----------------------------"
+                    );
+                    return true;
+                }
+
+                StringBuilder message = new StringBuilder();
+                for(int i = 1; i != args.length; i++) {
+                    message.append(args[i]).append(" ");
+                }
+
+                PartyInstance partyInstance = sbPlayer.getCurrentParty();
+                for(SkyblockPlayer member : partyInstance.getMembers()) {
+                    member.sendMessage("&9Party &8> &e" + sbPlayer.getBukkitPlayer().getDisplayName() + "&f: " + message);
+                }
+                return true;
             case 0:
                 sbPlayer.sendMessages(
                         "&9&m-----------------------------",
@@ -29,6 +51,7 @@ public final class PartyCommand extends SkyblockCommand {
                         "&e/party invite <player>",
                         "&e/party leave",
                         "&e/party disband",
+                        "&e/party chat <message>",
                         "&9&m-----------------------------"
                 );
                 return true;
@@ -88,6 +111,7 @@ public final class PartyCommand extends SkyblockCommand {
                                 "&e/party invite <player>",
                                 "&e/party leave",
                                 "&e/party disband",
+                                "&e/party chat <message>",
                                 "&9&m-----------------------------"
                         );
                         return true;
@@ -135,7 +159,5 @@ public final class PartyCommand extends SkyblockCommand {
                         return true;
                 }
         }
-
-        return true;
     }
 }

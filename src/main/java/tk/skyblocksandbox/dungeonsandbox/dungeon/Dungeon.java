@@ -22,9 +22,9 @@ public abstract class Dungeon {
     protected Generation.FloorGenerationTypes floorGeneration = null;
     protected boolean dungeonGenerationFinished = false;
 
-    protected boolean bloodRoomGenerated = false;
-    protected boolean fairyRoomGenerated = false;
-    protected boolean entranceGenerated = false;
+    public boolean bloodRoomGenerated = false;
+    public boolean fairyRoomGenerated = false;
+    public boolean entranceGenerated = false;
 
     public Dungeon(String friendlyName, String internalName, int dungeonFloor, boolean masterMode) {
         this.friendlyName = friendlyName;

@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
+import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 
 import java.nio.charset.StandardCharsets;
@@ -43,8 +44,6 @@ public final class SkyblockPlayerData {
     public int bonusAbilityDamage = 0;
     public int trueDefense = 0;
 
-    public int vanillaMaxHealth = 20;
-
     public String playingSong = "none";
 
     public boolean limitedMovement = false;
@@ -57,6 +56,8 @@ public final class SkyblockPlayerData {
 
     public boolean debugStateDamage = false;
     public boolean debugStateMessages = false;
+
+    public PartyModule.ChatTypes currentChat = PartyModule.ChatTypes.ALL_CHAT;
 
     private final SkyblockPlayerPermissions playerPermissions;
     private final SkyblockPlayerStorage playerStorage;

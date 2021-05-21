@@ -30,41 +30,7 @@ import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
 
 public final class SkyblockSandbox extends JavaPlugin {
 
-    private final static String version = "v0.3-development";
-
-    /*
-     * Skyblock Sandbox To-Do List:
-     * - Player Storage (ender chest, backpacks)
-     * - Custom Enchants (e-table, anvil, enchantments)
-     * - Auctions (display, menu)
-     * - Bazaar (menu, system)
-     * - Item Reforges
-     * - Custom Mining System (pickaxes, drills, axes, etc.)
-     * - Real-time updating stats system (While it isn't needed (we have getFinal_STAT_()) it would be nice to have for efficiency.)
-     */
-
-    /*
-     * Working on:
-     * - Dungeons (system, generation (lazy)) TODO: Implement proper dungeon generation.
-     * - Skyblock Menu
-     * - Custom Item Creator (system, menu)
-     * - Regions
-     */
-
-    /*
-     * Done:
-     * - Scoreboard (islands, coins, bits)
-     * - Player Stats System
-     * - Player Data Sync (stats, storage system)
-     * - Custom Mobs System (mobs, stats, bosses)
-     * - Module Loader (for multi server)
-     * - Custom Items System (items, stats, lore generator)
-     * - Custom Damage System (damage indicators & the damage calculation)
-     * - Party System
-     * - Custom Commands System
-     * - New (NBT Based) custom item system
-     * - Vanilla Items -> Custom Items System
-     */
+    private final static String version = "v0.3.2-development";
 
     private static PlayerAPI api;
     private static SkyblockSandbox instance;

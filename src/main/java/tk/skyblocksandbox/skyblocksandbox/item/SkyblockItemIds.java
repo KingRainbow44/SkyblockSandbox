@@ -28,6 +28,11 @@ public final class SkyblockItemIds {
     public static final String NECRON_LEGGINGS = "NECRON_LEGGINGS";
     public static final String NECRON_BOOTS = "NECRON_BOOTS";
 
+    public static final String STORM_HELMET = "STORM_HELMET";
+    public static final String STORM_CHESTPLATE = "STORM_CHESTPLATE";
+    public static final String STORM_LEGGINGS = "STORM_LEGGINGS";
+    public static final String STORM_BOOTS = "STORM_BOOTS";
+
     /*
      * Misc
      */

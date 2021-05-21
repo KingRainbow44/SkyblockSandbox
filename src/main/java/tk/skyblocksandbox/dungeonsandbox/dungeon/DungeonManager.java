@@ -12,7 +12,6 @@ public final class DungeonManager {
 
     public void createNewDungeon(Dungeon dungeonType, PartyInstance party) {
         dungeons.put(party, dungeonType);
-        dungeonType.initializeDungeon();
 
         try {
             party.sendMessages(
@@ -28,6 +27,7 @@ public final class DungeonManager {
             );
         }
 
+        dungeonType.initializeDungeon();
         dungeonType.warpParty(party);
     }
 

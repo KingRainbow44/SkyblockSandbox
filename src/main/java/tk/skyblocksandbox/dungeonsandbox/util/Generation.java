@@ -12,6 +12,11 @@ public final class Generation {
 
     public Generation() {
         roomSizes.put(AvailableRooms.ENTRANCE, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.FAIRY_ROOM, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.BLOOD_ROOM_SOUTH, RoomGenerationTypes.ONE_BY_ONE);
+
+        roomSizes.put(AvailableRooms.PRISON_CELL_1, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.OVERGROWN_3, RoomGenerationTypes.ONE_BY_ONE);
 
         roomSizes.put(AvailableRooms.FLAGS_7, RoomGenerationTypes.TWO_BY_TWO);
     }
@@ -42,8 +47,13 @@ public final class Generation {
 
     public enum AvailableRooms { // {ROOM_NAME}_{SECRET_COUNT}
         ENTRANCE,
+        FAIRY_ROOM,
+        BLOOD_ROOM_SOUTH,
 
-        FLAGS_7
+        FLAGS_7, // 2x2
+
+        PRISON_CELL_1, // 1x1
+        OVERGROWN_3, // 1x1
     }
 
     /**
@@ -61,29 +71,34 @@ public final class Generation {
     }
 
     private AvailableRooms randRoom() {
-        switch(Utility.generateRandomNumber(1, 2)) {
+        switch(Utility.generateRandomNumber(1, 4)) {
             default:
             case 1:
-                return AvailableRooms.ENTRANCE;
+                return AvailableRooms.FAIRY_ROOM;
             case 2:
-                return AvailableRooms.FLAGS_7;
+                return AvailableRooms.BLOOD_ROOM_SOUTH;
+            case 3:
+                return AvailableRooms.PRISON_CELL_1;
+            case 4:
+                return AvailableRooms.OVERGROWN_3;
         }
     }
 
-    private String enumToSchematic(AvailableRooms room) {
+    public String enumToSchematic(AvailableRooms room) {
         switch(room) {
-            case ENTRANCE:
-                return "entrance";
-            case FLAGS_7:
-                return "flags_7";
+            default:
+                return Utility.changeCase(room.name(), false);
+            case BLOOD_ROOM_SOUTH:
+                return "blood_south";
         }
-
-        return null;
     }
 
     private boolean validation(AvailableRooms room, Dungeon dungeon) {
         RoomGenerationTypes lastRoom = dungeon.getLastRoomGenerated();
-        if(roomSizes.getOrDefault(room, RoomGenerationTypes.ONE_BY_ONE) == lastRoom) return false;
+//        if(roomSizes.getOrDefault(room, RoomGenerationTypes.ONE_BY_ONE) == lastRoom) return false;
+
+        if(room == AvailableRooms.FAIRY_ROOM && dungeon.fairyRoomGenerated) return false;
+        if(room == AvailableRooms.BLOOD_ROOM_SOUTH && dungeon.bloodRoomGenerated) return false;
 
         return true;
     }

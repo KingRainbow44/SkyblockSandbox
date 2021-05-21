@@ -3,6 +3,7 @@ package tk.skyblocksandbox.skyblocksandbox.listener;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -61,7 +62,7 @@ public final class ItemListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if(event.getCurrentItem() != null) {
+        if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(event.getCurrentItem(), true);
             if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
                 if(event.getWhoClicked() instanceof Player) {
@@ -73,7 +74,7 @@ public final class ItemListener implements Listener {
             }
         }
 
-        if(event.getCursor() != null) {
+        if(event.getCursor() != null && event.getCursor().getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(event.getCursor(), true);
             if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
                 if(event.getWhoClicked() instanceof Player) {

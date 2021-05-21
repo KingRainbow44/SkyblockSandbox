@@ -7,6 +7,10 @@ import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronBoots;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronChestplate;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronLeggings;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormBoots;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormChestplate;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormHelmet;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
 import tk.skyblocksandbox.skyblocksandbox.item.misc.SkyblockMenu;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.AxeOfTheShredded;
@@ -18,11 +22,11 @@ import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class SkyblockItemManager {
+public final class SkyblockItemFactory {
 
     private final Map<String, SandboxItem> items = new HashMap<>();
 
-    public SkyblockItemManager() {
+    public SkyblockItemFactory() {
         registerItem(new Hyperion());
         registerItem(new MidasStaff());
         registerItem(new Bonemerang());
@@ -35,6 +39,11 @@ public final class SkyblockItemManager {
         registerItem(new NecronChestplate());
         registerItem(new NecronLeggings());
         registerItem(new NecronBoots());
+
+        registerItem(new StormHelmet());
+        registerItem(new StormChestplate());
+        registerItem(new StormLeggings());
+        registerItem(new StormBoots());
 
         registerItem(new SkyblockMenu());
     }

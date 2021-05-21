@@ -12,7 +12,7 @@ import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 import java.security.InvalidParameterException;
 
-public class SummonCommand extends SkyblockCommand {
+public final class SummonCommand extends SkyblockCommand {
 
     public SummonCommand() {
         super("summon");

@@ -24,6 +24,7 @@ public abstract class Dungeon {
 
     protected boolean bloodRoomGenerated = false;
     protected boolean fairyRoomGenerated = false;
+    protected boolean entranceGenerated = false;
 
     public Dungeon(String friendlyName, String internalName, int dungeonFloor, boolean masterMode) {
         this.friendlyName = friendlyName;
@@ -48,6 +49,13 @@ public abstract class Dungeon {
         return isMasterMode;
     }
 
+    public Generation.RoomGenerationTypes getLastRoomGenerated() {
+        return lastRoomGenerated;
+    }
+
+    /*
+     * Methods
+     */
     public void warpParty(PartyInstance party) {
         if(!dungeonGenerationFinished) return;
         World world = Bukkit.getWorld(dungeonToken);

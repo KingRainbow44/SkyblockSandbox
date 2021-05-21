@@ -39,7 +39,7 @@ public final class FloorOne extends Dungeon {
         ); if(!pasted) {
             Bukkit.getLogger().warning("Unable to paste entrance.schem, check CONSOLE for more details.");
             return;
-        }
+        } entranceGenerated = true;
 
         // First Room
 

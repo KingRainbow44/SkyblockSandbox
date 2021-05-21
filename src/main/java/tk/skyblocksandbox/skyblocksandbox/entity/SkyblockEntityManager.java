@@ -36,12 +36,10 @@ public final class SkyblockEntityManager {
 
     public SkyblockEntity getEntity(Entity entity) {
         if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) {
-            Bukkit.getLogger().info("no entityuuid");
             return null;
         }
         Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER);
         if(!(rawUUID instanceof Integer)) {
-            Bukkit.getLogger().info("not integer");
             return null;
         }
         return getEntity((int) rawUUID);

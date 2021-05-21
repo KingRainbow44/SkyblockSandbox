@@ -1,5 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -14,6 +16,7 @@ import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
+import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
@@ -110,8 +113,13 @@ public final class AxeOfTheShredded extends SandboxItem {
                     if(e instanceof Damageable && e != player) {
                         Damageable entity = (Damageable) e;
                         if(entity instanceof ArmorStand) return;
-                        if(entity instanceof Player && !entity.hasMetadata("NPC")) {
-//                            Calculator.damage((SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity), sbPlayer, false);
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+
+                        if(entity.hasMetadata("NPC")) {
+                            NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
+
+                            entity.setLastDamageCause(new EntityDamageByEntityEvent(player, e, EntityDamageEvent.DamageCause.CUSTOM, 0));
+                            SkyblockNPC.damage(npc, sbPlayer, true);
                             return;
                         }
 

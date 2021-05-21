@@ -1,8 +1,20 @@
 package tk.skyblocksandbox.dungeonsandbox.util;
 
 import tk.skyblocksandbox.dungeonsandbox.dungeon.Dungeon;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Generation {
+
+    private static final Map<AvailableRooms, RoomGenerationTypes> roomSizes = new HashMap<>();
+
+    public Generation() {
+        roomSizes.put(AvailableRooms.ENTRANCE, RoomGenerationTypes.ONE_BY_ONE);
+
+        roomSizes.put(AvailableRooms.FLAGS_7, RoomGenerationTypes.TWO_BY_TWO);
+    }
 
     public enum FloorGenerationTypes {
         FLOOR_1,
@@ -37,10 +49,43 @@ public final class Generation {
     /**
      * Generates a random dungeon room.
      * @param dungeon The dungeon the generator will base the generated room on.
-     * @return Schematic Name, used with SkyblockSandbox#schematic();
+     * @return The room type that was genereated
      */
-    public static String generateRandomRoom(Dungeon dungeon) {
+    public AvailableRooms generateRandomRoom(Dungeon dungeon) {
+        AvailableRooms room = randRoom();
+        while(!validation(room, dungeon)) {
+            room = randRoom();
+        }
 
+        return room;
+    }
+
+    private AvailableRooms randRoom() {
+        switch(Utility.generateRandomNumber(1, 2)) {
+            default:
+            case 1:
+                return AvailableRooms.ENTRANCE;
+            case 2:
+                return AvailableRooms.FLAGS_7;
+        }
+    }
+
+    private String enumToSchematic(AvailableRooms room) {
+        switch(room) {
+            case ENTRANCE:
+                return "entrance";
+            case FLAGS_7:
+                return "flags_7";
+        }
+
+        return null;
+    }
+
+    private boolean validation(AvailableRooms room, Dungeon dungeon) {
+        RoomGenerationTypes lastRoom = dungeon.getLastRoomGenerated();
+        if(roomSizes.getOrDefault(room, RoomGenerationTypes.ONE_BY_ONE) == lastRoom) return false;
+
+        return true;
     }
 
 }

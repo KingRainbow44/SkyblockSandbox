@@ -260,6 +260,10 @@ public final class Utility {
 
     }
 
+    public static int generateRandomNumber(int min, int max) {
+        return (int) Math.round(Math.floor(Math.random()*(max-min+1)+min));
+    }
+
     public static void applyGamerules(World world) {
         world.setGameRule(
                 GameRule.DO_MOB_SPAWNING, false

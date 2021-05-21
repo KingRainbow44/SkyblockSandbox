@@ -147,16 +147,16 @@ public abstract class SkyblockEntity {
      * @param attacker The player hurting the entity.
      */
     public void hurt(Player attacker) {
-//        PacketContainer entityStatus = new PacketContainer(PacketType.Play.Server.ENTITY_STATUS);
-//
-//        entityStatus.getIntegers().write(0, entity.getEntityId());
-//        entityStatus.getBytes().write(0, (byte) 2);
-//
-//        try {
-//            ProtocolLibrary.getProtocolManager().sendServerPacket(attacker, entityStatus);
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
+        PacketContainer entityStatus = new PacketContainer(PacketType.Play.Server.ENTITY_STATUS);
+
+        entityStatus.getIntegers().write(0, entity.getEntityId());
+        entityStatus.getBytes().write(0, (byte) 2);
+
+        try {
+            ProtocolLibrary.getProtocolManager().sendServerPacket(attacker, entityStatus);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public void damage(long damage) {

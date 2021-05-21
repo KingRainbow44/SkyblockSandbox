@@ -1,6 +1,8 @@
 package tk.skyblocksandbox.skyblocksandbox.item.bows;
 
 import de.tr7zw.nbtapi.NBTItem;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,6 +16,7 @@ import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
+import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
@@ -151,6 +154,14 @@ public final class Bonemerang extends SandboxItem {
                         Damageable entity = (Damageable) e;
                         if(entity instanceof ArmorStand) return;
                         if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+
+                        if(entity.hasMetadata("NPC")) {
+                            NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
+
+                            entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.CUSTOM, 0));
+                            SkyblockNPC.damage(npc, player, true);
+                            return;
+                        }
 
                         SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
                         if(sbEntity == null) return;

@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public final class StickOfFusion extends SandboxItem {
 
-    public NecronsHandle() {
+    public StickOfFusion() {
         super(Material.STICK, "Stick Of Fusion", SkyblockItemIds.STICK_OF_FUSION);
     }
 

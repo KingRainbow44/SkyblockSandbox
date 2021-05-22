@@ -40,7 +40,7 @@ public final class PartyInstance {
 
         invitedPlayers.add(toInvite);
 
-        TextComponent text = new TextComponent("Click here to join! ");
+        TextComponent text = new TextComponent(" Click here to join! ");
         text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party accept " + inviter.getBukkitPlayer().getDisplayName()));
         text.setColor(ChatColor.GOLD);
         TextComponent text2 = new TextComponent("You have ");
@@ -108,6 +108,7 @@ public final class PartyInstance {
         }
 
         partyMembers.add(player);
+        player.setCurrentParty(this);
         player.setPartyPermissions(0);
     }
 

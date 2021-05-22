@@ -1,7 +1,9 @@
 package tk.skyblocksandbox.skyblocksandbox.module;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
+import org.bukkit.event.Listener;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 
@@ -43,6 +45,10 @@ public abstract class SandboxModule {
 
     public final void registerCommand(SkyblockCommand command) {
         SkyblockSandbox.getInstance().registerCommand(command);
+    }
+
+    public final void registerListener(Listener listener) {
+        Bukkit.getServer().getPluginManager().registerEvents(listener, SkyblockSandbox.getInstance());
     }
 
     /*

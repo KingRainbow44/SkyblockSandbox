@@ -22,6 +22,9 @@ public abstract class Dungeon {
     protected Generation.FloorGenerationTypes floorGeneration = null;
     protected boolean dungeonGenerationFinished = false;
 
+    protected int roomsBeforeBlood = 5;
+    protected int roomsBeforeFairy = 2;
+
     public boolean bloodRoomGenerated = false;
     public boolean fairyRoomGenerated = false;
     public boolean entranceGenerated = false;
@@ -61,7 +64,7 @@ public abstract class Dungeon {
         World world = Bukkit.getWorld(dungeonToken);
 
         for(SkyblockPlayer member : party.getMembers()) {
-            member.getBukkitPlayer().teleport(new Location(world, 0, 81, 0));
+            member.getBukkitPlayer().teleport(new Location(world, 0.5, 81, 0.5));
         }
     }
 

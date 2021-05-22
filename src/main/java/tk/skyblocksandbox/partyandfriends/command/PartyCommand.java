@@ -157,6 +157,26 @@ public final class PartyCommand extends SkyblockCommand {
                         PartyInstance party1 = sbPlayer.getCurrentParty();
                         party1.kickMember(sbPlayer, (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(kickPlayer));
                         return true;
+                    case "chat":
+                        if(sbPlayer.getCurrentParty() == null) {
+                            sbPlayer.sendMessages(
+                                    "&9&m-----------------------------",
+                                    "&cYou're not in a party!",
+                                    "&9&m-----------------------------"
+                            );
+                            return true;
+                        }
+
+                        StringBuilder message2 = new StringBuilder();
+                        for(int i = 1; i != args.length; i++) {
+                            message2.append(args[i]).append(" ");
+                        }
+
+                        PartyInstance partyInstance2 = sbPlayer.getCurrentParty();
+                        for(SkyblockPlayer member : partyInstance2.getMembers()) {
+                            member.sendMessage("&9Party &8> &e" + sbPlayer.getBukkitPlayer().getDisplayName() + "&f: " + message2);
+                        }
+                        return true;
                 }
         }
     }

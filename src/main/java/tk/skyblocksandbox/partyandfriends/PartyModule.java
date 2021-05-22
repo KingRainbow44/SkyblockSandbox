@@ -2,6 +2,7 @@ package tk.skyblocksandbox.partyandfriends;
 
 import tk.skyblocksandbox.partyandfriends.command.ChatCommand;
 import tk.skyblocksandbox.partyandfriends.command.PartyCommand;
+import tk.skyblocksandbox.partyandfriends.listener.ChatListener;
 import tk.skyblocksandbox.partyandfriends.party.PartyManager;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
 
@@ -31,6 +32,8 @@ public final class PartyModule extends SandboxModule {
 
         registerCommand(new PartyCommand());
         registerCommand(new ChatCommand());
+
+        registerListener(new ChatListener());
 
         getLogger().info("Enabled Party Module.");
     }

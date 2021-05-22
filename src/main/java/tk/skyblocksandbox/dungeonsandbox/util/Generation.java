@@ -16,6 +16,8 @@ public final class Generation {
         roomSizes.put(AvailableRooms.BLOOD_ROOM_SOUTH, RoomGenerationTypes.ONE_BY_ONE);
 
         roomSizes.put(AvailableRooms.PRISON_CELL_1, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.BLUE_SKULLS_1, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.ADMIN_1, RoomGenerationTypes.ONE_BY_ONE);
         roomSizes.put(AvailableRooms.OVERGROWN_3, RoomGenerationTypes.ONE_BY_ONE);
 
         roomSizes.put(AvailableRooms.FLAGS_7, RoomGenerationTypes.TWO_BY_TWO);
@@ -45,6 +47,12 @@ public final class Generation {
         THREE_BY_ONE
     }
 
+    public enum AvailableDoors {
+        WITHER_DOOR,
+        OPEN_DOOR,
+        BLOOD_DOOR
+    }
+
     public enum AvailableRooms { // {ROOM_NAME}_{SECRET_COUNT}
         ENTRANCE,
         FAIRY_ROOM,
@@ -53,7 +61,13 @@ public final class Generation {
         FLAGS_7, // 2x2
 
         PRISON_CELL_1, // 1x1
+        BLUE_SKULLS_1, // 1x1
+        ADMIN_1, // 1x1
         OVERGROWN_3, // 1x1
+
+        MINI_BOSS_1, // Special
+
+        TRAP_HARD_3, // Trap Room
     }
 
     /**
@@ -97,8 +111,8 @@ public final class Generation {
         RoomGenerationTypes lastRoom = dungeon.getLastRoomGenerated();
 //        if(roomSizes.getOrDefault(room, RoomGenerationTypes.ONE_BY_ONE) == lastRoom) return false;
 
-        if(room == AvailableRooms.FAIRY_ROOM && dungeon.fairyRoomGenerated) return false;
-        if(room == AvailableRooms.BLOOD_ROOM_SOUTH && dungeon.bloodRoomGenerated) return false;
+        if(room == AvailableRooms.FAIRY_ROOM && dungeon.fairyRoomGenerated) return false; else dungeon.fairyRoomGenerated = true;
+        if(room == AvailableRooms.BLOOD_ROOM_SOUTH && dungeon.bloodRoomGenerated) return false; else dungeon.bloodRoomGenerated = true;
 
         return true;
     }

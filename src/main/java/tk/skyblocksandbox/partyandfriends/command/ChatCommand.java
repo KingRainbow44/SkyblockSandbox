@@ -32,6 +32,12 @@ public final class ChatCommand extends SkyblockCommand {
                     default:
                         sbPlayer.sendMessage("&cInvalid argument(s). Usage: &e/chat {all|party|reply|skyblock-coop}");
                         return true;
+                    case "a":
+                    case "all":
+                        sbPlayer.sendMessages("&aYou are now in &6ALL &achat.");
+                        sbPlayer.getPlayerData().currentChat = PartyModule.ChatTypes.ALL_CHAT;
+                        return true;
+                    case "p":
                     case "party":
                         PartyInstance partyInstance = sbPlayer.getCurrentParty();
                         if(partyInstance == null) {
@@ -42,9 +48,11 @@ public final class ChatCommand extends SkyblockCommand {
                         sbPlayer.sendMessages("&aYou are now in &6PARTY &achat.");
                         sbPlayer.getPlayerData().currentChat = PartyModule.ChatTypes.PARTY_CHAT;
                         return true;
+                    case "r":
                     case "reply":
                         sbPlayer.sendMessage("&cThis feature hasn't been implemented yet!");
                         return true;
+                    case "coop":
                     case "skyblock-coop":
                         sbPlayer.sendMessage("&cThis feature hasn't been implemented yet!");
                         return true;

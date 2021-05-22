@@ -16,7 +16,7 @@ public final class StickOfFusion extends SandboxItem {
 
     @Override
     public Collection<String> getLore() {
-        Lore generator = new Lore((16,
+        Lore generator = new Lore(,
                 " ",
                 Utility.colorize("&7Special stick of admin fusion's"),
                 Utility.colorize("&7Edition #1"),

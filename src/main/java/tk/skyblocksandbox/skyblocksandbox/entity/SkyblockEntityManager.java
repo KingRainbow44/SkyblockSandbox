@@ -9,6 +9,7 @@ import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one.Bonzo;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.seven.Necron;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.six.Sadan;
 import tk.skyblocksandbox.skyblocksandbox.entity.fishing.Yeti;
+import tk.skyblocksandbox.skyblocksandbox.entity.vanilla.Zombie;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -57,6 +58,8 @@ public final class SkyblockEntityManager {
                 return new Bonzo();
             case "YETI":
                 return new Yeti();
+            case "ZOMBIE":
+                return new Zombie();
         }
     }
 

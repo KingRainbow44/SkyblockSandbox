@@ -49,7 +49,7 @@ public final class SandboxCommand extends SkyblockCommand {
                 );
                 return true;
             case 3:
-                if(!sender.hasPermission("skyblocksandbox.operator.permissions") || !(sender instanceof ConsoleCommandSender)) {
+                if(!sender.hasPermission("skyblocksandbox.operator.permissions")) {
                     if(sbPlayer == null) return true;
                     sbPlayer.sendMessages(
                             "&a&m---------------&r&bSkyblock Sandbox&r&a&m---------------",

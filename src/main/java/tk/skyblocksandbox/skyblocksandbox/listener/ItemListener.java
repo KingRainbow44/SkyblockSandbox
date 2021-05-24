@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
+import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -63,7 +64,10 @@ public final class ItemListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
-            NBTItem nbtItem = new NBTItem(event.getCurrentItem(), true);
+            NBTItem nbt = new NBTItem(event.getCurrentItem(), true);
+            if(!nbt.hasKey("itemData")) return;
+
+            NBTCompound nbtItem = nbt.getCompound("itemData");
             if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
                 if(event.getWhoClicked() instanceof Player) {
                     SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) event.getWhoClicked());
@@ -75,7 +79,10 @@ public final class ItemListener implements Listener {
         }
 
         if(event.getCursor() != null && event.getCursor().getType() != Material.AIR) {
-            NBTItem nbtItem = new NBTItem(event.getCursor(), true);
+            NBTItem nbt = new NBTItem(event.getCursor(), true);
+            if(!nbt.hasKey("itemData")) return;
+
+            NBTCompound nbtItem = nbt.getCompound("itemData");
             if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
                 if(event.getWhoClicked() instanceof Player) {
                     SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) event.getWhoClicked());
@@ -89,8 +96,11 @@ public final class ItemListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        NBTItem item = new NBTItem(event.getItemDrop().getItemStack(), true);
-        if(item.hasKey("isSkyblockMenu") && item.getBoolean("isSkyblockMenu")) {
+        NBTItem nbt = new NBTItem(event.getItemDrop().getItemStack(), true);
+        if(!nbt.hasKey("itemData")) return;
+
+        NBTCompound nbtItem = nbt.getCompound("itemData");
+        if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
             SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(event.getPlayer());
             SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
 
@@ -101,8 +111,11 @@ public final class ItemListener implements Listener {
     @EventHandler
     public void onDrag(InventoryDragEvent event) {
         if(event.getCursor() == null) return;
-        NBTItem item = new NBTItem(event.getCursor(), true);
-        if(item.hasKey("isSkyblockMenu") && item.getBoolean("isSkyblockMenu")) {
+        NBTItem nbt = new NBTItem(event.getCursor(), true);
+        if(!nbt.hasKey("itemData")) return;
+
+        NBTCompound nbtItem = nbt.getCompound("itemData");
+        if(nbtItem.hasKey("isSkyblockMenu") && nbtItem.getBoolean("isSkyblockMenu")) {
             if(event.getWhoClicked() instanceof Player) {
                 SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) event.getWhoClicked());
                 SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);

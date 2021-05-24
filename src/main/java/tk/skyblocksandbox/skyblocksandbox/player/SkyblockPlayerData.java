@@ -1,12 +1,14 @@
 package tk.skyblocksandbox.skyblocksandbox.player;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bukkit.Bukkit;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 
 import java.nio.charset.StandardCharsets;
@@ -29,6 +31,8 @@ public final class SkyblockPlayerData {
     /*
      * Solid-State Stats (only change on X event)
      */
+    public PermitableRank.AvailableRanks rank = PermitableRank.AvailableRanks.DEFAULT;
+
     public int health = 100;
     public int defense = 0;
     public int strength = 0;
@@ -94,6 +98,7 @@ public final class SkyblockPlayerData {
         /*
          * Elements
          */
+        playerData.addProperty("rank", rank.name());
         playerData.addProperty("coins", coins);
         playerData.addProperty("bits", bits);
         playerData.addProperty("canTakeAbilityDamage", canTakeAbilityDamage);
@@ -142,20 +147,47 @@ public final class SkyblockPlayerData {
         /*
          * Elements
          */
-        coins = arrayData.get("coins").getAsInt();
-        bits = arrayData.get("bits").getAsInt();
+        rank = PermitableRank.getRankByString((String) getOrDefault("rank", arrayData, String.class));
+        coins = (int) getOrDefault("coins", arrayData, Integer.class);
+        bits = (int) getOrDefault("bits", arrayData, Integer.class);
         canTakeAbilityDamage = arrayData.get("canTakeAbilityDamage").getAsBoolean();
 
         /*
          * Classes
          */
         playerPermissions.importData(arrayData.get("permissions"));
+            playerPermissions.addPermissions(rank);
 //        playerStorage.importData(arrayData.get("storageData").toString());
 
         /*
          * Other
          */
         infiniteMana = arrayData.get("infiniteMana").getAsBoolean();
+    }
+
+    /*
+     * @NotNull Returnable
+     */
+    public Object getOrDefault(String constant, JsonObject array, Class<?> type) {
+        if(array.get(constant) == null) {
+            if(type == String.class) {
+                return "";
+            } else if (type == Integer.class) {
+                return 0;
+            } else if (type == JsonArray.class) {
+                return new JsonArray();
+            }
+        }
+
+        if (type == String.class) {
+            return array.get(constant).getAsString();
+        } else if (type == Integer.class) {
+            return array.get(constant).getAsInt();
+        } else if (type == JsonArray.class) {
+            return array.get(constant).getAsJsonArray();
+        } else {
+            return array.get(constant);
+        }
     }
 
     /*

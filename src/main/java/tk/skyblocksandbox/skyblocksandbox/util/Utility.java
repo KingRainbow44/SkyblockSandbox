@@ -132,7 +132,7 @@ public final class Utility {
         //then put the number sign to the commafiedNum and remove the sign from inputNum.
         if(firstChar=='+' || firstChar=='-')
         {
-            commafiedNum = commafiedNum + Character.toString(firstChar);
+            commafiedNum = commafiedNum + firstChar;
             integer=integer.replaceAll("[-\\+]", "");
         }
 
@@ -162,6 +162,7 @@ public final class Utility {
     public static ChatColor rarityToColor(Integer rarity) {
         switch(rarity) {
             default:
+            case SandboxItem.NONE:
             case SandboxItem.COMMON:
                 return ChatColor.WHITE;
             case SandboxItem.UNCOMMON:
@@ -173,6 +174,7 @@ public final class Utility {
             case SandboxItem.LEGENDARY:
                 return ChatColor.GOLD;
             case SandboxItem.MYTHIC:
+            case SandboxItem.PURPLE:
                 return ChatColor.LIGHT_PURPLE;
             case SandboxItem.SUPREME:
                 return ChatColor.DARK_RED;
@@ -273,6 +275,9 @@ public final class Utility {
         );
         world.setGameRule(
                 GameRule.DO_FIRE_TICK, false
+        );
+        world.setGameRule(
+                GameRule.MOB_GRIEFING, false
         );
 
         world.setGameRule(

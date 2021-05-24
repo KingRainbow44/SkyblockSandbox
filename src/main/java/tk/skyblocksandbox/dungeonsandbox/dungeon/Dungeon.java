@@ -18,7 +18,7 @@ public abstract class Dungeon {
     public static final String CATACOMBS = "THE_CATACOMBS";
 
     protected String dungeonToken = "";
-    protected Generation.RoomGenerationTypes lastRoomGenerated = null;
+    protected Generation.AvailableRooms lastRoomGenerated = null;
     protected Generation.FloorGenerationTypes floorGeneration = null;
     protected boolean dungeonGenerationFinished = false;
 
@@ -52,7 +52,7 @@ public abstract class Dungeon {
         return isMasterMode;
     }
 
-    public Generation.RoomGenerationTypes getLastRoomGenerated() {
+    public Generation.AvailableRooms getLastRoomGenerated() {
         return lastRoomGenerated;
     }
 

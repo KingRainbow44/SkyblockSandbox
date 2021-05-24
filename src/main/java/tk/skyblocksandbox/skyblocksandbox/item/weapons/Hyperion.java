@@ -1,8 +1,11 @@
 package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -15,6 +18,7 @@ import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
+import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
@@ -126,36 +130,31 @@ public final class Hyperion extends SandboxItem {
         }
         // Teleport System - END \\
 
-        int damage = 10000 + sbPlayer.getPlayerData().bonusAbilityDamage; // TODO: Calculate ability damage properly.
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
+
+        long damage = Calculator.damage(sbPlayer, 10000, 0.3);
+
         int entityCount = 0;
         for(Entity e : player.getNearbyEntities(6, 6, 6)) {
             if(e instanceof Damageable && e != player) {
                 Damageable entity = (Damageable) e;
-                if(entity instanceof ArmorStand) return;
+                if(entity.hasMetadata("isNotSkyblockEntity")) return;
+                if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
-                if(entity instanceof Player) {
-                    Object rawTarget = SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer((Player) entity);
-                    if(!(rawTarget instanceof SkyblockPlayer)) return;
-                    SkyblockPlayer sbTarget = (SkyblockPlayer) rawTarget;
-
-                    if(sbTarget.getPlayerData().canTakeAbilityDamage) {
-                        Calculator.damage(sbTarget, damage, false);
-                        entityCount++;
-                    }
-                }else{
-                    SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
-                    if(sbEntity == null) return;
-
+                if(entity instanceof Player && entity.hasMetadata("NPC")) {
+                    NPC toDamage = CitizensAPI.getNPCRegistry().getNPC(entity);
+                    SkyblockNPC.damage(toDamage, damage, false);
                     entityCount++;
-                    entity.setLastDamageCause(new EntityDamageByEntityEvent(player, e, EntityDamageEvent.DamageCause.CUSTOM, damage));
+                } else {
+                    SkyblockEntity sbEntity = SkyblockEntity.getSkyblockEntity(entity);
                     Calculator.damage(sbEntity, damage, false);
+                    entityCount++;
                 }
-
             }
         }
 
         if(entityCount > 0) {
-            player.sendMessage(Utility.colorize("&7Your Implosion did &c" + (Utility.commafy("" + (damage * entityCount))) + "&7 damage to " + entityCount + " enemies."));
+            player.sendMessage(Utility.colorize("&7Your Implosion did &c" + (Utility.commafy(damage * entityCount)) + "&7 damage to " + entityCount + " enemies."));
         }
 
         if(sbPlayer.getPlayerData().canUseWitherShield) {

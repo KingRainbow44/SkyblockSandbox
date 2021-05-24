@@ -195,6 +195,14 @@ public abstract class SkyblockEntity {
      * Static Methods
      */
 
+    public static SkyblockEntity getSkyblockEntity(Entity entity) {
+        if(entity.hasMetadata("NPC")) return getSkyblockEntityFromNPC(
+                CitizensAPI.getNPCRegistry().getNPC(entity)
+        );
+
+        return SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
+    }
+
     public static SkyblockEntity getSkyblockEntityFromNPC(NPC npc) {
         SkyblockEntityTrait entityTrait = npc.getOrAddTrait(SkyblockEntityTrait.class);
         return SkyblockSandbox.getManagement().getEntityManager().getEntity(entityTrait.getEntityId());

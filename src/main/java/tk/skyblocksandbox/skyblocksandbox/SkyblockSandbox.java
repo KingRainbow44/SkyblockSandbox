@@ -12,10 +12,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import tk.skyblocksandbox.dungeonsandbox.DungeonsModule;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
+import tk.skyblocksandbox.permitable.PermissionModule;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.ItemCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
@@ -30,7 +33,7 @@ import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
 
 public final class SkyblockSandbox extends JavaPlugin {
 
-    private final static String version = "v0.3.2-development";
+    private final static String version = "v0.4.0-development";
 
     private static PlayerAPI api;
     private static SkyblockSandbox instance;
@@ -47,6 +50,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         moduleManager = new SandboxModuleManager();
         moduleManager.addModule(new DungeonsModule());
         moduleManager.addModule(new PartyModule());
+        moduleManager.addModule(new PermissionModule());
 
         moduleManager.callModules(SandboxModule.LOAD_ON_PLUGIN);
     }
@@ -66,6 +70,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         initializeDatabase();
         initializeDependencies();
         initializeWorlds();
+        initializePermissions();
         bukkitStats();
 
         registerListener(new ItemListener());
@@ -146,6 +151,19 @@ public final class SkyblockSandbox extends JavaPlugin {
 
         new WorldCreator(configuration.hubWorld).createWorld();
         new WorldCreator(configuration.dungeonHubWorld).createWorld();
+    }
+
+    private void initializePermissions() {
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.addPermission(new Permission("skyblocksandbox.operator.permissions"));
+
+        pluginManager.addPermission(new Permission("skyblocksandbox.build"));
+        pluginManager.addPermission(new Permission("skyblocksandbox.command.item"));
+        pluginManager.addPermission(new Permission("skyblocksandbox.command.debug"));
+        pluginManager.addPermission(new Permission("skyblocksandbox.command.summon"));
+        pluginManager.addPermission(new Permission("skyblocksandbox.command.setblock"));
+
+        pluginManager.addPermission(new Permission("skyblocksandbox.command.rank"));
     }
 
     /*

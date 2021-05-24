@@ -8,6 +8,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -78,6 +79,7 @@ public final class AxeOfTheShredded extends SandboxItem {
         Vector throwVec = player.getLocation().add(player.getLocation().getDirection().multiply(10)).toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.2D);
 
         ArmorStand armorStand = (ArmorStand) player.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+        armorStand.setMetadata("isNotSkyblockEntity", new FixedMetadataValue(SkyblockSandbox.getInstance(), true));
         armorStand.getEquipment().setItemInMainHand(new ItemStack(Material.DIAMOND_AXE));
         armorStand.setInvulnerable(true);
         armorStand.setInvisible(true);
@@ -112,7 +114,7 @@ public final class AxeOfTheShredded extends SandboxItem {
                 for(Entity e : armorStand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != player) {
                         Damageable entity = (Damageable) e;
-                        if(entity instanceof ArmorStand) return;
+                        if(entity.hasMetadata("isNotSkyblockEntity")) return;
                         if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
                         if(entity.hasMetadata("NPC")) {

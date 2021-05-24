@@ -170,7 +170,9 @@ public final class Lore {
         /*
          * Abilities
          */
+        boolean addBreak3 = false;
         if(item.getItemData().hasAbility) {
+            addBreak3 = true;
             String[] lines = item.getItemData().abilityDescription.split("\n");
             switch(item.getItemData().abilityTrigger) {
                 case 0:
@@ -270,7 +272,7 @@ public final class Lore {
         }
 
         // Break
-        if(line > 2) {
+        if(line > 2 && addBreak3) {
             finalLore.add(line, " ");
             line++;
         }
@@ -312,6 +314,9 @@ public final class Lore {
                 case SandboxItem.MYTHIC:
                     color = Utility.colorize("&d&lMYTHIC DUNGEON");
                     break;
+                case SandboxItem.PURPLE:
+                    color = Utility.colorize("&d&lPURPLE DUNGEON");
+                    break;
                 case SandboxItem.SPECIAL:
                     color = Utility.colorize("&c&lSPECIAL DUNGEON");
                     break;
@@ -342,6 +347,9 @@ public final class Lore {
                     break;
                 case SandboxItem.MYTHIC:
                     color = Utility.colorize("&d&lMYTHIC");
+                    break;
+                case SandboxItem.PURPLE:
+                    color = Utility.colorize("&d&lPURPLE");
                     break;
                 case SandboxItem.SPECIAL:
                     color = Utility.colorize("&c&lSPECIAL");

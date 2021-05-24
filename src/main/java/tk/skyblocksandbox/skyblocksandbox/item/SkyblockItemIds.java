@@ -9,6 +9,7 @@ public final class SkyblockItemIds {
     public static final String MIDAS_STAFF = "MIDAS_STAFF";
     public static final String AXE_OF_THE_SHREDDED = "AXE_OF_THE_SHREDDED";
     public static final String GIANTS_SWORD = "GIANTS_SWORD";
+    public static final String SHADOW_FURY = "SHADOW_FURY";
 
     /*
      * Materials
@@ -21,7 +22,7 @@ public final class SkyblockItemIds {
     public static final String BONEMERANG = "BONE_BOOMERANG";
 
     /*
-     * Helmets
+     * Armors
      */
     public static final String NECRON_HELMET = "NECRON_HELMET";
     public static final String NECRON_CHESTPLATE = "NECRON_CHESTPLATE";
@@ -34,8 +35,16 @@ public final class SkyblockItemIds {
     public static final String STORM_BOOTS = "STORM_BOOTS";
 
     /*
+     * Armor Pieces
+     */
+    public static final String CRAFTYZ_FRENCH_BREAD = "CRAFTYZ_FRENCH_BREAD";
+    public static final String PURPLES_PURPLE_CLOAK = "PURPLES_PURPLE_CLOAK";
+    public static final String FLAMINGO_MASK = "FLAMINGO_MASK";
+
+    /*
      * Misc
      */
     public static final String SKYBLOCK_MENU = "SKYBLOCK_MENU";
+    public static final String THECAROTTES_CARROT = "THECAROTTES_CARROT";
 
 }

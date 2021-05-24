@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.item;
 
+import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -276,16 +277,19 @@ public final class SandboxItemStack {
         if(item.getType() == Material.AIR) return false;
 
         NBTItem nbtItem = new NBTItem(item);
-        return nbtItem.hasKey("itemId");
+        return nbtItem.hasKey("itemData");
     }
 
     public static SandboxItem toSandboxItem(ItemStack item) {
-        if(!isSandboxItem(item)) return new BukkitSandboxItem(new ItemStack(Material.STONE)).toSandboxItem();
+        if(!isSandboxItem(item)) return new BukkitSandboxItem(item).toSandboxItem();
         NBTItem nbtItem = new NBTItem(item);
+        if(!nbtItem.hasKey("itemData")) return new BukkitSandboxItem(item).toSandboxItem();
 
-        if(nbtItem.getBoolean("isVanilla")) return new BukkitSandboxItem(item).toSandboxItem();
+        NBTCompound nbt = nbtItem.getCompound("itemData");
+
+        if(nbt.getBoolean("isVanilla")) return new BukkitSandboxItem(item).toSandboxItem();
 
         SkyblockItemFactory itemManager = SkyblockSandbox.getManagement().getItemManager();
-        return itemManager.getRegisteredItems().getOrDefault(nbtItem.getString("itemId"), null);
+        return itemManager.getRegisteredItems().getOrDefault(nbt.getString("itemId"), new BukkitSandboxItem(item).toSandboxItem());
     }
 }

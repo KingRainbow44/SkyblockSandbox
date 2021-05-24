@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.item;
 
+import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -60,7 +61,8 @@ public abstract class SandboxItem {
     }
 
     protected void addNbt(ItemStack item) {
-        NBTItem nbt = new NBTItem(item, true);
+        NBTItem itemNbt = new NBTItem(item, true);
+        NBTCompound nbt = itemNbt.addCompound("itemData");
 
         // NBT Tags - START \\
         nbt.setBoolean("isVanilla", getItemData().isVanilla);
@@ -194,6 +196,8 @@ public abstract class SandboxItem {
 
     public void ability(int action, SkyblockPlayer player) {} // A 'null' method because not all items have an ability.
 
+    public void armorAbility(SkyblockPlayer player) {} // A 'null' method because not all armor pieces have an ability.
+
     public abstract SkyblockItemData getItemData();
 
     public abstract Collection<String> getLore();
@@ -229,6 +233,7 @@ public abstract class SandboxItem {
     public static final int ITEM = 15;
     public static final int OTHER = -1;
 
+    public static final int PURPLE = -2;
     public static final int NONE = -1;
     public static final int COMMON = 0;
     public static final int UNCOMMON = 1;

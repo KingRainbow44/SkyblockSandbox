@@ -3,6 +3,9 @@ package tk.skyblocksandbox.skyblocksandbox.item;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.chestplates.PurplesPupleCloak;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.CraftyzFrenchBread;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.FlamingoMask;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronBoots;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronChestplate;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
@@ -13,10 +16,8 @@ import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
 import tk.skyblocksandbox.skyblocksandbox.item.misc.SkyblockMenu;
-import tk.skyblocksandbox.skyblocksandbox.item.weapons.AxeOfTheShredded;
-import tk.skyblocksandbox.skyblocksandbox.item.weapons.GiantsSword;
-import tk.skyblocksandbox.skyblocksandbox.item.weapons.Hyperion;
-import tk.skyblocksandbox.skyblocksandbox.item.weapons.MidasStaff;
+import tk.skyblocksandbox.skyblocksandbox.item.misc.TheCarottesCarrot;
+import tk.skyblocksandbox.skyblocksandbox.item.weapons.*;
 import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
 
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public final class SkyblockItemFactory {
         registerItem(new Bonemerang());
         registerItem(new AxeOfTheShredded());
         registerItem(new GiantsSword());
+        registerItem(new ShadowFury());
 
         registerItem(new NecronsHandle());
 
@@ -45,7 +47,12 @@ public final class SkyblockItemFactory {
         registerItem(new StormLeggings());
         registerItem(new StormBoots());
 
+        registerItem(new CraftyzFrenchBread());
+        registerItem(new FlamingoMask());
+        registerItem(new PurplesPupleCloak());
+
         registerItem(new SkyblockMenu());
+        registerItem(new TheCarottesCarrot());
     }
 
     public void registerItem(SandboxItem item) {
@@ -68,8 +75,7 @@ public final class SkyblockItemFactory {
         if(itemStack == null || itemStack.getType() == Material.AIR) return false;
 
         NBTItem nbtItem = new NBTItem(itemStack);
-        if(!nbtItem.hasKey("isSkyblockItem")) return false;
-        return nbtItem.getBoolean("isSkyblockItem");
+        return nbtItem.hasKey("itemData");
     }
 
     public Map<String, SandboxItem> getRegisteredItems() {

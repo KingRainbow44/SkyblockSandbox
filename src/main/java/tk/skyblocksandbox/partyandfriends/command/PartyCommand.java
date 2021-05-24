@@ -68,7 +68,7 @@ public final class PartyCommand extends SkyblockCommand {
                         if(!partyManager.createParty(sbPlayer)) {
                             sbPlayer.sendMessages(
                                     "&9&m-----------------------------",
-                                    "&cYour already in a party!",
+                                    "&cYou're already in a party!",
                                     "&9&m-----------------------------"
                             );
                         }
@@ -129,6 +129,15 @@ public final class PartyCommand extends SkyblockCommand {
                         createParty.dispatchInvite(sbPlayer, invite);
                         return true;
                     case "accept":
+                        if(sbPlayer.getCurrentParty() != null) {
+                            sbPlayer.sendMessages(
+                                    "&9&m-----------------------------",
+                                    "&cYou're already in a party!",
+                                    "&9&m-----------------------------"
+                            );
+                            return true;
+                        }
+
                         String strLeader = args[1];
                         Player leader = Bukkit.getPlayer(strLeader);
                         if(leader == null) return true;

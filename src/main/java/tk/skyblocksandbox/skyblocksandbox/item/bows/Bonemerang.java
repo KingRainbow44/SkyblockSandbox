@@ -8,6 +8,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -76,6 +77,8 @@ public final class Bonemerang extends SandboxItem {
         Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
 
         NBTItem nbtItem = new NBTItem(bone, true);
+
+        stand.setMetadata("isNotSkyblockEntity", new FixedMetadataValue(SkyblockSandbox.getInstance(), true));
 
         stand.setInvisible(true);
         stand.setInvulnerable(true);
@@ -152,7 +155,7 @@ public final class Bonemerang extends SandboxItem {
                 for(Entity e : stand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != player.getBukkitPlayer()) {
                         Damageable entity = (Damageable) e;
-                        if(entity instanceof ArmorStand) return;
+                        if(entity.hasMetadata("isNotSkyblockEntity")) return;
                         if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
                         if(entity.hasMetadata("NPC")) {

@@ -4,8 +4,11 @@ import com.kingrainbow44.customplayer.player.CustomPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.BukkitSandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -28,12 +31,47 @@ public final class PlayerRunnable implements Runnable {
     public void run() {
         ticks++;
 
+        for(Player bukkitPlayer : Bukkit.getOnlinePlayers()) {
+            SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(bukkitPlayer);
+            PlayerInventory inventory = sbPlayer.getBukkitPlayer().getInventory();
+
+            if(inventory.getHelmet() != null) {
+                ItemStack item = inventory.getHelmet();
+                if(SandboxItemStack.isSandboxItem(item)) {
+                    SandboxItem helmet = SandboxItemStack.toSandboxItem(item);
+                    helmet.armorAbility(sbPlayer);
+                }
+            }
+
+            if(inventory.getChestplate() != null) {
+                ItemStack item = inventory.getChestplate();
+                if(SandboxItemStack.isSandboxItem(item)) {
+                    SandboxItem helmet = SandboxItemStack.toSandboxItem(item);
+                    helmet.armorAbility(sbPlayer);
+                }
+            }
+
+            if(inventory.getLeggings() != null) {
+                ItemStack item = inventory.getLeggings();
+                if(SandboxItemStack.isSandboxItem(item)) {
+                    SandboxItem helmet = SandboxItemStack.toSandboxItem(item);
+                    helmet.armorAbility(sbPlayer);
+                }
+            }
+
+            if(inventory.getBoots() != null) {
+                ItemStack item = inventory.getBoots();
+                if(SandboxItemStack.isSandboxItem(item)) {
+                    SandboxItem helmet = SandboxItemStack.toSandboxItem(item);
+                    helmet.armorAbility(sbPlayer);
+                }
+            }
+        }
+
         if(ticks % 20 == 0) { // Every second, run code:
-            CustomPlayerManager playerManager = SkyblockSandbox.getApi().getPlayerManager();
 
             for(Player bukkitPlayer : Bukkit.getOnlinePlayers()) {
-                if(!(playerManager.isCustomPlayer(bukkitPlayer) instanceof SkyblockPlayer)) return;
-                SkyblockPlayer sbPlayer = (SkyblockPlayer) playerManager.isCustomPlayer(bukkitPlayer);
+                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(bukkitPlayer);
 
                 sbPlayer.getScoreboard().updateScoreboard();
 

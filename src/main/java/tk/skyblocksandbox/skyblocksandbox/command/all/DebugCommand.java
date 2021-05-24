@@ -121,7 +121,7 @@ public final class DebugCommand extends SkyblockCommand {
                                 }
                                 return true;
                             case "build":
-                                if(!sbPlayer.getPlayerData().getPermissionsData().buildingAllowed) {
+                                if(!sbPlayer.getBukkitPlayer().hasPermission("sandbox.build")) {
                                     sbPlayer.sendMessage("&cYou do not have permission to toggle build.");
                                     return true;
                                 }

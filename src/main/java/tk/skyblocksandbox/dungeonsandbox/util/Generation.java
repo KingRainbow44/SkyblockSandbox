@@ -99,16 +99,16 @@ public final class Generation {
     }
 
     public String enumToSchematic(AvailableRooms room) {
-        switch(room) {
-            default:
-                return Utility.changeCase(room.name(), false);
-            case BLOOD_ROOM_SOUTH:
-                return "blood_south";
+        if (room == AvailableRooms.BLOOD_ROOM_SOUTH) {
+            return "blood_south";
         }
+        return Utility.changeCase(room.name(), false);
     }
 
     private boolean validation(AvailableRooms room, Dungeon dungeon) {
-        RoomGenerationTypes lastRoom = dungeon.getLastRoomGenerated();
+        AvailableRooms lastRoom = dungeon.getLastRoomGenerated();
+        if(room == lastRoom) return false;
+
 //        if(roomSizes.getOrDefault(room, RoomGenerationTypes.ONE_BY_ONE) == lastRoom) return false;
 
         if(room == AvailableRooms.FAIRY_ROOM && dungeon.fairyRoomGenerated) return false; else dungeon.fairyRoomGenerated = true;

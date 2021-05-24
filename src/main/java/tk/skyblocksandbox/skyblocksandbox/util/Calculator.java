@@ -20,6 +20,12 @@ public final class Calculator {
      * Used for doing calculations during, for example, damage.
      */
 
+    public static long damage(SkyblockPlayer sbPlayer, int baseAbilityDamage, double abilityScaling) {
+        int intelligence = sbPlayer.getPlayerData().getFinalIntelligence();
+
+        return Math.round(baseAbilityDamage * (1 + (intelligence / 100f) * abilityScaling));
+    }
+
     public static void damage(SkyblockPlayer sbPlayer, float damage, boolean doKnockback) {
         Player player = sbPlayer.getBukkitPlayer();
 

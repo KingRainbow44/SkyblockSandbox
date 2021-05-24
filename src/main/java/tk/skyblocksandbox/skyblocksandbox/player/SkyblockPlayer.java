@@ -3,6 +3,8 @@ package tk.skyblocksandbox.skyblocksandbox.player;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.kingrainbow44.customplayer.player.CustomPlayer;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import me.vagdedes.mysql.database.SQL;
@@ -13,8 +15,10 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.partyandfriends.party.PartyManager;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
@@ -27,6 +31,7 @@ import tk.skyblocksandbox.skyblocksandbox.util.Music;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
@@ -62,7 +67,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
                 throw new NullPointerException("SQL Table 'players' does not exist.");
             }
 
-            Object existingData = SQL.get("data", "uuid", "=", player.getUniqueId().toString(), "players").toString();
+            Object existingData = SQL.get("data", "uuid", "=", player.getUniqueId().toString(), "players");
 
             if(existingData != null) {
                 getPlayerData().importData(existingData);
@@ -75,6 +80,13 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
         SandboxItem sbMenu = (SandboxItem) SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(SkyblockItemIds.SKYBLOCK_MENU);
         getBukkitPlayer().getInventory().setItem(8, sbMenu.create());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                updateNameTag();
+            }
+        }.runTaskLater(SkyblockSandbox.getInstance(), 5L);
     }
 
     public void onUnregister() {
@@ -152,9 +164,9 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         switch(getPlayerData().location) {
             default:
             case SUBLOC_VILLAGE:
-                return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3, 70, -70, 180, 0);
+                return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().hubWorld), -3.5, 70, -70.5, 180, 0);
             case SUBLOC_DUNGEON_HUB:
-                return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().dungeonHubWorld), -31, 121, 0, 90, 0);
+                return new Location(Bukkit.getWorld(SkyblockSandbox.getConfiguration().dungeonHubWorld), -31.5, 121, 0.5, 90, 0);
         }
     }
 
@@ -210,6 +222,34 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         for(ICustomPlayer cPlayer : SkyblockSandbox.getApi().getPlayerManager().getPlayers().values()) {
             if(cPlayer.equals(this)) return;
             cPlayer.sendMessage("&7" + this.getBukkitPlayer().getDisplayName() + " died.");
+        }
+    }
+
+    public void updateNameTag() {
+        PermitableRank rank = PermitableRank.getRankByEnum(getPlayerData().rank);
+        String nameTagFormat = rank.getRankNameTagFormat();
+
+        WrappedDataWatcher dataWatcher = WrappedDataWatcher.getEntityWatcher(this.getBukkitPlayer()).deepClone();
+        WrappedDataWatcher.Serializer chatSerializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true);
+        WrappedDataWatcher.WrappedDataWatcherObject watcherObject = new WrappedDataWatcher.WrappedDataWatcherObject(2, chatSerializer);
+        Optional<Object> optional = Optional.of(WrappedChatComponent.fromChatMessage(
+                nameTagFormat
+        )[0].getHandle());
+        dataWatcher.setObject(watcherObject, optional);
+        dataWatcher.setObject(3, true);
+
+        PacketContainer packet = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
+        packet.getWatchableCollectionModifier().write(0, dataWatcher.getWatchableObjects());
+        packet.getIntegers().write(0, this.getBukkitPlayer().getEntityId());
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            try {
+                ProtocolLibrary.getProtocolManager().sendServerPacket(onlinePlayer, packet);
+            } catch (InvocationTargetException ex) {
+                Bukkit.getLogger().severe("Unable to update nametag packet for player " + onlinePlayer.getName() + "!");
+                ex.printStackTrace();
+                return;
+            }
         }
     }
 
@@ -295,6 +335,9 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
      */
 
     public static SkyblockPlayer getSkyblockPlayer(Player player) {
-        return (SkyblockPlayer) SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(player);
+        ICustomPlayer customPlayer = SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(player);
+        if(!(customPlayer instanceof SkyblockPlayer)) throw new NullPointerException("Invalid player.");
+
+        return (SkyblockPlayer) customPlayer;
     }
 }

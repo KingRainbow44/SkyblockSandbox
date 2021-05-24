@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
+import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -55,8 +56,10 @@ public final class InventoryListener implements Listener {
         }
 
         NBTItem nbtItem = new NBTItem(Objects.requireNonNull(player.getInventory().getItem(8)), true);
+        if(!nbtItem.hasKey("itemData")) return;
 
-        if(!nbtItem.hasKey("isSkyblockMenu") || !nbtItem.getBoolean("isSkyblockMenu")) {
+        NBTCompound nbt = nbtItem.getCompound("itemData");
+        if(!nbt.hasKey("isSkyblockMenu") || !nbt.getBoolean("isSkyblockMenu")) {
             Object sbMenu = SkyblockSandbox.getManagement().getItemManager().isSkyblockItem(SkyblockItemIds.SKYBLOCK_MENU);
             player.getInventory().setItem(8, ((SandboxItem) sbMenu).create());
         }

@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.player;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -7,20 +8,22 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
+import tk.skyblocksandbox.permitable.PermissionManager;
+import tk.skyblocksandbox.permitable.PermissionModule;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class SkyblockPlayerPermissions {
 
-    private final SkyblockPlayer sbPlayer;
+    private final SkyblockPlayer player;
 
-    public SkyblockPlayerPermissions(SkyblockPlayer player) {
-        sbPlayer = player;
+    public SkyblockPlayerPermissions(SkyblockPlayer sbPlayer) {
+        player = sbPlayer;
+        PermissionModule.getPermissionManager().addPermissionAttachment(sbPlayer);
     }
 
     /*
@@ -38,9 +41,9 @@ public final class SkyblockPlayerPermissions {
     public boolean commandSetBlock = false;
 
     /*
-     * Additional Permissions
+     * Extra Permissions
      */
-    private final Map<String, PermissionAttachment> additionalPermissions = new HashMap<>();
+    public Collection<String> permissions = new ArrayList<>();
 
     /*
      * Data Import/Export
@@ -56,6 +59,12 @@ public final class SkyblockPlayerPermissions {
         permissions.addProperty("commandItem", commandItem);
         permissions.addProperty("commandSummon", commandSummon);
         permissions.addProperty("commandSetBlock", commandSetBlock);
+
+        JsonArray permissionsArray = new JsonArray();
+        for(String permission : this.permissions) {
+            permissionsArray.add(permission);
+        }
+        permissions.add("extraPermissions", permissionsArray);
 
         return Base64.getUrlEncoder().encodeToString(permissions.toString().getBytes(StandardCharsets.UTF_8));
     }
@@ -83,22 +92,55 @@ public final class SkyblockPlayerPermissions {
         commandItem = arrayData.get("commandItem").getAsBoolean();
         commandSummon = arrayData.get("commandSummon").getAsBoolean();
         commandSetBlock = arrayData.get("commandSetBlock").getAsBoolean();
+
+        JsonArray permissionsArray = (JsonArray) getOrDefault("extraPermissions", arrayData, JsonArray.class);
+        if(permissionsArray != null) {
+            for (JsonElement jsonElement : permissionsArray) {
+                grantPermission(jsonElement.getAsString());
+            }
+        }
+    }
+
+    public Object getOrDefault(String constant, JsonObject array, Class<?> type) {
+        if(array.get(constant) == null) {
+            if(type == String.class) {
+                return "";
+            } else if (type == Integer.class) {
+                return 0;
+            } else if (type == JsonArray.class) {
+                return new JsonArray();
+            }
+        }
+
+        if (type == String.class) {
+            return array.get(constant).getAsString();
+        } else if (type == Integer.class) {
+            return array.get(constant).getAsInt();
+        } else if (type == JsonArray.class) {
+            return array.get(constant).getAsJsonArray();
+        } else {
+            return array.get(constant);
+        }
     }
 
     public void grantPermission(String permissionNode) {
-        Player player = sbPlayer.getBukkitPlayer();
+        PermissionManager manager = PermissionModule.getPermissionManager();
+        manager.addPermission(player, permissionNode);
 
-        PermissionAttachment attachment = player.addAttachment(SkyblockSandbox.getInstance());
-        additionalPermissions.put(permissionNode, attachment);
-
-        attachment.setPermission(permissionNode, true);
+        permissions.add(permissionNode);
     }
 
     public void revokePermission(String permissionNode) {
-        PermissionAttachment attachment = additionalPermissions.getOrDefault(permissionNode, null);
-        if(attachment == null) return;
+        PermissionManager manager = PermissionModule.getPermissionManager();
+        manager.removePermission(player, permissionNode);
 
-        attachment.unsetPermission(permissionNode);
+        permissions.remove(permissionNode);
+    }
+
+    public void addPermissions(PermitableRank.AvailableRanks rank) {
+        for(String permission : PermitableRank.getRankByEnum(rank).getPermissions()) {
+            grantPermission(permission);
+        }
     }
 
 }

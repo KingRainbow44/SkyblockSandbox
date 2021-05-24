@@ -112,7 +112,7 @@ public final class GiantsSword extends SandboxItem {
                     NPC toDamage = CitizensAPI.getNPCRegistry().getNPC(entity);
                     SkyblockNPC.damage(toDamage, damage, false);
                 } else {
-                    SkyblockEntity sbEntity = SkyblockEntity.getSkyblockEntity(entity);
+                    SkyblockEntity sbEntity = (SkyblockEntity) SkyblockEntity.getSkyblockEntity(entity);
                     Calculator.damage(sbEntity, damage, false);
                 }
                 entityCount++;

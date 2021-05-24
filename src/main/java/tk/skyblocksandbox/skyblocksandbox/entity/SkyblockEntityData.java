@@ -3,6 +3,7 @@ package tk.skyblocksandbox.skyblocksandbox.entity;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.inventory.ItemStack;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -33,6 +34,20 @@ public final class SkyblockEntityData {
     public boolean canTakeKnockback = true;
 
     /*
+     * Armor Data
+     */
+    public ItemStack helmet = null;
+    public ItemStack chestplate = null;
+    public ItemStack leggings = null;
+    public ItemStack boots = null;
+
+    /*
+     * Item Data
+     */
+    public ItemStack mainHand = null;
+    public ItemStack offHand = null;
+
+    /*
      * Skin Data
      */
     public String skinName = ""; // The Player Name. The Player who owns the skin.
@@ -48,8 +63,7 @@ public final class SkyblockEntityData {
      * SkyblockEntity Trait
      */
 
-    @Override
-    public String toString() {
+    public String toJson() {
         JsonObject entityData = new JsonObject();
 
         entityData.addProperty("health", health);

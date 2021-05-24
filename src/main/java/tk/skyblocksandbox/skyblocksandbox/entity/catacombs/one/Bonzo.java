@@ -1,6 +1,8 @@
 package tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one;
 
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
@@ -19,8 +21,11 @@ public final class Bonzo extends SkyblockEntity {
         entityData.isHostile = true;
         entityData.isUndead = true;
 
+        entityData.mainHand = new ItemStack(Material.BLAZE_ROD);
+
         entityData.entityName = "Bonzo";
         entityData.health = 250000;
+        entityData.damage = 1000;
 
         entityData.skinName = "SafeDrift48";
         entityData.skinSignature = "dj+mS77dCJC2QrkccHatGa3Z8RzrAycthJ6w3T2F8yAxdYnHNsdf6m+K7+L3hoEIqtzktgyKj/rcA4032Oklmp8doxLmFAvzyKbnCuO4yYt4xGJo2mwt1ZXkOv/saoZeV/lIOW0JlBtL+7K+mUgcxcGbBhZNl3i4QMyWQGqPHoAOXKU8pkfORdYjFS+eEVltWL463m/hc//5brrrxBWKjuOg9XEUWE" +

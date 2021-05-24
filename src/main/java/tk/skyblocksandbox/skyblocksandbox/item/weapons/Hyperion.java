@@ -141,15 +141,15 @@ public final class Hyperion extends SandboxItem {
                 if(entity.hasMetadata("isNotSkyblockEntity")) return;
                 if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
-                if(entity instanceof Player && entity.hasMetadata("NPC")) {
+                if(CitizensAPI.getNPCRegistry().isNPC(entity)) {
                     NPC toDamage = CitizensAPI.getNPCRegistry().getNPC(entity);
                     SkyblockNPC.damage(toDamage, damage, false);
-                    entityCount++;
                 } else {
-                    SkyblockEntity sbEntity = SkyblockEntity.getSkyblockEntity(entity);
+                    SkyblockEntity sbEntity = (SkyblockEntity) SkyblockEntity.getSkyblockEntity(entity);
                     Calculator.damage(sbEntity, damage, false);
-                    entityCount++;
                 }
+
+                entityCount++;
             }
         }
 

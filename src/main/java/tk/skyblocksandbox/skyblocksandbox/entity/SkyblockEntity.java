@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,6 +21,7 @@ import org.decimal4j.util.DoubleRounder;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
+import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.RoundingMode;
@@ -68,10 +70,14 @@ public abstract class SkyblockEntity {
 
             npc.getNpc().setProtected(false);
 
-            PersistentDataContainer data = entity.getPersistentDataContainer();
-            data.set(key("skyblockEntity"), PersistentDataType.BYTE, (byte) 1);
-            data.set(key("entityUUID"), PersistentDataType.INTEGER, entityId); // Redundancy (for other methods that use legacy "entityUUID".)
-            data.set(key("damage"), PersistentDataType.INTEGER, getEntityData().damage);
+            Equipment equipment = npc.getNpc().getOrAddTrait(Equipment.class);
+                if(getEntityData().helmet != null) equipment.set(Equipment.EquipmentSlot.HELMET, getEntityData().helmet);
+                if(getEntityData().chestplate != null) equipment.set(Equipment.EquipmentSlot.CHESTPLATE, getEntityData().chestplate);
+                if(getEntityData().leggings != null) equipment.set(Equipment.EquipmentSlot.LEGGINGS, getEntityData().leggings);
+                if(getEntityData().boots != null) equipment.set(Equipment.EquipmentSlot.BOOTS, getEntityData().boots);
+
+                if(getEntityData().mainHand != null) equipment.set(Equipment.EquipmentSlot.HAND, getEntityData().mainHand);
+                if(getEntityData().offHand != null) equipment.set(Equipment.EquipmentSlot.OFF_HAND, getEntityData().offHand);
 
             if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
 
@@ -161,6 +167,7 @@ public abstract class SkyblockEntity {
 
     public void damage(long damage) {
         currentHealth -= damage;
+        updateHealth();
     }
 
     public long getEntityHealth() {
@@ -181,6 +188,19 @@ public abstract class SkyblockEntity {
 
     public abstract SkyblockEntityData getEntityData();
 
+    public void updateHealth() {
+        if(getEntityData().isBoss) {
+            updateBossBar();
+        } else {
+            if(getEntityData().isNpc) {
+                NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
+                npc.setName(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
+            } else {
+                entity.setCustomName(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
+            }
+        }
+    }
+
     public void updateBossBar() {
         if(getEntityBossBar() == null) return;
 
@@ -195,9 +215,13 @@ public abstract class SkyblockEntity {
      * Static Methods
      */
 
-    public static SkyblockEntity getSkyblockEntity(Entity entity) {
+    public static Object getSkyblockEntity(Entity entity) {
         if(entity.hasMetadata("NPC")) return getSkyblockEntityFromNPC(
                 CitizensAPI.getNPCRegistry().getNPC(entity)
+        );
+
+        if(entity instanceof Player) return SkyblockPlayer.getSkyblockPlayer(
+                (Player) entity
         );
 
         return SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);

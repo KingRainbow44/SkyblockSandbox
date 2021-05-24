@@ -16,7 +16,6 @@ public final class Yeti extends SkyblockEntity {
 
         entityData.entityName = "Yeti";
         entityData.health = 2000000;
-        entityData.vanillaHealth = 20;
 
         entityData.skinName = "Serializable";
         entityData.skinSignature = "B6YLY/krUu8EI67UBzVoOid/8VERTuDl9Ctc/ucpa97/eHGDjUWAi3+xAYd2hsZVAAFrmWB+/PZzA2ZNNDa78NVWfKfSboaoSjgNwmYmqJpOVCWjt7XA4corOeVdMJWccQkr5Z3HmQFBzLltOzc/FQIxqCaEKGAfLkT5ttykKH04s1WoiwhHyfie8kNnc+pEsFe1yfAi9FR7m2UmQ8eJDw6aLSNX" +

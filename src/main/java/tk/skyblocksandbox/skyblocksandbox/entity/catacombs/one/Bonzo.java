@@ -1,13 +1,11 @@
 package tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one;
 
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
-public final class Bonzo extends SkyblockEntity {
+public final class Bonzo extends SandboxEntity {
 
     public Bonzo() {
         super(EntityType.PLAYER);

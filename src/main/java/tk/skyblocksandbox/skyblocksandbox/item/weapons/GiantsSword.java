@@ -5,13 +5,11 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
@@ -23,7 +21,6 @@ import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Set;
 
 public final class GiantsSword extends SandboxItem {
 
@@ -102,24 +99,14 @@ public final class GiantsSword extends SandboxItem {
 
         int entityCount = 0;
         for(Entity e : player.getNearbyEntities(4, 4, 4)) {
-            if(e instanceof Damageable && e != player) {
+            if(e instanceof Damageable && e != sbPlayer.getBukkitPlayer()) {
                 Damageable entity = (Damageable) e;
-                if(entity.hasMetadata("isNotSkyblockEntity") || entity instanceof ArmorStand) return;
-                if(entity instanceof Player && !entity.hasMetadata("NPC")) {
-                    SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
-                    if(sbPlayer.getPlayerData().pvpEnabled) {
-                        Calculator.damage(sbTarget, sbPlayer, true);
-                    }
-                    return;
-                }
+                if(!entity.hasMetadata("skyblockEntityId")) return;
+                if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
-                if(entity instanceof Player && entity.hasMetadata("NPC")) {
-                    NPC toDamage = CitizensAPI.getNPCRegistry().getNPC(entity);
-                    SkyblockNPC.damage(toDamage, damage, false);
-                } else {
-                    SkyblockEntity sbEntity = (SkyblockEntity) SkyblockEntity.getSkyblockEntity(entity);
-                    Calculator.damage(sbEntity, damage, false);
-                }
+                SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
+                Calculator.damage(sbEntity, sbPlayer, true);
+
                 entityCount++;
             }
         }

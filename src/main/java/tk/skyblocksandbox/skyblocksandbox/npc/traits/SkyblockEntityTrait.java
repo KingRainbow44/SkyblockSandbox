@@ -5,12 +5,10 @@ import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
@@ -136,7 +134,7 @@ public final class SkyblockEntityTrait extends Trait {
     String entityName = "";
 
     @Persist("entityId")
-    int entityId = -1;
+    int entityId = 1;
 
     @Persist("entityDataAdded")
     boolean entityDataAdded = false;
@@ -155,7 +153,7 @@ public final class SkyblockEntityTrait extends Trait {
     }
 
     public void onAttach() {
-        npc.getNavigator().getLocalParameters().attackRange(5.0).attackDelayTicks(10);
+        npc.getNavigator().getLocalParameters().attackRange(4.0).attackDelayTicks(15);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(
                 SkyblockSandbox.getInstance(),
@@ -182,22 +180,18 @@ public final class SkyblockEntityTrait extends Trait {
             speedAdded = true;
         }
 
-        if(!getEntityData().isBoss) {
-            getNPC().setName(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
+        if(!isBoss) {
+            long currentHealth = SkyblockSandbox.getManagement().getEntityManager().getEntity(entityId).getHealth();
+            getNPC().setName(colorize("&8[&7Lvl " + level +"&8] &c" + entityName + " &a" + currentHealth + "/" + Math.round(health) + "&c❤"));
         } else {
-            getNPC().setName(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
+            getNPC().setName(colorize("&e&l﴾ &c&l" + entityName + " &e&l﴿"));
         }
 
         if(isHostile) {
-            if(ticks % 10 == 0) {
-                for(Entity entity : getNPC().getEntity().getNearbyEntities(5, 5, 5)) {
-                    if(entity.hasMetadata("isNotSkyblockEntity") || entity instanceof ArmorStand) return;
-                    if(entity == getNPC().getEntity()) return;
-
-                    Object sbEntity = SkyblockEntity.getSkyblockEntity(entity);
-                    if(sbEntity instanceof SkyblockPlayer) {
-                        Calculator.damage((SkyblockPlayer) sbEntity, getEntityData().damage, true);
-                    }
+            if(ticks % 15 == 0) {
+                for(Entity entity : getNPC().getEntity().getNearbyEntities(4, 4, 4)) {
+                    if(!(entity instanceof Player)) return;
+                    Calculator.damage(SkyblockPlayer.getSkyblockPlayer((Player) entity), getEntityData().damage, true);
                 }
             }
         }

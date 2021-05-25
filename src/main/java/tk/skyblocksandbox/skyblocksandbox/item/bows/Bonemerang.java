@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
@@ -155,26 +155,14 @@ public final class Bonemerang extends SandboxItem {
                 for(Entity e : stand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != player.getBukkitPlayer()) {
                         Damageable entity = (Damageable) e;
-                        if(entity.hasMetadata("isNotSkyblockEntity")) return;
+                        if(!entity.hasMetadata("skyblockEntityId")) return;
                         if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
-                        if(entity.hasMetadata("NPC")) {
-                            NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
-
-                            entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.CUSTOM, 0));
-                            SkyblockNPC.damage(npc, player, true);
-                            return;
-                        }
-
-                        SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
-                        if(sbEntity == null) return;
-
-                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player.getBukkitPlayer(), e, EntityDamageEvent.DamageCause.CUSTOM, 0));
+                        SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
                         Calculator.damage(sbEntity, player, true);
                         if(back) {
                             Calculator.damage(sbEntity, player, true);
                         }
-
                     }
                 }
 

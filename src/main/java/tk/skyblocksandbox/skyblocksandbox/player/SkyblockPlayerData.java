@@ -197,7 +197,7 @@ public final class SkyblockPlayerData {
     /*
      * Player Data Methods
      */
-    public void damage(int damage) {
+    public void damage(long damage) {
         currentHealth -= damage;
         player.hurt();
     }

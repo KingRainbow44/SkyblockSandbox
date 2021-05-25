@@ -1,13 +1,11 @@
 package tk.skyblocksandbox.skyblocksandbox.util;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
-import tk.skyblocksandbox.skyblocksandbox.deprecated.VanillaItemData;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -140,7 +138,7 @@ public final class Calculator {
         return Math.round(damage);
     }
 
-    public static long damage(SkyblockEntity entity, float damage, boolean doKnockback) {
+    public static long damage(SandboxEntity entity, float damage, boolean doKnockback) {
         double finalDamage = damage;
         float damageReduction = entity.getEntityData().defense / (entity.getEntityData().defense + 100);
 
@@ -163,14 +161,14 @@ public final class Calculator {
         entity.hurt();
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageEvent(entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
-        if(entity.getEntityHealth() <= 0) {
+        if(entity.getHealth() <= 0) {
             entity.kill(true);
         }
 
         return Math.round(finalDamage);
     }
 
-    public static long damage(SkyblockEntity entity, SkyblockPlayer sbPlayer, boolean doKnockback) {
+    public static long damage(SandboxEntity entity, SkyblockPlayer sbPlayer, boolean doKnockback) {
         /*
          * Variables
          */
@@ -232,7 +230,7 @@ public final class Calculator {
         entity.hurt();
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
-        if(entity.getEntityHealth() <= 0) {
+        if(entity.getHealth() <= 0) {
             entity.kill(true);
         }
 
@@ -260,7 +258,7 @@ public final class Calculator {
                     "&9&m--------------------",
                     "entity name: " + entity.getEntityData().entityName,
                     "entity id: " + entity.getEntityId(),
-                    "entity health: " + entity.getEntityHealth(),
+                    "entity health: " + entity.getHealth(),
                     "&9&m--------------------"
             );
         }

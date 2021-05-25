@@ -1,10 +1,10 @@
 package tk.skyblocksandbox.skyblocksandbox.entity.catacombs.six;
 
 import org.bukkit.entity.EntityType;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
-public final class Sadan extends SkyblockEntity {
+public final class Sadan extends SandboxEntity {
 
     public Sadan() {
         super(EntityType.GIANT);

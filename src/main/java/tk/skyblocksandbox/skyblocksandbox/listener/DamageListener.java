@@ -1,26 +1,16 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
-import com.kingrainbow44.customplayer.player.CustomPlayerManager;
-import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.event.NPCDamageEvent;
-import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.util.Vector;
-import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityManager;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
-import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 
@@ -28,115 +18,78 @@ public final class DamageListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if(event.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
-            event.setCancelled(true);
-            return; // This means that the damage was from our custom damage system. Don't double damage.
-        }
-
-        event.setCancelled(true);
-
-        Entity entity = event.getEntity();
-        double damage = event.getDamage();
-
-        CustomPlayerManager playerManager = SkyblockSandbox.getApi().getPlayerManager();
-
-        // SkyblockEntity was damaged by a SkyblockPlayer.
         if(event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event;
+            // Entity was Damaged by another Entity. (EvE)
+            EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) event;
+            Entity damager = entityEvent.getDamager();
+            Entity damagee = entityEvent.getEntity();
 
-            Entity damager = damageEvent.getDamager();
+            /*
+             * Scenario Breakdown:
+             * - SBEntity damaged by SBEntity (EvE)
+             * - SBPlayer damaged by SBEntity (PvE)
+             * - SBEntity damaged by SBPlayer (PvE)
+             * - SBPlayer damaged by SBPlayer (PvP)
+             */
 
-            // Damager is NOT a Player in Any Way - START \\
-            if(!(damager instanceof Player)) {
-                if(!(entity instanceof Player)) {
-                    event.setCancelled(true);
-                    return;
-                }
-
-                if(damager.hasMetadata("NPC")) {
-//                    NPC npc = CitizensAPI.getNPCRegistry().getNPC(damager);
-                    event.setCancelled(true);
-                    return;
-                } else if (DataContainerAPI.has(damager, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) {
-                    SkyblockEntity sbDamager = (SkyblockEntity) SkyblockEntity.getSkyblockEntity(entity);
-                    SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
-
-                    Calculator.damage(sbTarget, sbDamager.getEntityData().damage, true);
-
-                    event.setCancelled(true);
-                    return;
-                } else {
-                    SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
-                    Calculator.damage(sbTarget, (int) Math.round(damage), true);
-
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-            // Damager is NOT a Player in Any Way - END \\
-
-            // Damager is NOT an NPC & the entity IS a player. \\
-            if(entity instanceof Player && !damager.hasMetadata("NPC")) {
-
-                if(!entity.hasMetadata("NPC")) {
-                    SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
-                    SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damager);
-
-                    if(!sbPlayer.getPlayerData().pvpEnabled || !sbTarget.getPlayerData().pvpEnabled) {
-                        event.setCancelled(true);
-                        return;
-                    }
-
-                    Calculator.damage(sbTarget, sbPlayer, true);
-                }
+            if(damager.hasMetadata("skyblockEntityId") && damagee.hasMetadata("skyblockEntityId")) { // (EvE)
+                SandboxEntity sbDamager = SandboxEntity.getSandboxEntity(damager);
+                SandboxEntity sbDamagee = SandboxEntity.getSandboxEntity(damagee);
 
                 event.setCancelled(true);
-                return;
+                Calculator.damage(sbDamagee, sbDamager.getEntityData().damage, true);
+            } else if (damager.hasMetadata("skyblockEntityId") && damagee instanceof Player) { // (PvE) - Scenario 1
+                SandboxEntity sbDamager = SandboxEntity.getSandboxEntity(damager);
+                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
+
+                event.setCancelled(true);
+                Calculator.damage(sbPlayer, sbDamager.getEntityData().damage, true);
+            } else if (damager instanceof Player && damagee.hasMetadata("skyblockEntityId")) { // (PvE) - Scenario 2
+                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damager);
+                SandboxEntity sbDamagee = SandboxEntity.getSandboxEntity(damagee);
+
+                event.setCancelled(true);
+                Calculator.damage(sbDamagee, sbPlayer, true);
+            } else if (damager instanceof Player && damagee instanceof Player) { // (PvP)
+                SkyblockPlayer sbDamager = SkyblockPlayer.getSkyblockPlayer((Player) damager);
+                SkyblockPlayer sbDamagee = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
+
+                event.setCancelled(true);
+                Calculator.damage(sbDamagee, sbDamager, true);
+            } else {
+                if(damagee instanceof Player) {
+                    SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
+                    Calculator.damage(sbPlayer, (int) Math.round(event.getDamage()), true);
+                }
+
+                if(damagee.hasMetadata("skyblockEntityId")) {
+                    SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(damagee);
+                    Calculator.damage(sbEntity, (int) Math.round(event.getDamage()), true);
+                }
+                event.setCancelled(true);
+            }
+        } else {
+            // Entity was Void damaged.
+            Entity damagee = event.getEntity();
+
+            /*
+             * Scenario Breakdown:
+             * - SBPlayer was void damaged.
+             * - SBEntity was void damaged.
+             */
+
+            if(damagee instanceof Player) {
+                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
+                sbPlayer.getPlayerData().damage(Math.round(event.getDamage()));
             }
 
-            Object rawPlayer = playerManager.isCustomPlayer((Player) damager);
-            if(!(rawPlayer instanceof SkyblockPlayer)) return;
-            SkyblockPlayer sbPlayer = (SkyblockPlayer) rawPlayer;
+            if(damagee.hasMetadata("skyblockEntityId")) {
+                SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(damagee);
+                sbEntity.damage(Math.round(event.getDamage()));
+            }
 
-            // Entity damaged was a SkyblockEntity.
-            SkyblockEntityManager entityManager = SkyblockSandbox.getManagement().getEntityManager();
-            if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) return;
-            Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER);
-            if(!(rawUUID instanceof Integer)) return;
-
-            SkyblockEntity sbEntity = entityManager.getEntity((int) rawUUID);
-            if(sbEntity == null) return;
-
-            Calculator.damage(sbEntity, sbPlayer, true);
             event.setCancelled(true);
-            return;
         }
-
-        // Entity damaged was a SkyblockPlayer.
-        if(entity instanceof Player) {
-            Player player = (Player) entity;
-            Object rawPlayer = playerManager.isCustomPlayer(player);
-            if(!(rawPlayer instanceof SkyblockPlayer)) return;
-            SkyblockPlayer sbPlayer = (SkyblockPlayer) rawPlayer;
-
-            sbPlayer.getPlayerData().damage((int) Math.round(damage));
-            event.setCancelled(true);
-            return;
-        }
-
-        // Entity damaged was a SkyblockEntity.
-        if(entity.hasMetadata("NPC")) return;
-
-        SkyblockEntityManager entityManager = SkyblockSandbox.getManagement().getEntityManager();
-        if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) return;
-        Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER);
-        if(!(rawUUID instanceof Integer)) return;
-
-        SkyblockEntity sbEntity = entityManager.getEntity((int) rawUUID);
-        if(sbEntity == null) return;
-
-        Calculator.damage(sbEntity, (float) damage, true);
-        event.setCancelled(true);
     }
 
     @EventHandler

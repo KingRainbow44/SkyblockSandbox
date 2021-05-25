@@ -1,10 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
-import com.kingrainbow44.persistentdatacontainers.DataContainerAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.persistence.PersistentDataType;
-import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import org.bukkit.metadata.MetadataValue;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one.Bonzo;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one.MasterBonzo;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.seven.Necron;
@@ -14,14 +11,16 @@ import tk.skyblocksandbox.skyblocksandbox.entity.vanilla.Zombie;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class SkyblockEntityManager {
 
-    private final Map<Integer, SkyblockEntity> entities = new HashMap<>();
+    private final Map<Integer, SandboxEntity> entities = new HashMap<>();
     private int nextId = -1;
 
-    public int registerEntity(SkyblockEntity entity) {
+    public int registerEntity(SandboxEntity entity) {
         nextId++;
         entities.put(nextId, entity);
 
@@ -32,22 +31,26 @@ public final class SkyblockEntityManager {
         entities.remove(entityId);
     }
 
-    public SkyblockEntity getEntity(int entityId) {
-        return entities.getOrDefault(entityId, null);
+    public SandboxEntity getEntity(Entity entity) {
+        if(!entity.hasMetadata("skyblockEntityId")) throw new NullPointerException("Does not contain Skyblock Entity Id.");
+
+        List<MetadataValue> data = entity.getMetadata("skyblockEntityId");
+
+        final SandboxEntity[] sbEntity = {null};
+        data.iterator().forEachRemaining(k -> {
+            if(entities.getOrDefault(k.asInt(), null) != null) {
+                sbEntity[0] = entities.getOrDefault(k.asInt(), null);
+            }
+        });
+
+        return sbEntity[0];
     }
 
-    public SkyblockEntity getEntity(Entity entity) {
-        if(!DataContainerAPI.has(entity, SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER)) {
-            return null;
-        }
-        Object rawUUID = DataContainerAPI.get(entity.getPersistentDataContainer(), SkyblockSandbox.getInstance(), "entityUUID", PersistentDataType.INTEGER);
-        if(!(rawUUID instanceof Integer)) {
-            return null;
-        }
-        return getEntity((int) rawUUID);
+    public SandboxEntity getEntity(int id) {
+        return entities.getOrDefault(id, null);
     }
 
-    public static SkyblockEntity parseEntity(String entityId) throws InvalidParameterException {
+    public static SandboxEntity parseEntity(String entityId) throws InvalidParameterException {
         switch(entityId) {
             default:
                 throw new InvalidParameterException("The entity id: " + entityId + " is not a valid entity id.");

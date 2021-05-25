@@ -1,10 +1,10 @@
 package tk.skyblocksandbox.skyblocksandbox.entity.vanilla;
 
 import org.bukkit.entity.EntityType;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
-public final class Zombie extends SkyblockEntity {
+public final class Zombie extends SandboxEntity {
 
     public Zombie() {
         super(EntityType.ZOMBIE);

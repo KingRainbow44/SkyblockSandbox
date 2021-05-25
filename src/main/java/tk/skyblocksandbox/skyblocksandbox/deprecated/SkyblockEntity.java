@@ -1,4 +1,4 @@
-package tk.skyblocksandbox.skyblocksandbox.entity;
+package tk.skyblocksandbox.skyblocksandbox.deprecated;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -10,17 +10,15 @@ import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.decimal4j.util.DoubleRounder;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
+import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityManager;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -28,8 +26,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.RoundingMode;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
-import static tk.skyblocksandbox.skyblocksandbox.util.Utility.key;
 
+@Deprecated
 public abstract class SkyblockEntity {
 
     private final EntityType entityType;
@@ -45,82 +43,53 @@ public abstract class SkyblockEntity {
         this.entityType = entityType;
     }
 
-    public void createEntity(Location location) {
-        SkyblockEntityManager entityManager = SkyblockSandbox.getManagement().getEntityManager();
-        entityId = entityManager.registerEntity(this);
+//    public void create(Location location) {
+//        SkyblockEntityManager entityManager = SkyblockSandbox.getManagement().getEntityManager();
+//        entityId = entityManager.registerEntity(this);
+//
+//        NPC npc = CitizensAPI.getNPCRegistry().createNPC(entityType, getEntityData().entityName);
+//        npc.spawn(location);
+//
+//        if(npc.getEntity() instanceof LivingEntity) {
+//            entity = (LivingEntity) npc.getEntity();
+//        } else {
+//            throw new NullPointerException("EntityType is not a living entity");
+//        }
+//
+//        if(entityType == EntityType.PLAYER) {
+//            SkinTrait skin = npc.getOrAddTrait(SkinTrait.class);
+//            skin.setSkinPersistent(getEntityData().skinName, getEntityData().skinSignature, getEntityData().skinData);
+//
+//            Equipment equipment = npc.getOrAddTrait(Equipment.class);
+//            if(getEntityData().helmet != null) equipment.set(Equipment.EquipmentSlot.HELMET, getEntityData().helmet);
+//            if(getEntityData().chestplate != null) equipment.set(Equipment.EquipmentSlot.CHESTPLATE, getEntityData().chestplate);
+//            if(getEntityData().leggings != null) equipment.set(Equipment.EquipmentSlot.LEGGINGS, getEntityData().leggings);
+//            if(getEntityData().boots != null) equipment.set(Equipment.EquipmentSlot.BOOTS, getEntityData().boots);
+//
+//            if(getEntityData().mainHand != null) equipment.set(Equipment.EquipmentSlot.HAND, getEntityData().mainHand);
+//            if(getEntityData().offHand != null) equipment.set(Equipment.EquipmentSlot.OFF_HAND, getEntityData().offHand);
+//        } else if (entityType == EntityType.WITHER || entityType == EntityType.ENDER_DRAGON) {
+//            BossBar bossBar = ((Boss) entity).getBossBar();
+//            bossBar.setProgress(0.0f);
+//            bossBar.setVisible(false);
+//        }
+//
+//        if(getEntityData().isBoss) {
+//            npc.setName(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
+//        } else {
+//            npc.setName(colorize(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤")));
+//        }
+//
+//        entity.setMetadata("skyblockEntityData", new FixedMetadataValue(SkyblockSandbox.getInstance(), getEntityData().toJson()));
+//        entity.setMetadata("skyblockEntityId", new FixedMetadataValue(SkyblockSandbox.getInstance(), entityId));
+//
+//        if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
+//    }
 
-        this.currentHealth = getEntityData().health;
-
-        if(entityType == EntityType.PLAYER) {
-            SkyblockNPC npc;
-
-            if(getEntityData().isBoss) {
-                npc = new SkyblockNPC(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
-            } else {
-                npc = new SkyblockNPC(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
-            }
-
-            npc.getNpc().spawn(location);
-
-            entity = (LivingEntity) npc.getNpc().getEntity();
-            npc.setEntityData(getEntityData());
-            npc.setEntityId(entityId);
-
-            SkinTrait skinTrait = npc.getNpc().getOrAddTrait(SkinTrait.class);
-            skinTrait.setSkinPersistent(getEntityData().skinName, getEntityData().skinSignature, getEntityData().skinData);
-
-            npc.getNpc().setProtected(false);
-
-            Equipment equipment = npc.getNpc().getOrAddTrait(Equipment.class);
-                if(getEntityData().helmet != null) equipment.set(Equipment.EquipmentSlot.HELMET, getEntityData().helmet);
-                if(getEntityData().chestplate != null) equipment.set(Equipment.EquipmentSlot.CHESTPLATE, getEntityData().chestplate);
-                if(getEntityData().leggings != null) equipment.set(Equipment.EquipmentSlot.LEGGINGS, getEntityData().leggings);
-                if(getEntityData().boots != null) equipment.set(Equipment.EquipmentSlot.BOOTS, getEntityData().boots);
-
-                if(getEntityData().mainHand != null) equipment.set(Equipment.EquipmentSlot.HAND, getEntityData().mainHand);
-                if(getEntityData().offHand != null) equipment.set(Equipment.EquipmentSlot.OFF_HAND, getEntityData().offHand);
-
-            if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
-
-            if(getEntityData().isBoss) {
-                entityBossBar = Bukkit.createBossBar(colorize("&c&l" + getEntityData().entityName), BarColor.RED, BarStyle.SOLID);
-                for(Player nearbyPlayer : Bukkit.getOnlinePlayers()) {
-                    entityBossBar.addPlayer(nearbyPlayer);
-                }
-            }
-        } else {
-            World world = location.getWorld();
-
-            Entity entity = world.spawnEntity(location, entityType);
-            entity.setCustomNameVisible(true);
-
-            PersistentDataContainer data = entity.getPersistentDataContainer();
-
-            data.set(key("skyblockEntity"), PersistentDataType.BYTE, (byte) 1);
-            data.set(key("entityUUID"), PersistentDataType.INTEGER, entityId);
-            data.set(key("damage"), PersistentDataType.INTEGER, getEntityData().damage);
-
-            this.entity = (LivingEntity) entity;
-
-            if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
-
-            if(!getEntityData().isBoss) {
-                entity.setCustomName(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
-            } else {
-                if(entityType == EntityType.WITHER || entityType == EntityType.ENDER_DRAGON) {
-                    BossBar bossBar = ((Boss) entity).getBossBar();
-                    bossBar.setProgress(0.0f);
-                    bossBar.setVisible(false);
-                }
-
-                entity.setCustomName(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
-                entityBossBar = Bukkit.createBossBar(colorize("&c&l" + getEntityData().entityName), BarColor.RED, BarStyle.SOLID);
-                for(Player nearbyPlayer : Bukkit.getOnlinePlayers()) {
-                    entityBossBar.addPlayer(nearbyPlayer);
-                }
-            }
-        }
-    }
+//    @Deprecated
+//    public void createEntity(Location location) {
+//        create(location);
+//    }
 
     public void setHealth(long health) {
         currentHealth = health;
@@ -235,7 +204,7 @@ public abstract class SkyblockEntity {
         return SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
     }
 
-    public static SkyblockEntity getSkyblockEntityFromNPC(NPC npc) {
+    public static SandboxEntity getSkyblockEntityFromNPC(NPC npc) {
         SkyblockEntityTrait entityTrait = npc.getOrAddTrait(SkyblockEntityTrait.class);
         return SkyblockSandbox.getManagement().getEntityManager().getEntity(entityTrait.getEntityId());
     }

@@ -4,9 +4,8 @@ import org.bukkit.entity.EntityType;
 import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
-public final class Necron extends SandboxEntity {
-
-    public Necron() {
+public final class MasterNecron extends SandboxEntity {
+    public MasterNecron() {
         super(EntityType.WITHER);
     }
 
@@ -20,9 +19,8 @@ public final class Necron extends SandboxEntity {
         entityData.canTakeKnockback = false;
         entityData.isUndead = true;
 
-        entityData.health = 1000000000;
-        entityData.defense = 300;
-        entityData.vanillaHealth = 300;
+        entityData.health = 2000000000;
+        entityData.defense = 1000;
 
         return entityData;
     }

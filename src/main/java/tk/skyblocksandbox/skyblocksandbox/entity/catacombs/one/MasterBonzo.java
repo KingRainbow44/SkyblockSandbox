@@ -3,10 +3,10 @@ package tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
-public final class MasterBonzo extends SkyblockEntity {
+public final class MasterBonzo extends SandboxEntity {
 
     public MasterBonzo() {
         super(EntityType.PLAYER);

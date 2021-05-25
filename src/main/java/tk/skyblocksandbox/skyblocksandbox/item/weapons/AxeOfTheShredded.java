@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
@@ -112,29 +112,12 @@ public final class AxeOfTheShredded extends SandboxItem {
                 armorStand.setVelocity(newVector);
 
                 for(Entity e : armorStand.getNearbyEntities(1, 1, 1)) {
-                    if(e instanceof Damageable && e != player) {
+                    if(e instanceof Damageable && e != sbPlayer.getBukkitPlayer()) {
                         Damageable entity = (Damageable) e;
-                        if(entity.hasMetadata("isNotSkyblockEntity") || e instanceof ArmorStand) return;
-                        if(entity instanceof Player && !entity.hasMetadata("NPC")) {
-                            SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
-                            if(sbPlayer.getPlayerData().pvpEnabled) {
-                                Calculator.damage(sbTarget, sbPlayer, true);
-                            }
-                            return;
-                        }
+                        if(!entity.hasMetadata("skyblockEntityId")) return;
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
-                        if(entity.hasMetadata("NPC")) {
-                            NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
-
-                            entity.setLastDamageCause(new EntityDamageByEntityEvent(player, e, EntityDamageEvent.DamageCause.CUSTOM, 0));
-                            SkyblockNPC.damage(npc, sbPlayer, true);
-                            return;
-                        }
-
-                        SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
-                        if(sbEntity == null) return;
-
-                        entity.setLastDamageCause(new EntityDamageByEntityEvent(player, e, EntityDamageEvent.DamageCause.CUSTOM, 0));
+                        SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
                         Calculator.damage(sbEntity, sbPlayer, true);
                     }
                 }

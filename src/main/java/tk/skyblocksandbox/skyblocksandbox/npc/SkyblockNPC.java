@@ -3,19 +3,16 @@ package tk.skyblocksandbox.skyblocksandbox.npc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
-import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
 
@@ -54,7 +51,7 @@ public final class SkyblockNPC {
         /*
          * Variables
          */
-        SkyblockEntity sbEntity = SkyblockEntity.getSkyblockEntityFromNPC(npc);
+        SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(npc);
         SkyblockEntityData entityData = npc.getOrAddTrait(SkyblockEntityTrait.class).getEntityData();
         SandboxItem sbItem = sbPlayer.getItemInHand(true);
 
@@ -114,7 +111,7 @@ public final class SkyblockNPC {
         sbEntity.hurt();
         npc.getEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), npc.getEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
-        if(sbEntity.getEntityHealth() <= 0) {
+        if(sbEntity.getHealth() <= 0) {
             sbEntity.kill(true);
         }
 
@@ -142,7 +139,7 @@ public final class SkyblockNPC {
                     "&9&m--------------------",
                     "entity name: " + sbEntity.getEntityData().entityName,
                     "entity id: " + sbEntity.getEntityId(),
-                    "entity health: " + sbEntity.getEntityHealth(),
+                    "entity health: " + sbEntity.getHealth(),
                     "&9&m--------------------"
             );
         }
@@ -152,7 +149,7 @@ public final class SkyblockNPC {
 
     public static double damage(NPC npc, double damage, boolean doKnockback) {
         SkyblockEntityData entityData = npc.getOrAddTrait(SkyblockEntityTrait.class).getEntityData();
-        SkyblockEntity sbEntity = SkyblockEntity.getSkyblockEntityFromNPC(npc);
+        SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(npc);
 
         double finalDamage = damage;
 
@@ -177,7 +174,7 @@ public final class SkyblockNPC {
         sbEntity.hurt();
         npc.getEntity().setLastDamageCause(new EntityDamageEvent(npc.getEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
-        if(sbEntity.getEntityHealth() <= 0) {
+        if(sbEntity.getHealth() <= 0) {
             sbEntity.kill(true);
         }
 

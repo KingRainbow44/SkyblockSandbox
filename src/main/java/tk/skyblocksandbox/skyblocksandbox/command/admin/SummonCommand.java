@@ -4,9 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityManager;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -39,8 +38,8 @@ public final class SummonCommand extends SkyblockCommand {
             case 1:
                 sbPlayer.sendMessage("&eAttempting to summon " + args[0] + "...");
                 try {
-                    SkyblockEntity sbEntity = SkyblockEntityManager.parseEntity(args[0]);
-                    sbEntity.createEntity(sbPlayer.getBukkitPlayer().getLocation());
+                    SandboxEntity sbEntity = SkyblockEntityManager.parseEntity(args[0]);
+                    sbEntity.create(sbPlayer.getBukkitPlayer().getLocation());
 
                     sbPlayer.sendMessage("&aSuccessfully summoned " + args[0] + "!");
                 } catch (InvalidParameterException e) {
@@ -57,8 +56,8 @@ public final class SummonCommand extends SkyblockCommand {
                         return true;
                     }
 
-                    SkyblockEntity sbEntity = SkyblockEntityManager.parseEntity(args[0]);
-                    sbEntity.createEntity(target.getLocation());
+                    SandboxEntity sbEntity = SkyblockEntityManager.parseEntity(args[0]);
+                    sbEntity.create(target.getLocation());
 
                     sbPlayer.sendMessage("&aSuccessfully summoned " + args[0] + "!");
                 } catch (InvalidParameterException e) {
@@ -78,8 +77,8 @@ public final class SummonCommand extends SkyblockCommand {
                     int zPos = Integer.parseInt(args[3]);
                     Location location = new Location(sbPlayer.getBukkitPlayer().getWorld(), xPos, yPos, zPos);
 
-                    SkyblockEntity sbEntity = SkyblockEntityManager.parseEntity(args[0]);
-                    sbEntity.createEntity(location);
+                    SandboxEntity sbEntity = SkyblockEntityManager.parseEntity(args[0]);
+                    sbEntity.create(location);
 
                     sbPlayer.sendMessage("&aSuccessfully summoned " + args[0] + "!");
                 } catch (NumberFormatException | InvalidParameterException e) {

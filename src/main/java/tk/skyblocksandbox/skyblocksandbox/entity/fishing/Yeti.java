@@ -1,10 +1,10 @@
 package tk.skyblocksandbox.skyblocksandbox.entity.fishing;
 
 import org.bukkit.entity.EntityType;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
-public final class Yeti extends SkyblockEntity {
+public final class Yeti extends SandboxEntity {
 
     public Yeti() {
         super(EntityType.PLAYER);

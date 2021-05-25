@@ -10,11 +10,8 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
-import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
@@ -136,24 +133,13 @@ public final class Hyperion extends SandboxItem {
 
         int entityCount = 0;
         for(Entity e : player.getNearbyEntities(6, 6, 6)) {
-            if(e instanceof Damageable && e != player) {
+            if(e instanceof Damageable && e != sbPlayer.getBukkitPlayer()) {
                 Damageable entity = (Damageable) e;
-                if(entity.hasMetadata("isNotSkyblockEntity") || entity instanceof ArmorStand) return;
-                if(entity instanceof Player && !entity.hasMetadata("NPC")) {
-                    SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
-                    if(sbPlayer.getPlayerData().pvpEnabled) {
-                        Calculator.damage(sbTarget, sbPlayer, true);
-                    }
-                    return;
-                }
+                if(!entity.hasMetadata("skyblockEntityId")) return;
+                if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
 
-                if(CitizensAPI.getNPCRegistry().isNPC(entity)) {
-                    NPC toDamage = CitizensAPI.getNPCRegistry().getNPC(entity);
-                    SkyblockNPC.damage(toDamage, damage, false);
-                } else {
-                    SkyblockEntity sbEntity = (SkyblockEntity) SkyblockEntity.getSkyblockEntity(entity);
-                    Calculator.damage(sbEntity, damage, false);
-                }
+                SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
+                Calculator.damage(sbEntity, sbPlayer, true);
 
                 entityCount++;
             }

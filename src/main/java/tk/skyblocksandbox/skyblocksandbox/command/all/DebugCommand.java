@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import tk.skyblocksandbox.dungeonsandbox.generator.VoidGenerator;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
-import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Music;
 
@@ -166,7 +166,7 @@ public final class DebugCommand extends SkyblockCommand {
                                 sbPlayer.sendMessage("&eAttempting to reset nearby entities...");
                                 for(Entity entity : sbPlayer.getBukkitPlayer().getNearbyEntities(10, 10, 10)) {
                                     if(SkyblockSandbox.getManagement().getEntityManager().getEntity(entity) == null) return true;
-                                    SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
+                                    SandboxEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
 
                                     sbEntity.setHealth(sbEntity.getEntityData().health);
                                 }
@@ -179,7 +179,7 @@ public final class DebugCommand extends SkyblockCommand {
                                     if(SkyblockSandbox.getManagement().getEntityManager().getEntity(entity) == null) {
                                         entity.remove();
                                     } else {
-                                        SkyblockEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
+                                        SandboxEntity sbEntity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entity);
                                         sbEntity.kill(true);
                                     }
                                 }
@@ -262,7 +262,7 @@ public final class DebugCommand extends SkyblockCommand {
                             case "check":
                                 try {
                                     int entityId = Integer.parseInt(args[2]);
-                                    SkyblockEntity entity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entityId);
+                                    SandboxEntity entity = SkyblockSandbox.getManagement().getEntityManager().getEntity(entityId);
 
                                     if(entity != null) {
                                         sbPlayer.sendMessage("&aEntity is valid.");

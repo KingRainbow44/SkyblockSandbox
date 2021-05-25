@@ -6,19 +6,23 @@ import net.minecraft.server.v1_16_R3.ChatMessageType;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.LocaleLanguage;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.text.translate.*;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -97,6 +101,61 @@ public final class Utility {
         if (PENDING_MESSAGES.containsKey(bukkitPlayer)) {
             PENDING_MESSAGES.get(bukkitPlayer).cancel();
         }
+    }
+
+    public static ItemStack getHeadFromUrl(String url) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if(meta != null) {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+            byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
+            profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+            Field profileField = null;
+
+            try {
+                profileField = meta.getClass().getDeclaredField("profile");
+            } catch (NoSuchFieldException | SecurityException e) {
+                e.printStackTrace();
+            }
+
+            profileField.setAccessible(true);
+
+            try {
+                profileField.set(meta, profile);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public static ItemStack getHeadFromUrl(SkullMeta meta, String url) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        if(meta != null) {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+            byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
+            profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+            Field profileField = null;
+
+            try {
+                profileField = meta.getClass().getDeclaredField("profile");
+            } catch (NoSuchFieldException | SecurityException e) {
+                e.printStackTrace();
+            }
+
+            profileField.setAccessible(true);
+
+            try {
+                profileField.set(meta, profile);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        item.setItemMeta(meta);
+
+        return item;
     }
 
     public static String colorize(String message) {
@@ -283,6 +342,10 @@ public final class Utility {
         world.setGameRule(
                 GameRule.KEEP_INVENTORY, true
         );
+    }
+
+    public static PermitableRank getRankOfPlayer(SkyblockPlayer sbPlayer) {
+        return PermitableRank.getRankByEnum(sbPlayer.getPlayerData().rank);
     }
 
     public static NamespacedKey key(String key) {

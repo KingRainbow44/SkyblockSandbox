@@ -1,12 +1,16 @@
 package tk.skyblocksandbox.skyblocksandbox.entity;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bukkit.inventory.ItemStack;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import com.google.gson.stream.JsonReader;
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
+import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
+
+import java.io.StringReader;
 
 public final class SkyblockEntityData {
 
@@ -96,7 +100,11 @@ public final class SkyblockEntityData {
             return parsedData;
         }
 
-        JsonElement decodedData = new JsonParser().parse(entityData);
+        JsonElement decodedData = new JsonParser().parse(new JsonReader(new StringReader(entityData)));
+        if(!(decodedData instanceof JsonObject)) {
+            return parsedData;
+        }
+
         JsonObject arrayData = decodedData.getAsJsonObject();
 
         parsedData.health = arrayData.get("health").getAsInt();

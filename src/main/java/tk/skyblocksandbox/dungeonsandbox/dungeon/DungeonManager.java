@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.dungeonsandbox.dungeon;
 
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.HashMap;
@@ -16,13 +17,13 @@ public final class DungeonManager {
         try {
             party.sendMessages(
                     "&9&m-----------------------------",
-                    "&e" + party.getLeader().getName() + " entered &c" + dungeonType.getDungeonName() + "&e, Floor " + Utility.toRomanNumeral(dungeonType.getDungeonFloor()) + "!",
+                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(party.getLeader()).getRankNameTagFormat(), party.getLeader()) + " &eentered &c" + dungeonType.getDungeonName() + "&e, Floor " + Utility.toRomanNumeral(dungeonType.getDungeonFloor()) + "!",
                     "&9&m-----------------------------"
             );
         } catch (Exception e) {
             party.sendMessages(
                     "&9&m-----------------------------",
-                    "&e" + party.getLeader().getName() + " entered &c" + dungeonType.getDungeonName() + "&e, Floor " + dungeonType.getDungeonFloor() + "!",
+                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(party.getLeader()).getRankNameTagFormat(), party.getLeader()) + " &eentered &c" + dungeonType.getDungeonName() + "&e, Floor " + dungeonType.getDungeonFloor() + "!",
                     "&9&m-----------------------------"
             );
         }

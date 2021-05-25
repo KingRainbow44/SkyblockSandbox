@@ -111,7 +111,7 @@ public final class SkyblockNPC {
             sbEntity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entityData.level +"&8] &c" + entityData.entityName + " &a" + Math.round(entityData.health) + "/" + Math.round(entityData.health) + "&c❤"));
         }
 
-        sbEntity.hurt(sbPlayer.getBukkitPlayer());
+        sbEntity.hurt();
         npc.getEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), npc.getEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbEntity.getEntityHealth() <= 0) {
@@ -174,7 +174,7 @@ public final class SkyblockNPC {
             sbEntity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entityData.level +"&8] &c" + entityData.entityName + " &a" + Math.round(entityData.health) + "/" + Math.round(entityData.health) + "&c❤"));
         }
 
-        sbEntity.hurt(Utility.getRandomPlayer());
+        sbEntity.hurt();
         npc.getEntity().setLastDamageCause(new EntityDamageEvent(npc.getEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbEntity.getEntityHealth() <= 0) {

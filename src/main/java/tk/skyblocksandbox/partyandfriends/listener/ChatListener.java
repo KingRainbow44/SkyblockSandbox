@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 public final class ChatListener implements Listener {
@@ -14,7 +15,7 @@ public final class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if(SkyblockPlayer.getSkyblockPlayer(player) == null) return;
+        SkyblockPlayer.getSkyblockPlayer(player);
 
         SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(player);
         PartyModule.ChatTypes chatType = sbPlayer.getPlayerData().currentChat;
@@ -33,8 +34,9 @@ public final class ChatListener implements Listener {
                     return;
                 }
 
+                PermitableRank rank = PermitableRank.getRankByEnum(sbPlayer.getPlayerData().rank);
                 partyInstance.sendMessages(
-                        "&9Party &8> &e" + player.getDisplayName() + "&f: " + event.getMessage()
+                        "&9Party &8> " + PermitableRank.formatNameTag(rank.getRankNameTagFormat(), sbPlayer) + "&f: " + event.getMessage()
                 );
                 return;
         }

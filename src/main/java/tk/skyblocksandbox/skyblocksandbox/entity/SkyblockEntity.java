@@ -9,6 +9,7 @@ import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -150,18 +151,25 @@ public abstract class SkyblockEntity {
 
     /**
      * Fakes the red effect on an entity using ProtocolLib.
-     * @param attacker The player hurting the entity.
      */
-    public void hurt(Player attacker) {
+    public void hurt() {
+        entity.getWorld().playSound(
+                entity.getLocation(),
+                Sound.ENTITY_PLAYER_ATTACK_CRIT,
+                1, 1
+        );
+
         PacketContainer entityStatus = new PacketContainer(PacketType.Play.Server.ENTITY_STATUS);
 
         entityStatus.getIntegers().write(0, entity.getEntityId());
         entityStatus.getBytes().write(0, (byte) 2);
 
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(attacker, entityStatus);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            try {
+                ProtocolLibrary.getProtocolManager().sendServerPacket(player, entityStatus);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
     }
 

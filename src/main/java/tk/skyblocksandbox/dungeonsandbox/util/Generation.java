@@ -65,7 +65,7 @@ public final class Generation {
         ADMIN_1, // 1x1
         OVERGROWN_3, // 1x1
 
-        MINI_BOSS_1, // Special
+        MINI_BOSS_ONE, // Special
 
         TRAP_HARD_3, // Trap Room
     }
@@ -85,7 +85,7 @@ public final class Generation {
     }
 
     private AvailableRooms randRoom() {
-        switch(Utility.generateRandomNumber(1, 4)) {
+        switch(Utility.generateRandomNumber(1, 7)) {
             default:
             case 1:
                 return AvailableRooms.FAIRY_ROOM;
@@ -95,6 +95,12 @@ public final class Generation {
                 return AvailableRooms.PRISON_CELL_1;
             case 4:
                 return AvailableRooms.OVERGROWN_3;
+            case 5:
+                return AvailableRooms.BLUE_SKULLS_1;
+            case 6:
+                return AvailableRooms.MINI_BOSS_ONE;
+            case 7:
+                return AvailableRooms.TRAP_HARD_3;
         }
     }
 

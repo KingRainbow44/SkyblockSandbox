@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -58,16 +59,21 @@ public final class ShadowFury extends SandboxItem {
     @Override
     public void ability(int action, SkyblockPlayer sbPlayer) {
         if(action != INTERACT_RIGHT_CLICK) return;
-        if(!sbPlayer.manaCheck(0, "Shadow Fury")) return;
         Player player = sbPlayer.getBukkitPlayer();
         List<Entity> inRange = player.getNearbyEntities(12, 12, 12);
         List<Entity> filteredList = new ArrayList<Entity>();
 
         for (Entity e : inRange) {
             if (e instanceof Damageable && e != player) {
+                if(e instanceof ArmorStand || e.hasMetadata("isNotSkyblockEntity")) return;
+
+                if(e instanceof Player && !e.hasMetadata("NPC")) {
+                    filteredList.add(e);
+                }
+
                 if (filteredList.size() < 5) {
                     filteredList.add(e);
-                }else {
+                } else {
                     break;
                 }
             }
@@ -88,6 +94,6 @@ public final class ShadowFury extends SandboxItem {
                     cancel();
                 }
             }
-        }.runTaskTimer(SkyblockSandbox.getInstance(), 0L, 20L);
+        }.runTaskTimer(SkyblockSandbox.getInstance(), 0L, 10L);
     }
 }

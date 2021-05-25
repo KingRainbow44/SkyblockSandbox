@@ -7,8 +7,10 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Content;
 import org.bukkit.scheduler.BukkitRunnable;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.*;
 
@@ -54,6 +56,7 @@ public final class PartyInstance {
             @Override
             public void run() {
                 if(inParty(toInvite)) return;
+                if(!invitedPlayers.contains(toInvite)) return;
 
                 invitedPlayers.remove(toInvite);
                 toInvite.sendMessages(
@@ -74,7 +77,7 @@ public final class PartyInstance {
 
         toInvite.sendMessages(
                 "&9&m-----------------------------",
-                "&e" + inviter.getBukkitPlayer().getDisplayName() + " has invited you to join their party!"
+                PermitableRank.formatNameTag(Utility.getRankOfPlayer(inviter).getRankNameTagFormat(), inviter) + " &ehas invited you to join their party!"
         );
         toInvite.getBukkitPlayer().spigot().sendMessage(text2, text3, text4, text);
         toInvite.sendMessages("&9&m-----------------------------");
@@ -82,7 +85,7 @@ public final class PartyInstance {
         for(SkyblockPlayer member : partyMembers) {
             member.sendMessages(
                     "&9&m-----------------------------",
-                    "&e" + inviter.getBukkitPlayer().getDisplayName() + " invited " + toInvite.getBukkitPlayer().getDisplayName() + " to the party! They",
+                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(inviter).getRankNameTagFormat(), inviter) + " &einvited&e " + Utility.getRankOfPlayer(toInvite).getRankNameTagFormat() + " &eto the party! They",
                     "&ehave &c60 &eseconds to accept.",
                     "&9&m-----------------------------"
             );

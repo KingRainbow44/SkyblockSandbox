@@ -24,6 +24,7 @@ public abstract class Dungeon {
 
     protected int roomsBeforeBlood = 5;
     protected int roomsBeforeFairy = 2;
+    protected int roomsTotal = 2; // In 1x1s
 
     public boolean bloodRoomGenerated = false;
     public boolean fairyRoomGenerated = false;

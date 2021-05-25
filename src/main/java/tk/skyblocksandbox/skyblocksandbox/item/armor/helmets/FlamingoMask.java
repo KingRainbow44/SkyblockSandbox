@@ -97,11 +97,7 @@ public final class FlamingoMask extends SandboxItem {
     @Override
     public void armorAbility(SkyblockPlayer sbPlayer) {
         Player player = sbPlayer.getBukkitPlayer();
-        if(player.isSneaking()) {
-            if(!sbPlayer.manaCheck(5, "Lock Knees")) {
-                sbPlayer.getPlayerData().canTakeKnockback = true;
-                return;
-            }
+        if(player.isSneaking() && sbPlayer.manaCheck(5, "Lock Knees")) {
             sbPlayer.getPlayerData().canTakeKnockback = false;
         } else {
             sbPlayer.getPlayerData().canTakeKnockback = true;

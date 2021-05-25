@@ -2,16 +2,20 @@ package tk.skyblocksandbox.skyblocksandbox.npc.traits;
 
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
+import net.citizensnpcs.api.util.DataKey;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
+
+import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
 
 public final class SkyblockEntityTrait extends Trait {
 
@@ -21,7 +25,36 @@ public final class SkyblockEntityTrait extends Trait {
 
     public void setEntityData(SkyblockEntityData entityData) {
         this.entityData = entityData.toJson();
+
+        health = entityData.health;
+        defense = entityData.defense;
+        damage = entityData.damage;
+        speed = entityData.speed;
+        level = entityData.level;
+
         isHostile = entityData.isHostile;
+        isNpc = entityData.isNpc;
+        isBoss = entityData.isBoss;
+        isUndead = entityData.isUndead;
+        isArthropod = entityData.isArthropod;
+
+        canTakeKnockback = entityData.canTakeKnockback;
+
+        helmet = entityData.helmet;
+        chestplate = entityData.chestplate;
+        leggings = entityData.leggings;
+        boots = entityData.boots;
+
+        mainHand = entityData.mainHand;
+        offHand = entityData.offHand;
+
+        skinName = entityData.skinName;
+        skinSignature = entityData.skinSignature;
+        skinData = entityData.skinData;
+
+        entityName = entityData.entityName;
+
+        entityDataAdded = true;
     }
 
     public void setEntityId(int entityId) {
@@ -35,15 +68,94 @@ public final class SkyblockEntityTrait extends Trait {
     @Persist("entityData")
     String entityData = "";
 
-    @Persist("entityId")
-    int entityId =-1;
+    /*
+     * Entity Data Raw
+     */
+
+    @Persist("entityHealth")
+    long health = 100;
+
+    @Persist("defense")
+    float defense = 0;
+
+    @Persist("damage")
+    int damage = 0;
+
+    @Persist("speed")
+    int speed = 100;
+
+    @Persist("level")
+    int level = 1;
+
+    @Persist("isHostile")
+    boolean isHostile = true;
+
+    @Persist("isNpc")
+    boolean isNpc = true;
+
+    @Persist("isBoss")
+    boolean isBoss = false;
+
+    @Persist("isUndead")
+    boolean isUndead = false;
+
+    @Persist("isArthropod")
+    boolean isArthropod = false;
 
     @Persist
-    boolean isHostile = false;
+    boolean canTakeKnockback = true;
+
+    @Persist("helmet")
+    ItemStack helmet = null;
+
+    @Persist("chestplate")
+    ItemStack chestplate = null;
+
+    @Persist("leggings")
+    ItemStack leggings = null;
+
+    @Persist("boots")
+    ItemStack boots = null;
+
+    @Persist("mainHand")
+    ItemStack mainHand = null;
+
+    @Persist("offHand")
+    ItemStack offHand = null;
+
+    @Persist("skinName")
+    String skinName = "";
+
+    @Persist("skinSignature")
+    String skinSignature = "";
+
+    @Persist
+    String skinData = "";
+
+    @Persist("entityName")
+    String entityName = "";
+
+    @Persist("entityId")
+    int entityId = -1;
+
+    @Persist("entityDataAdded")
+    boolean entityDataAdded = false;
+
+    @Persist("speedAdded")
+    boolean speedAdded = false;
+
+    @Override
+    public void load(DataKey key) {
+        entityData = key.getString("entityData");
+    }
+
+    @Override
+    public void save(DataKey key) {
+        key.setString("entityData", getEntityData().toJson());
+    }
 
     public void onAttach() {
         npc.getNavigator().getLocalParameters().attackRange(5.0).attackDelayTicks(10);
-        npc.getNavigator().getLocalParameters().baseSpeed(getEntityData().speed / 100f);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(
                 SkyblockSandbox.getInstance(),
@@ -65,6 +177,17 @@ public final class SkyblockEntityTrait extends Trait {
         if(!getNPC().isSpawned()) return;
         ticks++;
 
+        if(entityDataAdded && !speedAdded) {
+            npc.getNavigator().getLocalParameters().baseSpeed(getEntityData().speed / 100f);
+            speedAdded = true;
+        }
+
+        if(!getEntityData().isBoss) {
+            getNPC().setName(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤"));
+        } else {
+            getNPC().setName(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
+        }
+
         if(isHostile) {
             if(ticks % 10 == 0) {
                 for(Entity entity : getNPC().getEntity().getNearbyEntities(5, 5, 5)) {
@@ -74,8 +197,6 @@ public final class SkyblockEntityTrait extends Trait {
                     Object sbEntity = SkyblockEntity.getSkyblockEntity(entity);
                     if(sbEntity instanceof SkyblockPlayer) {
                         Calculator.damage((SkyblockPlayer) sbEntity, getEntityData().damage, true);
-                    } else {
-                        Calculator.damage((SkyblockEntity) sbEntity, getEntityData().damage, true);
                     }
                 }
             }
@@ -88,7 +209,7 @@ public final class SkyblockEntityTrait extends Trait {
                 target = getNextEntity(32); if(target == null) return;
                 getNPC().getNavigator().setTarget(target.getLocation());
             } else {
-                getNPC().getNavigator().setTarget(target, true);
+                npc.getNavigator().setTarget(target, true);
             }
         }
     }
@@ -114,7 +235,37 @@ public final class SkyblockEntityTrait extends Trait {
      */
 
     public SkyblockEntityData getEntityData() {
-        return SkyblockEntityData.parse(entityData);
+        SkyblockEntityData entityData = new SkyblockEntityData();
+
+        entityData.health = health;
+        entityData.defense = defense;
+        entityData.damage = damage;
+        entityData.speed = speed;
+
+        entityData.level = level;
+        entityData.entityName = entityName;
+
+        entityData.isHostile = isHostile;
+        entityData.isNpc = isNpc;
+        entityData.isBoss = isBoss;
+        entityData.isUndead = isUndead;
+        entityData.isArthropod = isArthropod;
+
+        entityData.canTakeKnockback = canTakeKnockback;
+
+        entityData.helmet = helmet;
+        entityData.chestplate = chestplate;
+        entityData.leggings = leggings;
+        entityData.boots = boots;
+
+        entityData.mainHand = mainHand;
+        entityData.offHand = offHand;
+
+        entityData.skinName = skinName;
+        entityData.skinSignature = skinSignature;
+        entityData.skinData = skinData;
+
+        return entityData;
     }
 
     public int getEntityId() {

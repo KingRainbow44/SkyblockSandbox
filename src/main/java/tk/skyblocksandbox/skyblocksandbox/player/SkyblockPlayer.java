@@ -11,6 +11,7 @@ import me.vagdedes.mysql.database.SQL;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -86,7 +87,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
             public void run() {
                 updateNameTag();
             }
-        }.runTaskLater(SkyblockSandbox.getInstance(), 5L);
+        }.runTaskLater(SkyblockSandbox.getInstance(), 50L);
     }
 
     public void onUnregister() {
@@ -227,7 +228,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
     public void updateNameTag() {
         PermitableRank rank = PermitableRank.getRankByEnum(getPlayerData().rank);
-        String nameTagFormat = rank.getRankNameTagFormat();
+        String nameTagFormat = PermitableRank.formatNameTag(rank.getRankNameTagFormat(), this);
 
         WrappedDataWatcher dataWatcher = WrappedDataWatcher.getEntityWatcher(this.getBukkitPlayer()).deepClone();
         WrappedDataWatcher.Serializer chatSerializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true);
@@ -246,9 +247,8 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
             try {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(onlinePlayer, packet);
             } catch (InvocationTargetException ex) {
-                Bukkit.getLogger().severe("Unable to update nametag packet for player " + onlinePlayer.getName() + "!");
+                Bukkit.getLogger().severe("Unable to update name tag packet for player " + onlinePlayer.getName() + "!");
                 ex.printStackTrace();
-                return;
             }
         }
     }
@@ -315,18 +315,25 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
     /**
      * Fakes the red effect on an entity using ProtocolLib.
-     * @param attacker The player hurting the entity.
      */
-    public void hurt(Player attacker) {
+    public void hurt() {
+        getBukkitPlayer().getWorld().playSound(
+                getBukkitPlayer().getLocation(),
+                Sound.ENTITY_PLAYER_HURT,
+                1, 1
+        );
+
         PacketContainer entityStatus = new PacketContainer(PacketType.Play.Server.ENTITY_STATUS);
 
         entityStatus.getIntegers().write(0, getBukkitPlayer().getEntityId());
         entityStatus.getBytes().write(0, (byte) 2);
 
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(attacker, entityStatus);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            try {
+                ProtocolLibrary.getProtocolManager().sendServerPacket(player, entityStatus);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
     }
 

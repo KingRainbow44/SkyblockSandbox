@@ -75,7 +75,7 @@ public final class AxeOfTheShredded extends SandboxItem {
 
         Player player = sbPlayer.getBukkitPlayer();
 
-        Location throwLoc = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY() + 1.0D, player.getLocation().getZ());
+        Location throwLoc = player.getLocation().add(0, 1.2, 0);
         Vector throwVec = player.getLocation().add(player.getLocation().getDirection().multiply(10)).toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.2D);
 
         ArmorStand armorStand = (ArmorStand) player.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
@@ -114,8 +114,14 @@ public final class AxeOfTheShredded extends SandboxItem {
                 for(Entity e : armorStand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != player) {
                         Damageable entity = (Damageable) e;
-                        if(entity.hasMetadata("isNotSkyblockEntity")) return;
-                        if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+                        if(entity.hasMetadata("isNotSkyblockEntity") || e instanceof ArmorStand) return;
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) {
+                            SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
+                            if(sbPlayer.getPlayerData().pvpEnabled) {
+                                Calculator.damage(sbTarget, sbPlayer, true);
+                            }
+                            return;
+                        }
 
                         if(entity.hasMetadata("NPC")) {
                             NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);

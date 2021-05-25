@@ -1,5 +1,7 @@
 package tk.skyblocksandbox.permitable.rank;
 
+import org.bukkit.entity.Player;
+import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.ArrayList;
@@ -42,6 +44,14 @@ public final class PermitableRank {
         return colorize(nameFormat);
     }
 
+    public static String formatNameTag(String format, Player player) {
+        return format.replaceAll("PLAYER", player.getDisplayName());
+    }
+
+    public static String formatNameTag(String format, SkyblockPlayer player) {
+        return format.replaceAll("PLAYER", player.getBukkitPlayer().getDisplayName());
+    }
+
     public Collection<String> getPermissions() {
         return permissions;
     }
@@ -64,6 +74,10 @@ public final class PermitableRank {
             case "MVP++":
             case "MVP_PLUS_PLUS":
                 return AvailableRanks.MVP_PLUS_PLUS;
+            case "HELPER":
+                return AvailableRanks.HELPER;
+            case "MODERATOR":
+                return AvailableRanks.MODERATOR;
             case "ADMIN":
                 return AvailableRanks.ADMIN;
             case "OWNER":
@@ -80,7 +94,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "Default",
                         "&7%1$s: %2$s",
-                        "&7%1$s",
+                        "PLAYER",
                         permissions
                 );
             case VIP:
@@ -89,7 +103,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "VIP",
                         "&a[VIP] %1$s&f: %2$s",
-                        "&a[VIP] %1$s",
+                        "&a[VIP] PLAYER",
                         permissions, AvailableRanks.DEFAULT
                 );
             case VIP_PLUS:
@@ -98,7 +112,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "VIP+",
                         "&a[VIP&6+&a] %1$s&f: %2$s",
-                        "&a[VIP&6+&a] %1$s",
+                        "&a[VIP&6+&a] PLAYER",
                         permissions, AvailableRanks.VIP
                 );
             case MVP:
@@ -107,7 +121,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "MVP",
                         "&b[MVP] %1$s&f: %2$s",
-                        "&b[MVP] %1$s",
+                        "&b[MVP] PLAYER",
                         permissions, AvailableRanks.VIP_PLUS
                 );
             case MVP_PLUS:
@@ -116,8 +130,15 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "MVP+",
                         "&b[MVP&c+&b] %1$s&f: %2$s",
-                        "&b[MVP&c+&b] %1$s",
+                        "&b[MVP&c+&b] PLAYER",
                         permissions, AvailableRanks.MVP
+                );
+            case GOD:
+                return new PermitableRank(
+                        "MVP+",
+                        "&e[GOD] %1$s&f: %2$s",
+                        "&e[GOD] PLAYER",
+                        permissions, AvailableRanks.MVP_PLUS
                 );
             case MVP_PLUS_PLUS:
                 permissions.add("skyblocksandbox.command.item");
@@ -125,8 +146,29 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "MVP++",
                         "&6[MVP&c++&6] %1$s&f: %2$s",
-                        "&b[MVP&c++&6] %1$s",
+                        "&b[MVP&c++&6] PLAYER",
                         permissions, AvailableRanks.MVP_PLUS
+                );
+            case YOUTUBE:
+                return new PermitableRank(
+                        "YouTube",
+                        "&c[&fYOUTUBE&c] %1$s&f: %2$s",
+                        "&c[&fYOUTUBE&c] PLAYER",
+                        permissions, AvailableRanks.MVP_PLUS_PLUS
+                );
+            case HELPER:
+                return new PermitableRank(
+                        "Helper",
+                        "&9[HELPER] %1$s&f: %2$s",
+                        "&9[HELPER] PLAYER",
+                        permissions, AvailableRanks.MVP_PLUS_PLUS
+                );
+            case MODERATOR:
+                return new PermitableRank(
+                        "Moderator",
+                        "&2[MOD] %1$s&f: %2$s",
+                        "&2[MOD] PLAYER",
+                        permissions, AvailableRanks.HELPER
                 );
             case ADMIN:
                 permissions.add("dungeonssandbox.command.joindungeon");
@@ -138,14 +180,14 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "Admin",
                         "&c[ADMIN] %1$s&f: %2$s",
-                        "&c[ADMIN] %1$s",
+                        "&c[ADMIN] PLAYER",
                         permissions
                 );
             case OWNER:
                 return new PermitableRank(
                         "Owner",
                         "&c[OWNER] %1$s&f: %2$s",
-                        "&c[OWNER] %1$s",
+                        "&c[OWNER] PLAYER",
                         permissions
                 );
         }
@@ -159,7 +201,13 @@ public final class PermitableRank {
 
         MVP,
         MVP_PLUS,
+        GOD,
         MVP_PLUS_PLUS,
+
+        YOUTUBE,
+
+        HELPER,
+        MODERATOR,
 
         ADMIN,
         OWNER

@@ -4,6 +4,7 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryProvider;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.menu.providers.MainSkyblockMenu;
+import tk.skyblocksandbox.skyblocksandbox.menu.providers.SkyblockSettingsMenu;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 import java.util.HashMap;
@@ -20,12 +21,31 @@ public final class MenuFactory {
                 "menu.skyblock_menu_main",
                 "Skyblock Menu"
         ));
+
+        registerMenu(MenuList.SKYBLOCK_MENU_SETTINGS, buildFromProvider(
+                new SkyblockSettingsMenu(), MenuList.SKYBLOCK_MENU_MAIN,
+                9, 6,
+                "menu.skyblock_menu_settings",
+                "Skyblock Menu"
+        ));
     }
 
     public SmartInventory buildFromProvider(InventoryProvider provider, int length, int width, String menuLocale, String title) {
         SmartInventory.Builder builder = SmartInventory.builder()
                 .id(menuLocale)
                 .provider(provider)
+                .size(width, length)
+                .title(title)
+                .manager(SkyblockSandbox.getManagement().getInventoryManager());
+
+        return builder.build();
+    }
+
+    public SmartInventory buildFromProvider(InventoryProvider provider, MenuList parent, int length, int width, String menuLocale, String title) {
+        SmartInventory.Builder builder = SmartInventory.builder()
+                .id(menuLocale)
+                .provider(provider)
+                .parent(menus.getOrDefault(parent, null))
                 .size(width, length)
                 .title(title)
                 .manager(SkyblockSandbox.getManagement().getInventoryManager());

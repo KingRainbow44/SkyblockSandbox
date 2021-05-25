@@ -5,6 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 public final class Bonzo extends SkyblockEntity {
 
@@ -21,11 +22,12 @@ public final class Bonzo extends SkyblockEntity {
         entityData.isHostile = true;
         entityData.isUndead = true;
 
-        entityData.mainHand = new ItemStack(Material.BLAZE_ROD);
+        entityData.mainHand = Utility.getHeadFromUrl("http://textures.minecraft.net/texture/97c4036f80bf3609180c7c4a9568853fd815f154ad8438b92f3851019835b070");
 
         entityData.entityName = "Bonzo";
         entityData.health = 250000;
         entityData.damage = 1000;
+        entityData.speed = 150;
 
         entityData.skinName = "SafeDrift48";
         entityData.skinSignature = "dj+mS77dCJC2QrkccHatGa3Z8RzrAycthJ6w3T2F8yAxdYnHNsdf6m+K7+L3hoEIqtzktgyKj/rcA4032Oklmp8doxLmFAvzyKbnCuO4yYt4xGJo2mwt1ZXkOv/saoZeV/lIOW0JlBtL+7K+mUgcxcGbBhZNl3i4QMyWQGqPHoAOXKU8pkfORdYjFS+eEVltWL463m/hc//5brrrxBWKjuOg9XEUWE" +

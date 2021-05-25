@@ -138,8 +138,14 @@ public final class Hyperion extends SandboxItem {
         for(Entity e : player.getNearbyEntities(6, 6, 6)) {
             if(e instanceof Damageable && e != player) {
                 Damageable entity = (Damageable) e;
-                if(entity.hasMetadata("isNotSkyblockEntity")) return;
-                if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+                if(entity.hasMetadata("isNotSkyblockEntity") || entity instanceof ArmorStand) return;
+                if(entity instanceof Player && !entity.hasMetadata("NPC")) {
+                    SkyblockPlayer sbTarget = SkyblockPlayer.getSkyblockPlayer((Player) entity);
+                    if(sbPlayer.getPlayerData().pvpEnabled) {
+                        Calculator.damage(sbTarget, sbPlayer, true);
+                    }
+                    return;
+                }
 
                 if(CitizensAPI.getNPCRegistry().isNPC(entity)) {
                     NPC toDamage = CitizensAPI.getNPCRegistry().getNPC(entity);

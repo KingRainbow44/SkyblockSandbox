@@ -44,7 +44,7 @@ public final class Calculator {
 
         sbPlayer.updateHud();
 
-        sbPlayer.hurt(Utility.getRandomPlayer());
+        sbPlayer.hurt();
         player.setLastDamageCause(new EntityDamageEvent(player, EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbPlayer.getPlayerData().currentHealth <= 0) {
@@ -105,7 +105,7 @@ public final class Calculator {
             Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbTarget.getBukkitPlayer().setVelocity( sbPlayer.getBukkitPlayer().getLocation().getDirection().multiply(0.2) ), 1L);
         }
 
-        sbTarget.hurt(sbPlayer.getBukkitPlayer());
+        sbTarget.hurt();
         sbTarget.getBukkitPlayer().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), sbTarget.getBukkitPlayer(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(sbTarget.getPlayerData().currentHealth <= 0) {
@@ -160,7 +160,7 @@ public final class Calculator {
             entity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entity.getEntityData().level +"&8] &c" + entity.getEntityData().entityName + " &a" + Math.round(entity.getEntityData().health) + "/" + Math.round(entity.getEntityData().health) + "&c❤"));
         }
 
-        entity.hurt(Utility.getRandomPlayer());
+        entity.hurt();
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageEvent(entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(entity.getEntityHealth() <= 0) {
@@ -229,7 +229,7 @@ public final class Calculator {
             entity.getBukkitEntity().setCustomName(colorize("&8[&7Lvl " + entity.getEntityData().level +"&8] &c" + entity.getEntityData().entityName + " &a" + Math.round(entity.getEntityData().health) + "/" + Math.round(entity.getEntityData().health) + "&c❤"));
         }
 
-        entity.hurt(sbPlayer.getBukkitPlayer());
+        entity.hurt();
         entity.getBukkitEntity().setLastDamageCause(new EntityDamageByEntityEvent(sbPlayer.getBukkitPlayer(), entity.getBukkitEntity(), EntityDamageEvent.DamageCause.CUSTOM, 0));
 
         if(entity.getEntityHealth() <= 0) {

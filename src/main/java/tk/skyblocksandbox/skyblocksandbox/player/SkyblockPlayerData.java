@@ -10,6 +10,7 @@ import org.bukkit.inventory.PlayerInventory;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -52,10 +53,9 @@ public final class SkyblockPlayerData {
 
     public boolean limitedMovement = false;
     public boolean infiniteMana = false;
+    public boolean pvpEnabled = false;
 
     public boolean canTakeKnockback = true;
-
-    public boolean canTakeAbilityDamage = false;
     public boolean canUseWitherShield = true;
 
     public boolean debugStateDamage = false;
@@ -101,7 +101,7 @@ public final class SkyblockPlayerData {
         playerData.addProperty("rank", rank.name());
         playerData.addProperty("coins", coins);
         playerData.addProperty("bits", bits);
-        playerData.addProperty("canTakeAbilityDamage", canTakeAbilityDamage);
+        playerData.addProperty("pvpEnabled", pvpEnabled);
 
         playerData.addProperty("permissions", playerPermissions.exportData());
 //        playerData.addProperty("storageData", playerStorage.exportData());
@@ -150,7 +150,7 @@ public final class SkyblockPlayerData {
         rank = PermitableRank.getRankByString((String) getOrDefault("rank", arrayData, String.class));
         coins = (int) getOrDefault("coins", arrayData, Integer.class);
         bits = (int) getOrDefault("bits", arrayData, Integer.class);
-        canTakeAbilityDamage = arrayData.get("canTakeAbilityDamage").getAsBoolean();
+        pvpEnabled = (boolean) getOrDefault("pvpEnabled", arrayData, Boolean.class);
 
         /*
          * Classes
@@ -176,6 +176,8 @@ public final class SkyblockPlayerData {
                 return 0;
             } else if (type == JsonArray.class) {
                 return new JsonArray();
+            } else if (type == Boolean.class) {
+                return false;
             }
         }
 
@@ -185,6 +187,8 @@ public final class SkyblockPlayerData {
             return array.get(constant).getAsInt();
         } else if (type == JsonArray.class) {
             return array.get(constant).getAsJsonArray();
+        } else if (type == Boolean.class) {
+            return array.get(constant).getAsBoolean();
         } else {
             return array.get(constant);
         }
@@ -195,11 +199,12 @@ public final class SkyblockPlayerData {
      */
     public void damage(int damage) {
         currentHealth -= damage;
+        player.hurt();
     }
 
-    public void heal(int health) {
-        int finalHealth = health + currentHealth;
-        if(finalHealth > health) {
+    public void heal(int addHealth) {
+        int finalHealth = addHealth + currentHealth;
+        if(finalHealth > getFinalMaxHealth()) {
             currentHealth = getFinalMaxHealth();
         } else {
             currentHealth = finalHealth;

@@ -16,6 +16,8 @@ public final class FloorOne extends Dungeon {
     public FloorOne() {
         super("The Catacombs", "THE_CATACOMBS", 1, false);
         floorGeneration = Generation.FloorGenerationTypes.FLOOR_1;
+
+        roomsTotal = 7;
     }
 
     /**
@@ -60,16 +62,18 @@ public final class FloorOne extends Dungeon {
             return;
         }
 
-        // Second Room
-        Generation.AvailableRooms secondRoom = generation.generateRandomRoom(this);
-        pasted = Schematic.pasteSchematic(
-                new Location(bukkitWorld, 0, 109, 63),
-                generation.enumToSchematic(secondRoom), false
-        ); if(!pasted) {
-            Bukkit.getLogger().warning("Unable to paste " + Utility.changeCase(secondRoom.name(), false) + ".schem, check CONSOLE for more details.");
-            return;
+        // Other Rooms
+        for(int i = 1; i == roomsTotal; i++) {
+            int z = i * 32;
+            Generation.AvailableRooms room = generation.generateRandomRoom(this);
+            pasted = Schematic.pasteSchematic(
+                    new Location(bukkitWorld, 0, 109, z),
+                    generation.enumToSchematic(room), false
+            ); if(!pasted) {
+                Bukkit.getLogger().warning("Unable to paste " + Utility.changeCase(room.name(), false) + ".schem, check CONSOLE for more details.");
+                return;
+            }
         }
-
 
         // Finish Generation
         dungeonGenerationFinished = true;

@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataType;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one.Bonzo;
+import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.one.MasterBonzo;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.seven.Necron;
 import tk.skyblocksandbox.skyblocksandbox.entity.catacombs.six.Sadan;
 import tk.skyblocksandbox.skyblocksandbox.entity.fishing.Yeti;
@@ -56,6 +57,8 @@ public final class SkyblockEntityManager {
                 return new Sadan();
             case "BONZO":
                 return new Bonzo();
+            case "MASTER_BONZO":
+                return new MasterBonzo();
             case "YETI":
                 return new Yeti();
             case "ZOMBIE":

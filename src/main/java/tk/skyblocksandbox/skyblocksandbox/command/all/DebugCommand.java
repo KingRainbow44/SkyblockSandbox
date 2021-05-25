@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.command.all;
 
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -52,6 +53,18 @@ public final class DebugCommand extends SkyblockCommand {
                         return true;
                     case "warp":
                         sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [foldername|village|dungeon_hub]");
+                        return true;
+                    case "saferestart":
+                        if(!sbPlayer.getBukkitPlayer().isOp()) {
+                            return true;
+                        }
+
+                        CitizensAPI.getNPCRegistry().deregisterAll();
+                        for(Player player : Bukkit.getOnlinePlayers()) {
+                            player.kickPlayer("Server Restart!");
+                        }
+
+                        Bukkit.shutdown();
                         return true;
                 }
                 return true;

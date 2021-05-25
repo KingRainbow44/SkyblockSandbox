@@ -6,9 +6,11 @@ import org.bukkit.entity.Player;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.partyandfriends.party.PartyManager;
+import tk.skyblocksandbox.permitable.rank.PermitableRank;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 public final class PartyCommand extends SkyblockCommand {
 
@@ -183,7 +185,8 @@ public final class PartyCommand extends SkyblockCommand {
 
                         PartyInstance partyInstance2 = sbPlayer.getCurrentParty();
                         for(SkyblockPlayer member : partyInstance2.getMembers()) {
-                            member.sendMessage("&9Party &8> &e" + sbPlayer.getBukkitPlayer().getDisplayName() + "&f: " + message2);
+                            PermitableRank rank = PermitableRank.getRankByEnum(sbPlayer.getPlayerData().rank);
+                            member.sendMessage("&9Party &8> " + PermitableRank.formatNameTag(rank.getRankNameTagFormat(), sbPlayer) + "&f: " + message2);
                         }
                         return true;
                 }

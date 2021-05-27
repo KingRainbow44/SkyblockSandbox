@@ -40,6 +40,7 @@ public final class SkyblockItemIds {
     public static final String CRAFTYZ_FRENCH_BREAD = "CRAFTYZ_FRENCH_BREAD";
     public static final String PURPLES_PURPLE_CLOAK = "PURPLES_PURPLE_CLOAK";
     public static final String FLAMINGO_MASK = "FLAMINGO_MASK";
+    public static final String WARDEN_HELMET = "WARDEN_HELMET";
 
     /*
      * Misc

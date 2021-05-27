@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.chestplates.PurplesPupleCloak;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.CraftyzFrenchBread;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.FlamingoMask;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.WardenHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronBoots;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronChestplate;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.necron.NecronHelmet;
@@ -50,6 +51,7 @@ public final class SkyblockItemFactory {
         registerItem(new CraftyzFrenchBread());
         registerItem(new FlamingoMask());
         registerItem(new PurplesPupleCloak());
+        registerItem(new WardenHelmet());
 
         registerItem(new SkyblockMenu());
         registerItem(new TheCarottesCarrot());

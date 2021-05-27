@@ -101,8 +101,8 @@ public final class GiantsSword extends SandboxItem {
         for(Entity e : player.getNearbyEntities(4, 4, 4)) {
             if(e instanceof Damageable && e != sbPlayer.getBukkitPlayer()) {
                 Damageable entity = (Damageable) e;
-                if(!entity.hasMetadata("skyblockEntityId")) return;
-                if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+                if(!entity.hasMetadata("skyblockEntityId")) continue;
+                if(entity instanceof Player && !entity.hasMetadata("NPC")) continue;
 
                 SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
                 Calculator.damage(sbEntity, sbPlayer, true);

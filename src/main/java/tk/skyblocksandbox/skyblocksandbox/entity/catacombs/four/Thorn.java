@@ -1,28 +1,26 @@
-package tk.skyblocksandbox.skyblocksandbox.entity.catacombs.seven;
+package tk.skyblocksandbox.skyblocksandbox.entity.catacombs.four;
 
 import org.bukkit.entity.EntityType;
 import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 
-public final class Necron extends SandboxEntity {
-
-    public Necron() {
-        super(EntityType.WITHER);
+public final class Thorn extends SandboxEntity {
+    public Thorn() {
+        super(EntityType.GHAST);
     }
 
     @Override
     public SkyblockEntityData getEntityData() {
         SkyblockEntityData entityData = new SkyblockEntityData();
 
-        entityData.entityName = "Necron";
         entityData.isBoss = true;
-
-        entityData.canTakeKnockback = false;
+        entityData.isHostile = true;
         entityData.isUndead = true;
 
-        entityData.health = 1000000000;
-        entityData.defense = 300;
-        entityData.damage = 5000;
+        entityData.entityName = "Thorn";
+        entityData.health = 10000000;
+        entityData.damage = 10000;
+        entityData.defense = 100;
 
         return entityData;
     }

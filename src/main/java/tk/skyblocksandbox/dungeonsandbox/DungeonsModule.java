@@ -41,7 +41,7 @@ public final class DungeonsModule extends SandboxModule {
 
     private void clearExistingDungeons() {
         for (File file : Objects.requireNonNull(Bukkit.getServer().getWorldContainer().listFiles())){
-            if(file.getName().contains("dungeon_") && file.isDirectory()) {
+            if(file.getName().contains("dungeon_") && !file.getName().contains("hub") && file.isDirectory()) {
                 if(!file.delete()) {
                     throw new NullPointerException("Unable to destroy the dungeon: " + file.getName() + ". Delete manually and restart the server.");
                 }

@@ -6,9 +6,11 @@ import net.citizensnpcs.api.util.DataKey;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.entity.SkyblockEntityData;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
@@ -57,6 +59,7 @@ public final class SkyblockEntityTrait extends Trait {
 
     public void setEntityId(int entityId) {
         this.entityId = entityId;
+        entityIdSet = true;
     }
 
     /*
@@ -139,6 +142,9 @@ public final class SkyblockEntityTrait extends Trait {
     @Persist("entityDataAdded")
     boolean entityDataAdded = false;
 
+    @Persist("entityIdSet")
+    boolean entityIdSet = false;
+
     @Persist("speedAdded")
     boolean speedAdded = false;
 
@@ -153,7 +159,9 @@ public final class SkyblockEntityTrait extends Trait {
     }
 
     public void onAttach() {
-        npc.getNavigator().getLocalParameters().attackRange(4.0).attackDelayTicks(15);
+        if(npc.getEntity().getType() != EntityType.GHAST) {
+            npc.getNavigator().getLocalParameters().attackRange(4.0).attackDelayTicks(15);
+        }
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(
                 SkyblockSandbox.getInstance(),
@@ -168,41 +176,32 @@ public final class SkyblockEntityTrait extends Trait {
         lookTrait.setRealisticLooking(true);
     }
 
-    private int ticks = -1;
-
     @Override
     public void run() {
-        if(!getNPC().isSpawned()) return;
-        ticks++;
+        if(!getNPC().isSpawned() || !entityIdSet || !entityDataAdded) return;
 
-        if(entityDataAdded && !speedAdded) {
+        if(!speedAdded) {
             npc.getNavigator().getLocalParameters().baseSpeed(getEntityData().speed / 100f);
             speedAdded = true;
         }
 
+        SandboxEntity.getSandboxEntity(getNPC().getEntity()).ability(); // Call ability every tick.
+
         if(!isBoss) {
-            long currentHealth = SkyblockSandbox.getManagement().getEntityManager().getEntity(entityId).getHealth();
+            long currentHealth = SandboxEntity.getSandboxEntity(getNPC().getEntity()).getHealth();
             getNPC().setName(colorize("&8[&7Lvl " + level +"&8] &c" + entityName + " &a" + currentHealth + "/" + Math.round(health) + "&c❤"));
         } else {
             getNPC().setName(colorize("&e&l﴾ &c&l" + entityName + " &e&l﴿"));
         }
 
         if(isHostile) {
-            if(ticks % 15 == 0) {
-                for(Entity entity : getNPC().getEntity().getNearbyEntities(4, 4, 4)) {
-                    if(!(entity instanceof Player)) return;
-                    Calculator.damage(SkyblockPlayer.getSkyblockPlayer((Player) entity), getEntityData().damage, true);
-                }
-            }
-        }
-
-        if(isHostile) {
             Entity target = getNextEntity(5);
 
             if(target == null) {
-                target = getNextEntity(32); if(target == null) return;
+                target = getNextEntity(32); if(target == null || target.hasMetadata("NPC")) return;
                 getNPC().getNavigator().setTarget(target.getLocation());
             } else {
+                if(target.hasMetadata("NPC")) return;
                 npc.getNavigator().setTarget(target, true);
             }
         }

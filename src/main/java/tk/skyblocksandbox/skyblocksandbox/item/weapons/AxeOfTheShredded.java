@@ -1,12 +1,9 @@
 package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,15 +14,19 @@ import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
-import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class AxeOfTheShredded extends SandboxItem {
+
+    private static final Map<Player, Integer> axeThrows = new HashMap<>();
 
     public AxeOfTheShredded() {
         super(Material.DIAMOND_AXE, "Axe of the Shredded", SkyblockItemIds.AXE_OF_THE_SHREDDED);
@@ -53,6 +54,8 @@ public final class AxeOfTheShredded extends SandboxItem {
         itemData.baseDamage = 140;
         itemData.baseStrength = 115;
 
+        itemData.canDungeonize = true;
+
         itemData.hasAbility = true;
         itemData.abilityTrigger = RIGHT_CLICK_TRIGGER;
         itemData.abilityName = "Throw";
@@ -71,9 +74,57 @@ public final class AxeOfTheShredded extends SandboxItem {
     @Override
     public void ability(int action, SkyblockPlayer sbPlayer) {
         if(action != INTERACT_RIGHT_CLICK) return;
-        if(!sbPlayer.manaCheck(20, "Throw")) return;
 
         Player player = sbPlayer.getBukkitPlayer();
+
+        // Incorporate Stacking
+        int manaCost, damageBoost, currentAxeThrows;
+
+        if(!axeThrows.containsKey(player)) {
+            axeThrows.put(player, 0);
+        }
+
+        axeThrows.put(player, axeThrows.get(player) + 1);
+        currentAxeThrows = axeThrows.get(player);
+        switch(currentAxeThrows - 1) {
+            case 0:
+                manaCost = 20; damageBoost = 1;
+                break;
+            case 1:
+                manaCost = 40; damageBoost = 2;
+                break;
+            case 2:
+                manaCost = 60; damageBoost = 4;
+                break;
+            case 3:
+                manaCost = 80; damageBoost = 8;
+                break;
+            default:
+            case 4:
+                manaCost = 160; damageBoost = 16;
+                break;
+        }
+
+        if(sbPlayer.getPlayerData().debugStateMessages) {
+            sbPlayer.sendMessages(
+                    "mana cost: " + manaCost,
+                    "damage boost: " + damageBoost,
+                    "------------",
+                    "in axe throws: " + axeThrows.containsKey(player)
+            );
+        }
+
+        if(!sbPlayer.manaCheck(manaCost, "Throw")) return;
+
+        int finalCurrentAxeThrows = currentAxeThrows;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(finalCurrentAxeThrows == axeThrows.get(player)) {
+                    axeThrows.replace(player, 0);
+                }
+            }
+        }.runTaskLater(SkyblockSandbox.getInstance(), 10L);
 
         Location throwLoc = player.getLocation().add(0, 1.2, 0);
         Vector throwVec = player.getLocation().add(player.getLocation().getDirection().multiply(10)).toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.2D);
@@ -83,17 +134,17 @@ public final class AxeOfTheShredded extends SandboxItem {
         armorStand.getEquipment().setItemInMainHand(new ItemStack(Material.DIAMOND_AXE));
         armorStand.setInvulnerable(true);
         armorStand.setInvisible(true);
-        armorStand.setSmall(true);
 
         final Vector[] previousVector = {throwVec};
+        Collection<Entity> damaged = new ArrayList<>();
+
         new BukkitRunnable() {
             private int run = -1;
 
             @Override
             public void run() {
-                if(run < 101) {
-                    run++;
-                } else {
+                run++;
+                if(run > 100) {
                     cancel();
                     return;
                 }
@@ -114,11 +165,16 @@ public final class AxeOfTheShredded extends SandboxItem {
                 for(Entity e : armorStand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != sbPlayer.getBukkitPlayer()) {
                         Damageable entity = (Damageable) e;
-                        if(!entity.hasMetadata("skyblockEntityId")) return;
-                        if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+                        if(damaged.contains(e)) continue;
+                        if(!damaged.contains(e)) {
+                            damaged.add(e);
+                        }
+
+                        if(!entity.hasMetadata("skyblockEntityId")) continue;
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) continue;
 
                         SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
-                        Calculator.damage(sbEntity, sbPlayer, true);
+                        Calculator.damage(sbEntity, sbPlayer, true, damageBoost, 0.1f);
                     }
                 }
             }

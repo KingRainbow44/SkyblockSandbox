@@ -348,8 +348,34 @@ public final class Utility {
         return PermitableRank.getRankByEnum(sbPlayer.getPlayerData().rank);
     }
 
-    public static NamespacedKey key(String key) {
-        return new NamespacedKey(SkyblockSandbox.getInstance(), key);
+    /**
+     * @return A double of 2 integers. The first is the amount of loops. The second is the remaining quantity.
+     */
+    public static Collection<Integer> countSteps(int loopOver, int loopQuantity) {
+        for(int i = 0; i <= 2147483646; i++) {
+            if(loopOver % loopQuantity == 0) {
+                Collection<Integer> steps = new ArrayList<>();
+                steps.add(i);
+                steps.add(0);
+
+                return steps;
+            }
+
+            if(loopOver - loopQuantity < 0) {
+                Collection<Integer> steps = new ArrayList<>();
+                steps.add(i);
+                steps.add(loopOver);
+
+                return steps;
+            }
+
+            loopOver -= loopQuantity;
+        }
+
+        Collection<Integer> steps = new ArrayList<>();
+        steps.add(loopOver); steps.add(loopQuantity);
+
+        return steps;
     }
 
 }

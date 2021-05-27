@@ -18,6 +18,11 @@ public final class DamageListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
+        if(event.getCause() == EntityDamageEvent.DamageCause.CUSTOM) {
+            event.setCancelled(true);
+            return;
+        }
+
         if(event instanceof EntityDamageByEntityEvent) {
             // Entity was Damaged by another Entity. (EvE)
             EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) event;
@@ -39,11 +44,13 @@ public final class DamageListener implements Listener {
                 event.setCancelled(true);
                 Calculator.damage(sbDamagee, sbDamager.getEntityData().damage, true);
             } else if (damager.hasMetadata("skyblockEntityId") && damagee instanceof Player) { // (PvE) - Scenario 1
-                SandboxEntity sbDamager = SandboxEntity.getSandboxEntity(damager);
-                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
-
+//                SandboxEntity sbDamager = SandboxEntity.getSandboxEntity(damager);
+//                SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
+//
+//                event.setCancelled(true);
+//                Calculator.damage(sbPlayer, sbDamager.getEntityData().damage, true);
                 event.setCancelled(true);
-                Calculator.damage(sbPlayer, sbDamager.getEntityData().damage, true);
+                return; // Custom Damage System is built in.
             } else if (damager instanceof Player && damagee.hasMetadata("skyblockEntityId")) { // (PvE) - Scenario 2
                 SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damager);
                 SandboxEntity sbDamagee = SandboxEntity.getSandboxEntity(damagee);
@@ -78,7 +85,7 @@ public final class DamageListener implements Listener {
              * - SBEntity was void damaged.
              */
 
-            if(damagee instanceof Player) {
+            if(damagee instanceof Player && !damagee.hasMetadata("NPC")) {
                 SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
                 sbPlayer.getPlayerData().damage(Math.round(event.getDamage()));
             }
@@ -111,7 +118,7 @@ public final class DamageListener implements Listener {
         NPC entity = event.getNPC();
         Entity damager = event.getDamager();
 
-        if(!(damager instanceof Player)) return;
+        if(!(damager instanceof Player) || damager.hasMetadata("NPC")) return;
         SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damager);
 
         SkyblockNPC.damage(entity, sbPlayer, true);

@@ -34,7 +34,7 @@ public final class DebugCommand extends SkyblockCommand {
         switch(args.length) {
 
             case 0:
-                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|damage|messages|reset|kill|check|foldername|village|dungeon_hub] [valid integer]");
+                sbPlayer.sendMessages("&cInvalid argument! Usage: &e/debug <music|playall|changestat|toggle|entity|warp> [music_id|health|defense|intelligence|strength|critchance|critdamage|ferocity|speed|damage|messages|reset|kill|check|foldername|village|dungeon_hub] [valid integer]");
                 return true;
 
             case 1:
@@ -43,7 +43,7 @@ public final class DebugCommand extends SkyblockCommand {
                         sbPlayer.sendMessages("&cArgument missing! Usage: &e/debug music [music_id|stop] [music_id]");
                         return true;
                     case "changestat":
-                        sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug changestat [health|defense|intelligence|strength] [valid integer]");
+                        sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug changestat [health|defense|intelligence|strength|critchance|critdamage|ferocity|speed] [valid integer]");
                         return true;
                     case "toggle":
                         sbPlayer.sendMessage("&cArguments missing! Usage: &e/debug toggle [damage|messages|build|infinitemana]");
@@ -233,7 +233,7 @@ public final class DebugCommand extends SkyblockCommand {
                             int setStat = Integer.parseInt(args[2]);
                             switch(args[1]) {
                                 default:
-                                    sbPlayer.sendMessage("&cInvalid stat! Types: health, defense, intelligence, strength");
+                                    sbPlayer.sendMessage("&cInvalid stat! Types: health, defense, intelligence, strength, critchance, critdamage, ferocity, speed");
                                     return true;
                                 case "intelligence":
                                     sbPlayer.getPlayerData().intelligence = setStat + 100;
@@ -251,6 +251,24 @@ public final class DebugCommand extends SkyblockCommand {
                                 case "defense":
                                     sbPlayer.getPlayerData().defense = setStat;
                                     sbPlayer.sendMessage("&aSet defense to " + args[2] + "!");
+                                    return true;
+                                case "critchance":
+                                case "cchance":
+                                    sbPlayer.getPlayerData().critChance = setStat;
+                                    sbPlayer.sendMessages("&aSet critical strike chance to " + args[2] + "!");
+                                    return true;
+                                case "critdamage":
+                                case "cdamage":
+                                    sbPlayer.getPlayerData().critDamage = setStat;
+                                    sbPlayer.sendMessages("&aSet critical damage to " + args[2] + "!");
+                                    return true;
+                                case "ferocity":
+                                    sbPlayer.getPlayerData().ferocity = setStat;
+                                    sbPlayer.sendMessages("&aSet ferocity to " + args[2] + "!");
+                                    return true;
+                                case "speed":
+                                    sbPlayer.getPlayerData().speed = setStat;
+                                    sbPlayer.sendMessages("&aSet speed to " + args[2] + "!");
                                     return true;
                             }
                         } catch (NumberFormatException e) {

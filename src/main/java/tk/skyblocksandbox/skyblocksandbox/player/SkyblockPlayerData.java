@@ -30,6 +30,14 @@ public final class SkyblockPlayerData {
     public int currentMana = 100;
 
     /*
+     * Increase by Percentage Stats (special stats)
+     */
+    public double damageIncrease = 0.0;
+    public double damageReduction = 0.0;
+
+    public double baseDamageIncrease = 0.0;
+
+    /*
      * Solid-State Stats (only change on X event)
      */
     public PermitableRank.AvailableRanks rank = PermitableRank.AvailableRanks.DEFAULT;
@@ -198,7 +206,19 @@ public final class SkyblockPlayerData {
      * Player Data Methods
      */
     public void damage(long damage) {
-        currentHealth -= damage;
+        long damageLeft = damage;
+
+        if(absorptionHealth > 0) {
+            if(absorptionHealth >= damageLeft) {
+                absorptionHealth -= damageLeft;
+            } else {
+                damageLeft -= absorptionHealth; absorptionHealth = 0;
+                currentHealth -= damageLeft;
+            }
+        } else {
+            currentHealth -= damageLeft;
+        }
+
         player.hurt();
     }
 
@@ -209,6 +229,20 @@ public final class SkyblockPlayerData {
         } else {
             currentHealth = finalHealth;
         }
+    }
+
+    public void addAbsorptionHealth(int health) {
+        absorptionHealth += health;
+    }
+
+    public void removeAbsorptionHealth(int health) {
+        if(absorptionHealth <= health) {
+            absorptionHealth = 0;
+            return;
+        }
+
+        absorptionHealth -= health;
+        player.updateHud();
     }
 
     public Integer getAbsorptionHealth() {

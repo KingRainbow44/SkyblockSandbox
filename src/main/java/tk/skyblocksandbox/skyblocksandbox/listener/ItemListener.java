@@ -17,7 +17,9 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.events.ArmorEquipEvent;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
@@ -121,6 +123,27 @@ public final class ItemListener implements Listener {
                 SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_MAIN);
 
                 event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEquip(ArmorEquipEvent event) {
+        SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(event.getPlayer());
+
+        if(event.getOldArmorPiece() != null) {
+            ItemStack old = event.getOldArmorPiece();
+            if(SandboxItemStack.isSandboxItem(old)) {
+                SandboxItem sbOld = SandboxItemStack.toSandboxItem(old);
+                sbOld.onRemove(sbPlayer);
+            }
+        }
+
+        if(event.getNewArmorPiece() != null) {
+            ItemStack newArmor = event.getNewArmorPiece();
+            if(SandboxItemStack.isSandboxItem(newArmor)) {
+                SandboxItem sbNew = SandboxItemStack.toSandboxItem(newArmor);
+                sbNew.onWear(sbPlayer);
             }
         }
     }

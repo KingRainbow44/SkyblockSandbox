@@ -23,6 +23,7 @@ import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public final class Bonemerang extends SandboxItem {
@@ -91,6 +92,9 @@ public final class Bonemerang extends SandboxItem {
 
         bukkitPlayer.playSound(bukkitPlayer.getLocation(), Sound.BLOCK_BONE_BLOCK_BREAK, 2.0f, 2.0f);
 
+        Collection<Entity> goBone = new ArrayList<>();
+        Collection<Entity> backBone = new ArrayList<>();
+
         new BukkitRunnable() {
             public int ran = 0;
 
@@ -155,8 +159,18 @@ public final class Bonemerang extends SandboxItem {
                 for(Entity e : stand.getNearbyEntities(1, 1, 1)) {
                     if(e instanceof Damageable && e != player.getBukkitPlayer()) {
                         Damageable entity = (Damageable) e;
-                        if(!entity.hasMetadata("skyblockEntityId")) return;
-                        if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+
+                        if(!back && goBone.contains(entity)) continue;
+                        if(back && backBone.contains(entity)) continue;
+
+                        if(!back && !goBone.contains(entity)) {
+                            goBone.add(entity);
+                        } else if (back && !backBone.contains(entity)) {
+                            backBone.add(entity);
+                        }
+
+                        if(!entity.hasMetadata("skyblockEntityId")) continue;
+                        if(entity instanceof Player && !entity.hasMetadata("NPC")) continue;
 
                         SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
                         Calculator.damage(sbEntity, player, true);

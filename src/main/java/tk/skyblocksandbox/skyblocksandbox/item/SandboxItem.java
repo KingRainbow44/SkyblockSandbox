@@ -198,6 +198,10 @@ public abstract class SandboxItem {
 
     public void armorAbility(SkyblockPlayer player) {} // A 'null' method because not all armor pieces have an ability.
 
+    public void onWear(SkyblockPlayer player) {} // Called when a player holds/equips the item.
+
+    public void onRemove(SkyblockPlayer player) {} // Called when a player removes/stops holding the item.
+
     public abstract SkyblockItemData getItemData();
 
     public abstract Collection<String> getLore();

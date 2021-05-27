@@ -21,8 +21,7 @@ public final class Sadan extends SandboxEntity {
         entityData.isUndead = true;
 
         entityData.health = 40000000;
-        entityData.defense = 0;
-        entityData.vanillaHealth = 100;
+        entityData.damage = 100000;
 
         return entityData;
     }

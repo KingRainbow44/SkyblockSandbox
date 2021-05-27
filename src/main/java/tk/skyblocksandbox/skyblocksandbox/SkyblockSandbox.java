@@ -28,6 +28,7 @@ import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModule;
 import tk.skyblocksandbox.skyblocksandbox.module.SandboxModuleManager;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
+import tk.skyblocksandbox.skyblocksandbox.runnable.EntityRunnable;
 import tk.skyblocksandbox.skyblocksandbox.runnable.PlayerRunnable;
 import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
 
@@ -79,12 +80,16 @@ public final class SkyblockSandbox extends JavaPlugin {
         registerListener(new DamageListener());
         registerListener(new InventoryListener());
 
+        // From Arnuh/ArmorEquipEvent. Really useful.
+        registerListener(new ArmorEquipListener());
+
         registerCommand(new ItemCommand());
         registerCommand(new SandboxCommand());
         registerCommand(new DebugCommand());
         registerCommand(new SummonCommand());
 
         registerRunnable(new PlayerRunnable(), 1L);
+        registerRunnable(new EntityRunnable(), 1L);
         registerRunnable(new RegionCheck(), 1L);
 
         moduleManager.enableModules();

@@ -2,15 +2,13 @@ package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
@@ -135,8 +133,8 @@ public final class Hyperion extends SandboxItem {
         for(Entity e : player.getNearbyEntities(6, 6, 6)) {
             if(e instanceof Damageable && e != sbPlayer.getBukkitPlayer()) {
                 Damageable entity = (Damageable) e;
-                if(!entity.hasMetadata("skyblockEntityId")) return;
-                if(entity instanceof Player && !entity.hasMetadata("NPC")) return;
+                if(!entity.hasMetadata("skyblockEntityId")) continue;
+                if(entity instanceof Player && !entity.hasMetadata("NPC")) continue;
 
                 SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
                 Calculator.damage(sbEntity, sbPlayer, true);
@@ -150,10 +148,21 @@ public final class Hyperion extends SandboxItem {
         }
 
         if(sbPlayer.getPlayerData().canUseWitherShield) {
-//            sbPlayer.addAbsorptionHealth( sbPlayer.getPlayerData().critDamage * 2 ); // TODO: Implement absorption.
+            int absorption = (int) Math.round(sbPlayer.getPlayerData().getFinalCritDamage() * 1.5);
+
+            sbPlayer.getPlayerData().damageIncrease += 0.1;
+            sbPlayer.getPlayerData().addAbsorptionHealth(absorption);
             sbPlayer.getPlayerData().canUseWitherShield = false;
 
-//            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> sbPlayer.removeAbsorption( (sbPlayer.getPlayerData().critDamage * 2) ), 20*5L); // TODO: Implement absorption.
+            Bukkit.getScheduler().runTaskLater(SkyblockSandbox.getInstance(), () -> {
+                sbPlayer.getPlayerData().heal(
+                        (absorption / 2)
+                );
+
+                sbPlayer.getPlayerData().removeAbsorptionHealth(absorption);
+                sbPlayer.getPlayerData().damageReduction -= 0.1;
+                sbPlayer.getPlayerData().canUseWitherShield = true;
+            }, 20*5L);
         }
     }
 }

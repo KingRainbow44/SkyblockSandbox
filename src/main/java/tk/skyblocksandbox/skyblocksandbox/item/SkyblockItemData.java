@@ -7,6 +7,7 @@ public class SkyblockItemData {
      */
 
     public boolean isDungeonItem = false;
+    public boolean canDungeonize = false;
     public boolean canHaveStars = true;
 
     public boolean canReforge = true;

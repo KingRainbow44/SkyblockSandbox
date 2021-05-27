@@ -10,12 +10,17 @@ import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.decimal4j.util.DoubleRounder;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.RoundingMode;
 
 import static tk.skyblocksandbox.skyblocksandbox.util.Utility.colorize;
 
@@ -36,7 +41,6 @@ public abstract class SandboxEntity {
 
     public void create(Location location) {
         SkyblockEntityManager entityManager = SkyblockSandbox.getManagement().getEntityManager();
-        entityId = entityManager.registerEntity(this);
 
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(entityType, getEntityData().entityName);
         npc.spawn(location);
@@ -44,8 +48,11 @@ public abstract class SandboxEntity {
         if(npc.getEntity() instanceof LivingEntity) {
             entity = (LivingEntity) npc.getEntity();
         } else {
-            throw new NullPointerException("EntityType is not a living entity");
+            throw new NullPointerException("EntityType is not a living entity.");
         }
+
+        entityId = entityManager.registerEntity(this); // Register entity from the Bukkit entity id system.
+        if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
 
         if(entityType == EntityType.PLAYER) {
             SkinTrait skin = npc.getOrAddTrait(SkinTrait.class);
@@ -67,14 +74,24 @@ public abstract class SandboxEntity {
 
         if(getEntityData().isBoss) {
             npc.setName(colorize("&e&l﴾ &c&l" + getEntityData().entityName + " &e&l﴿"));
+            entityBossBar = Bukkit.createBossBar(colorize("&c&l" + getEntityData().entityName), BarColor.RED, BarStyle.SOLID);
+            for(Entity entity : entity.getNearbyEntities(20, 20, 20)) {
+                if(entity instanceof Player) {
+                    entityBossBar.addPlayer((Player) entity);
+                }
+            }
         } else {
             npc.setName(colorize(colorize("&8[&7Lvl " + getEntityData().level +"&8] &c" + getEntityData().entityName + " &a" + Math.round(getEntityData().health) + "/" + Math.round(getEntityData().health) + "&c❤")));
         }
 
+        SkyblockEntityTrait entityTrait = npc.getOrAddTrait(SkyblockEntityTrait.class);
+        entityTrait.setEntityId(entityId);
+        entityTrait.setEntityData(getEntityData());
+
+        currentHealth = getEntityData().health;
+
         entity.setMetadata("skyblockEntityData", new FixedMetadataValue(SkyblockSandbox.getInstance(), getEntityData().toJson()));
         entity.setMetadata("skyblockEntityId", new FixedMetadataValue(SkyblockSandbox.getInstance(), entityId));
-
-        if(entityManager.getEntity(entityId) == null) throw new NullPointerException("Value of returning Skyblock Entity from Entity was null.");
     }
 
     public final LivingEntity getBukkitEntity() {
@@ -147,7 +164,13 @@ public abstract class SandboxEntity {
     }
 
     public void updateBossBar() {
+        if(entityBossBar == null) throw new NullPointerException("No entity boss bar to update.");
 
+        double progress = DoubleRounder.round((float) getHealth() / (float) getEntityData().health, 2, RoundingMode.DOWN);
+        if(progress < 0) progress = 0.0f;
+        if(progress > 1) progress = 1.0f;
+
+        entityBossBar.setProgress(progress);
     }
 
     /**
@@ -155,16 +178,18 @@ public abstract class SandboxEntity {
      */
     public abstract SkyblockEntityData getEntityData();
 
+    public void ability() {} // A 'null' method. Not all entities have an ability. Runs every tick.
+
     /*
      * Static Get Methods
      */
     public static SandboxEntity getSandboxEntity(Object entity) {
         if(entity instanceof NPC) {
             return SkyblockSandbox.getManagement().getEntityManager().getEntity(((NPC) entity).getEntity());
-        } else if (entity instanceof LivingEntity) {
+        } else if (entity instanceof Entity) {
             return SkyblockSandbox.getManagement().getEntityManager().getEntity((Entity) entity);
         } else {
-            return null;
+            throw new NullPointerException("Not a Sandbox Entity.");
         }
     }
 }

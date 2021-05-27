@@ -18,6 +18,8 @@ public final class Zombie extends SandboxEntity {
         entityData.damage = 10;
         entityData.level = 1;
 
+        entityData.entityName = "Zombie";
+
         entityData.isUndead = true;
 
         return entityData;

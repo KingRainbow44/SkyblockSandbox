@@ -21,6 +21,7 @@ public final class MasterNecron extends SandboxEntity {
 
         entityData.health = 2000000000;
         entityData.defense = 1000;
+        entityData.damage = 250000;
 
         return entityData;
     }

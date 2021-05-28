@@ -30,6 +30,7 @@ public final class SkyblockItemFactory {
 
     public SkyblockItemFactory() {
         registerItem(new Hyperion());
+        registerItem(new Valkyrie());
         registerItem(new MidasStaff());
         registerItem(new Bonemerang());
         registerItem(new AxeOfTheShredded());

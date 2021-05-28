@@ -6,6 +6,7 @@ public final class SkyblockItemIds {
      * Weapons
      */
     public static final String HYPERION = "HYPERION";
+    public static final String VALKYRIE = "VALKYRIE";
     public static final String MIDAS_STAFF = "MIDAS_STAFF";
     public static final String AXE_OF_THE_SHREDDED = "AXE_OF_THE_SHREDDED";
     public static final String GIANTS_SWORD = "GIANTS_SWORD";
@@ -24,15 +25,15 @@ public final class SkyblockItemIds {
     /*
      * Armors
      */
-    public static final String NECRON_HELMET = "NECRON_HELMET";
-    public static final String NECRON_CHESTPLATE = "NECRON_CHESTPLATE";
-    public static final String NECRON_LEGGINGS = "NECRON_LEGGINGS";
-    public static final String NECRON_BOOTS = "NECRON_BOOTS";
+    public static final String NECRON_HELMET = "POWER_WITHER_HELMET";
+    public static final String NECRON_CHESTPLATE = "POWER_WITHER_CHESTPLATE";
+    public static final String NECRON_LEGGINGS = "POWER_WITHER_LEGGINGS";
+    public static final String NECRON_BOOTS = "POWER_WITHER_BOOTS";
 
-    public static final String STORM_HELMET = "STORM_HELMET";
-    public static final String STORM_CHESTPLATE = "STORM_CHESTPLATE";
-    public static final String STORM_LEGGINGS = "STORM_LEGGINGS";
-    public static final String STORM_BOOTS = "STORM_BOOTS";
+    public static final String STORM_HELMET = "WISE_WITHER_HELMET";
+    public static final String STORM_CHESTPLATE = "WISE_WITHER_CHESTPLATE";
+    public static final String STORM_LEGGINGS = "WISE_WITHER_LEGGINGS";
+    public static final String STORM_BOOTS = "WISE_WITHER_BOOTS";
 
     /*
      * Armor Pieces

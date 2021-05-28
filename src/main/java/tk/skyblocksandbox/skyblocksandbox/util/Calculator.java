@@ -1,9 +1,10 @@
 package tk.skyblocksandbox.skyblocksandbox.util;
 
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.util.Vector;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
@@ -49,6 +50,20 @@ public final class Calculator {
         for(int i = 0; i <= strikes; i++) {
             if(sbPlayer.getPlayerData().debugStateMessages) sbPlayer.sendMessages("ferocity triggered; strikes: " + strikes);
             entity.damage(damage);
+
+            Vector direction = entity.getBukkitEntity().getLocation().getDirection();
+            Vector increment = direction.multiply(0.1);
+
+            Location lastPoint = entity.getBukkitEntity().getLocation().add(direction.multiply(2.4));
+            World world = entity.getBukkitEntity().getWorld();
+            for (int newI = 0; newI < 12; newI++) {
+                world.spawnParticle(
+                        Particle.REDSTONE,
+                        lastPoint,
+                        1, 1, 0, 1, new Particle.DustOptions(Color.RED, 1)
+                );
+                lastPoint = lastPoint.add(increment);
+            }
         }
     }
 
@@ -65,6 +80,20 @@ public final class Calculator {
         for(int i = 0; i <= strikes; i++) {
             if(sbPlayer.getPlayerData().debugStateMessages) sbPlayer.sendMessages("ferocity triggered; strikes: " + strikes);
             entity.getPlayerData().damage(damage);
+
+            Vector direction = entity.getBukkitPlayer().getLocation().getDirection();
+            Vector increment = direction.multiply(0.1);
+
+            Location lastPoint = entity.getBukkitPlayer().getLocation().add(direction.multiply(2.4));
+            World world = entity.getBukkitPlayer().getWorld();
+            for (int newI = 0; newI < 12; newI++) {
+                world.spawnParticle(
+                        Particle.REDSTONE,
+                        lastPoint,
+                        1, 1, 0, 1, new Particle.DustOptions(Color.RED, 1)
+                );
+                lastPoint = lastPoint.add(increment);
+            }
         }
     }
 
@@ -203,6 +232,12 @@ public final class Calculator {
                     "&9&m--------------------"
             );
         }
+
+        Indicator.displayDamage(
+                sbTarget.getBukkitPlayer().getLocation(),
+                Math.round(damage),
+                (criticalDamage > 1)
+        );
 
         return Math.round(damage);
     }
@@ -344,6 +379,12 @@ public final class Calculator {
             );
         }
 
+        Indicator.displayDamage(
+                entity.getBukkitEntity().getLocation(),
+                Math.round(damage),
+                (criticalDamage > 1)
+        );
+
         return Math.round(damage);
     }
 
@@ -456,6 +497,12 @@ public final class Calculator {
                     "&9&m--------------------"
             );
         }
+
+        Indicator.displayDamage(
+                entity.getLocation(),
+                Math.round(damage),
+                (criticalDamage > 1)
+        );
 
         return Math.round(damage);
     }

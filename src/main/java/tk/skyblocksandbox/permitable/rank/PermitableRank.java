@@ -74,6 +74,8 @@ public final class PermitableRank {
             case "MVP++":
             case "MVP_PLUS_PLUS":
                 return AvailableRanks.MVP_PLUS_PLUS;
+            case "GOD":
+                return AvailableRanks.GOD;
             case "HELPER":
                 return AvailableRanks.HELPER;
             case "MODERATOR":
@@ -94,7 +96,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "Default",
                         "&7%1$s: %2$s",
-                        "PLAYER",
+                        "&7PLAYER",
                         permissions
                 );
             case VIP:

@@ -6,14 +6,17 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
 import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemIds;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Cuboid;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
 
@@ -104,12 +107,32 @@ public final class MidasStaff extends SandboxItem {
                     return;
                 }
 
+                Collection<Entity> damaged = new ArrayList<>();
                 for(Object rawLoc : possibleBlocks.toArray()) {
                     if(rawLoc instanceof Location) {
                         Location location = (Location) rawLoc;
                         world.spawnParticle(Particle.BLOCK_DUST, location, 1, 1, 0.1, 0.1, Material.GOLD_BLOCK.createBlockData());
+                        for(Entity entity : world.getNearbyEntities(location, 1, 1, 1)) {
+                            if(entity.hasMetadata("skyblockEntityId") && !damaged.contains(entity)) {
+                                damaged.add(entity);
+                                SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
+
+                                long damage = Calculator.damage(sbPlayer, 32000, 0.3);
+                                Calculator.damage(sbEntity, damage, true);
+                            }
+                        }
+
                         for (Block block : getBlocks(player, location.getBlock())) {
                             world.spawnParticle(Particle.BLOCK_DUST, block.getLocation(), 1, 1, 0.1, 0.1, Material.GOLD_BLOCK.createBlockData());
+                            for(Entity entity : world.getNearbyEntities(block.getLocation(), 1, 1, 1)) {
+                                if(entity.hasMetadata("skyblockEntityId") && !damaged.contains(entity)) {
+                                    damaged.add(entity);
+                                    SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
+
+                                    long damage = Calculator.damage(sbPlayer, 32000, 0.3);
+                                    Calculator.damage(sbEntity, damage, true);
+                                }
+                            }
                         }
                     }
                 }

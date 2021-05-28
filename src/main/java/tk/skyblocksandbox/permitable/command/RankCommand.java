@@ -71,7 +71,7 @@ public final class RankCommand extends SkyblockCommand {
                 sbTarget.getPlayerData().rank = rank;
 
                 sbPlayer.sendMessages("&aSuccessfully set " + target.getDisplayName() + "'s rank!");
-                sbTarget.sendMessage("&aYou are now a(n) " + rank.name() + "!");
+                sbTarget.sendMessage("&aYou are now a(n) " + PermitableRank.getRankByEnum(rank).getRankName() + "!");
                 return true;
         }
     }

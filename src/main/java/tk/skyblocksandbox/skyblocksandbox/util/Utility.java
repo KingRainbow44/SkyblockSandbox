@@ -178,7 +178,7 @@ public final class Utility {
         String integer;
         if(input instanceof String) {
             integer = (String) input;
-        } else if (input instanceof Integer) {
+        } else if (input instanceof Integer || input instanceof Long) {
             integer = "" + input;
         } else {
             return "" + input;

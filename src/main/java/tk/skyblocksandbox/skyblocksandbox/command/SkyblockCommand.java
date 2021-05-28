@@ -8,6 +8,7 @@ import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class SkyblockCommand extends Command implements TabCompleter {
@@ -24,6 +25,10 @@ public abstract class SkyblockCommand extends Command implements TabCompleter {
 
     protected SkyblockCommand(String name, String[] aliases, String description) {
         super(name, description, "/skyblocksandbox:" + name + " help", Arrays.asList(aliases));
+    }
+
+    protected SkyblockCommand(String name, String description) {
+        super(name, description, "/skyblocksandbox:" + name + " help", Collections.emptyList());
     }
 
     protected boolean isConsoleCommandSender(CommandSender sender) {

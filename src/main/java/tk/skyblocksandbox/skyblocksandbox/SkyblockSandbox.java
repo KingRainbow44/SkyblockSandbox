@@ -7,18 +7,23 @@ import me.vagdedes.mysql.database.SQL;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.TraitInfo;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 import tk.skyblocksandbox.dungeonsandbox.DungeonsModule;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.permitable.PermissionModule;
+import tk.skyblocksandbox.skyblocksandbox.command.GenericCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.ItemCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
@@ -72,6 +77,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         initializeDependencies();
         initializeWorlds();
         initializePermissions();
+        initializeGenericCommands();
         bukkitStats();
 
         registerListener(new ItemListener());
@@ -169,6 +175,50 @@ public final class SkyblockSandbox extends JavaPlugin {
         pluginManager.addPermission(new Permission("skyblocksandbox.command.setblock"));
 
         pluginManager.addPermission(new Permission("skyblocksandbox.command.rank"));
+    }
+
+    private void initializeGenericCommands() {
+        registerCommand(new GenericCommand(
+                "restart", "A safer restart command for SB Sandbox.", "minecraft.command.stop", GenericCommand.SenderType.ALL, (sender, args) -> {
+                    if(!sender.isOp()) {
+                        return false;
+                    }
+
+                    CitizensAPI.getNPCRegistry().deregisterAll();
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.kickPlayer("Server Restart!");
+                    }
+
+                    Bukkit.shutdown();
+                    return true;
+                })
+        );
+
+        registerCommand(new GenericCommand(
+                        "vector", "Add velocity to yourself!", "skyblocksandbox.command.vector", GenericCommand.SenderType.PLAYER_SENDER, (sender, args) -> {
+                            if(args.length < 3) {
+                                sender.sendMessage(ChatColor.RED + "You need to provide 3 numerical arguments!");
+                                return true;
+                            }
+
+                            Player player = (Player) sender;
+
+                            try {
+                                double xVelocity = Double.parseDouble(args[0]);
+                                double yVelocity = Double.parseDouble(args[1]);
+                                double zVelocity = Double.parseDouble(args[2]);
+
+                                player.setVelocity(new Vector(
+                                        xVelocity, yVelocity, zVelocity
+                                ));
+                                sender.sendMessage(ChatColor.GREEN + "Wheeeee!");
+                            } catch (NumberFormatException e) {
+                                sender.sendMessage(ChatColor.RED + "You need to provide 3 numerical arguments!");
+                            }
+
+                            return true;
+                }, "velocity")
+        );
     }
 
     /*

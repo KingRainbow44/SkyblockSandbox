@@ -173,6 +173,15 @@ public abstract class SandboxEntity {
         entityBossBar.setProgress(progress);
     }
 
+    public Location getLocation() {
+        if(entityType == EntityType.PLAYER) {
+            NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
+            return npc.getStoredLocation();
+        } else {
+            return entity.getLocation();
+        }
+    }
+
     /**
      * @return The SkyblockEntityData class which compactly holds all the data about a Skyblock Entity.
      */

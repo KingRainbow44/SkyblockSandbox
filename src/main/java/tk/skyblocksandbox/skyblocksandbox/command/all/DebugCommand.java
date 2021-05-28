@@ -54,18 +54,6 @@ public final class DebugCommand extends SkyblockCommand {
                     case "warp":
                         sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug warp [foldername|village|dungeon_hub]");
                         return true;
-                    case "saferestart":
-                        if(!sbPlayer.getBukkitPlayer().isOp()) {
-                            return true;
-                        }
-
-                        CitizensAPI.getNPCRegistry().deregisterAll();
-                        for(Player player : Bukkit.getOnlinePlayers()) {
-                            player.kickPlayer("Server Restart!");
-                        }
-
-                        Bukkit.shutdown();
-                        return true;
                 }
                 return true;
 
@@ -148,12 +136,27 @@ public final class DebugCommand extends SkyblockCommand {
                                 }
                                 return true;
                             case "infinitemana":
+                            case "infiniteintelligence":
+                            case "unlimitedmana":
+                            case"unlimitedintelligence":
                                 if(sbPlayer.getPlayerData().infiniteMana) {
                                     sbPlayer.sendMessage("&cInfinite Mana has been disabled.");
                                     sbPlayer.getPlayerData().infiniteMana = false;
                                 } else {
                                     sbPlayer.sendMessage("&aInfinite Mana has been enabled.");
                                     sbPlayer.getPlayerData().infiniteMana = true;
+                                }
+                                return true;
+                            case "madvantages":
+                            case "movement":
+                            case "advantages":
+                            case "movementadvantages":
+                                if(sbPlayer.getPlayerData().limitedMovement) {
+                                    sbPlayer.sendMessage("&aLimited Movement has been disabled.");
+                                    sbPlayer.getPlayerData().limitedMovement = false;
+                                } else {
+                                    sbPlayer.sendMessage("&cLimited Movement has been enabled.");
+                                    sbPlayer.getPlayerData().limitedMovement = true;
                                 }
                                 return true;
                         }

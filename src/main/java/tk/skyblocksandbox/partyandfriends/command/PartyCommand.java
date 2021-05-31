@@ -103,6 +103,12 @@ public final class PartyCommand extends SkyblockCommand {
                     case "debug":
                         sbPlayer.sendMessage("Party Permissions: " + sbPlayer.getPartyPermissions());
                         return true;
+                    case "ghost":
+                        if(sbPlayer.getBukkitPlayer().hasPermission("partyandfriends.party.ghost")) {
+                            PartyManager partyManager2 = PartyModule.getPartyManager();
+                            partyManager2.createParty(sbPlayer);
+                        }
+                        return true;
                 }
             case 2:
                 switch(args[0]) {

@@ -63,7 +63,7 @@ public final class FloorOne extends Dungeon {
         }
 
         // Other Rooms
-        for(int i = 1; i <= roomsTotal; i++) {
+        for(int i = 2; i <= roomsTotal; i++) {
             int z = i * 32;
             Generation.AvailableRooms room = generation.generateRandomRoom(this);
             pasted = Schematic.pasteSchematic(

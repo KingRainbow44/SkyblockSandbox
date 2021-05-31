@@ -14,19 +14,22 @@ public final class PermitableRank {
     private final String rankName;
     private final String chatFormat;
     private final String nameFormat;
+    private final String prefix;
     private final Collection<String> permissions;
 
-    public PermitableRank(String rankName, String chatFormat, String nameFormat, Collection<String> permissions) {
+    public PermitableRank(String rankName, String chatFormat, String nameFormat, String prefix, Collection<String> permissions) {
         this.rankName = rankName;
         this.chatFormat = chatFormat;
         this.nameFormat = nameFormat;
+        this.prefix = prefix;
         this.permissions = permissions;
     }
 
-    public PermitableRank(String rankName, String chatFormat, String nameFormat, Collection<String> permissions, AvailableRanks inheritFrom) {
+    public PermitableRank(String rankName, String chatFormat, String nameFormat, String prefix, Collection<String> permissions, AvailableRanks inheritFrom) {
         this.rankName = rankName;
         this.chatFormat = chatFormat;
         this.nameFormat = nameFormat;
+        this.prefix = prefix;
         this.permissions = permissions;
 
         permissions.addAll(getRankByEnum(inheritFrom).getPermissions());
@@ -42,6 +45,10 @@ public final class PermitableRank {
 
     public String getRankNameTagFormat() {
         return colorize(nameFormat);
+    }
+
+    public String getPrefix() {
+        return colorize(prefix);
     }
 
     public static String formatNameTag(String format, Player player) {
@@ -96,7 +103,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "Default",
                         "&7%1$s: %2$s",
-                        "&7PLAYER",
+                        "&7PLAYER", "",
                         permissions
                 );
             case VIP:
@@ -105,7 +112,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "VIP",
                         "&a[VIP] %1$s&f: %2$s",
-                        "&a[VIP] PLAYER",
+                        "&a[VIP] PLAYER", "&a[VIP] ",
                         permissions, AvailableRanks.DEFAULT
                 );
             case VIP_PLUS:
@@ -114,7 +121,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "VIP+",
                         "&a[VIP&6+&a] %1$s&f: %2$s",
-                        "&a[VIP&6+&a] PLAYER",
+                        "&a[VIP&6+&a] PLAYER", "&a[VIP&6+&a] ",
                         permissions, AvailableRanks.VIP
                 );
             case MVP:
@@ -123,7 +130,7 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "MVP",
                         "&b[MVP] %1$s&f: %2$s",
-                        "&b[MVP] PLAYER",
+                        "&b[MVP] PLAYER", "&b[MVP] ",
                         permissions, AvailableRanks.VIP_PLUS
                 );
             case MVP_PLUS:
@@ -132,14 +139,14 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "MVP+",
                         "&b[MVP&c+&b] %1$s&f: %2$s",
-                        "&b[MVP&c+&b] PLAYER",
+                        "&b[MVP&c+&b] PLAYER", "&b[MVP&c+&b] ",
                         permissions, AvailableRanks.MVP
                 );
             case GOD:
                 return new PermitableRank(
                         "MVP+",
                         "&e[GOD] %1$s&f: %2$s",
-                        "&e[GOD] PLAYER",
+                        "&e[GOD] PLAYER", "&e[GOD] ",
                         permissions, AvailableRanks.MVP_PLUS
                 );
             case MVP_PLUS_PLUS:
@@ -148,28 +155,28 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "MVP++",
                         "&6[MVP&c++&6] %1$s&f: %2$s",
-                        "&b[MVP&c++&6] PLAYER",
+                        "&b[MVP&c++&6] PLAYER", "&b[MVP&c++&6] ",
                         permissions, AvailableRanks.MVP_PLUS
                 );
             case YOUTUBE:
                 return new PermitableRank(
                         "YouTube",
                         "&c[&fYOUTUBE&c] %1$s&f: %2$s",
-                        "&c[&fYOUTUBE&c] PLAYER",
+                        "&c[&fYOUTUBE&c] PLAYER", "&c[&fYOUTUBE&c] ",
                         permissions, AvailableRanks.MVP_PLUS_PLUS
                 );
             case HELPER:
                 return new PermitableRank(
                         "Helper",
                         "&9[HELPER] %1$s&f: %2$s",
-                        "&9[HELPER] PLAYER",
+                        "&9[HELPER] PLAYER", "&9[HELPER] ",
                         permissions, AvailableRanks.MVP_PLUS_PLUS
                 );
             case MODERATOR:
                 return new PermitableRank(
                         "Moderator",
                         "&2[MOD] %1$s&f: %2$s",
-                        "&2[MOD] PLAYER",
+                        "&2[MOD] PLAYER", "&2[MOD] ",
                         permissions, AvailableRanks.HELPER
                 );
             case ADMIN:
@@ -182,14 +189,14 @@ public final class PermitableRank {
                 return new PermitableRank(
                         "Admin",
                         "&c[ADMIN] %1$s&f: %2$s",
-                        "&c[ADMIN] PLAYER",
+                        "&c[ADMIN] PLAYER", "&c[ADMIN] ",
                         permissions
                 );
             case OWNER:
                 return new PermitableRank(
                         "Owner",
                         "&c[OWNER] %1$s&f: %2$s",
-                        "&c[OWNER] PLAYER",
+                        "&c[OWNER] PLAYER", "&c[OWNER] ",
                         permissions
                 );
         }

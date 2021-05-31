@@ -35,6 +35,11 @@ public final class SkyblockItemIds {
     public static final String STORM_LEGGINGS = "WISE_WITHER_LEGGINGS";
     public static final String STORM_BOOTS = "WISE_WITHER_BOOTS";
 
+    public static final String GOLDOR_HELMET = "TANK_WITHER_HELMET";
+    public static final String GOLDOR_CHESTPLATE = "TANK_WITHER_CHESTPLATE";
+    public static final String GOLDOR_LEGGINGS = "TANK_WITHER_LEGGINGS";
+    public static final String GOLDOR_BOOTS = "TANK_WITHER_BOOTS";
+
     /*
      * Armor Pieces
      */
@@ -42,6 +47,11 @@ public final class SkyblockItemIds {
     public static final String PURPLES_PURPLE_CLOAK = "PURPLES_PURPLE_CLOAK";
     public static final String FLAMINGO_MASK = "FLAMINGO_MASK";
     public static final String WARDEN_HELMET = "WARDEN_HELMET";
+
+    /*
+     * Pet
+     */
+    public static final String PET = "PET";
 
     /*
      * Misc

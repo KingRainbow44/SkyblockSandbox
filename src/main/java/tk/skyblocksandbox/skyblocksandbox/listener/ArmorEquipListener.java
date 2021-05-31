@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import tk.skyblocksandbox.skyblocksandbox.events.ArmorEquipEvent;
+import tk.skyblocksandbox.skyblocksandbox.event.ArmorEquipEvent;
 import tk.skyblocksandbox.skyblocksandbox.util.armor.ArmorType;
 
 public final class ArmorEquipListener implements Listener {

@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.util;
 
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.pet.SkyblockPet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -425,6 +426,18 @@ public final class Lore {
 
     public Collection<String> advancedLore(SandboxItem item) {
         return null;
+    }
+
+    public Collection<String> petLore(SkyblockPet petObject) {
+        if(hasExtraLore) {
+            throw new IllegalArgumentException("Cannot add extra lore to a Skyblock Pet item.");
+        }
+
+        ArrayList<String> finalLore = new ArrayList<>();
+
+
+
+        return finalLore;
     }
 
 }

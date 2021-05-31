@@ -159,7 +159,7 @@ public final class Utility {
     }
 
     public static String colorize(String message) {
-        return message.replace('&', ChatColor.COLOR_CHAR);
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static String changeCase(String message, boolean upper) {

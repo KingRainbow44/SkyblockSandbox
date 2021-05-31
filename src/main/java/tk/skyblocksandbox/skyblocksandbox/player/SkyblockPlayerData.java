@@ -112,7 +112,7 @@ public final class SkyblockPlayerData {
         playerData.addProperty("pvpEnabled", pvpEnabled);
 
         playerData.addProperty("permissions", playerPermissions.exportData());
-//        playerData.addProperty("storageData", playerStorage.exportData());
+        playerData.addProperty("storageData", playerStorage.exportData());
 
         /*
          * Other
@@ -124,7 +124,7 @@ public final class SkyblockPlayerData {
 
     public void importData(Object previousData) {
         String rawData;
-        if(previousData.toString() == null || previousData.toString().equals("{}")) {
+        if (previousData.toString() == null || previousData.toString().equals("{}")) {
             return;
         } else {
             rawData = previousData.toString();
@@ -139,14 +139,16 @@ public final class SkyblockPlayerData {
         /*
          * Stats
          */
-        health = arrayData.get("health").getAsInt(); currentHealth = health;
+        health = arrayData.get("health").getAsInt();
+        currentHealth = health;
         defense = arrayData.get("defense").getAsInt();
         strength = arrayData.get("strength").getAsInt();
         speed = arrayData.get("speed").getAsInt();
         critChance = arrayData.get("critChance").getAsInt();
         critDamage = arrayData.get("critDamage").getAsInt();
         bonusAttackSpeed = arrayData.get("bonusAttackSpeed").getAsInt();
-        intelligence = arrayData.get("intelligence").getAsInt(); currentMana = intelligence;
+        intelligence = arrayData.get("intelligence").getAsInt();
+        currentMana = intelligence;
         seaCreatureChance = arrayData.get("seaCreatureChance").getAsInt();
         magicFind = arrayData.get("magicFind").getAsInt();
         ferocity = arrayData.get("ferocity").getAsInt();
@@ -164,8 +166,8 @@ public final class SkyblockPlayerData {
          * Classes
          */
         playerPermissions.importData(arrayData.get("permissions"));
-            playerPermissions.addPermissions(rank);
-//        playerStorage.importData(arrayData.get("storageData").toString());
+        playerPermissions.addPermissions(rank);
+        playerStorage.importData(getOrDefault("storageData", arrayData, String.class));
 
         /*
          * Other
@@ -177,8 +179,8 @@ public final class SkyblockPlayerData {
      * @NotNull Returnable
      */
     public Object getOrDefault(String constant, JsonObject array, Class<?> type) {
-        if(array.get(constant) == null) {
-            if(type == String.class) {
+        if (array.get(constant) == null) {
+            if (type == String.class) {
                 return "";
             } else if (type == Integer.class) {
                 return 0;
@@ -208,11 +210,12 @@ public final class SkyblockPlayerData {
     public void damage(long damage) {
         long damageLeft = damage;
 
-        if(absorptionHealth > 0) {
-            if(absorptionHealth >= damageLeft) {
+        if (absorptionHealth > 0) {
+            if (absorptionHealth >= damageLeft) {
                 absorptionHealth -= damageLeft;
             } else {
-                damageLeft -= absorptionHealth; absorptionHealth = 0;
+                damageLeft -= absorptionHealth;
+                absorptionHealth = 0;
                 currentHealth -= damageLeft;
             }
         } else {
@@ -224,7 +227,7 @@ public final class SkyblockPlayerData {
 
     public void heal(int addHealth) {
         int finalHealth = addHealth + currentHealth;
-        if(finalHealth > getFinalMaxHealth()) {
+        if (finalHealth > getFinalMaxHealth()) {
             currentHealth = getFinalMaxHealth();
         } else {
             currentHealth = finalHealth;
@@ -236,7 +239,7 @@ public final class SkyblockPlayerData {
     }
 
     public void removeAbsorptionHealth(int health) {
-        if(absorptionHealth <= health) {
+        if (absorptionHealth <= health) {
             absorptionHealth = 0;
             return;
         }
@@ -251,7 +254,7 @@ public final class SkyblockPlayerData {
 
     public void addMana(int mana) {
         int finalMana = mana + currentMana;
-        if(finalMana > getFinalIntelligence()) {
+        if (finalMana > getFinalIntelligence()) {
             currentMana = getFinalIntelligence();
         } else {
             currentMana = finalMana;
@@ -266,23 +269,27 @@ public final class SkyblockPlayerData {
         int finalStat = 0;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getDamage();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getDamage();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getDamage();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getDamage();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getDamage();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getDamage();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getDamage();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getDamage();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getDamage();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getDamage();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getDamage();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getDamage();
 
         return finalStat;
     }
@@ -291,23 +298,27 @@ public final class SkyblockPlayerData {
         int finalStat = strength;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getStrength();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getStrength();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getStrength();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getStrength();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getStrength();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getStrength();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getStrength();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getStrength();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getStrength();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getStrength();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getStrength();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getStrength();
 
         return finalStat;
     }
@@ -316,23 +327,27 @@ public final class SkyblockPlayerData {
         int finalStat = defense;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getDefense();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getDefense();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getDefense();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getDefense();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getDefense();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getDefense();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getDefense();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getDefense();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getDefense();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getDefense();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getDefense();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getDefense();
 
         return finalStat;
     }
@@ -341,23 +356,27 @@ public final class SkyblockPlayerData {
         int finalStat = trueDefense;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getTrueDefense();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getTrueDefense();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getTrueDefense();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getTrueDefense();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getTrueDefense();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getTrueDefense();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getTrueDefense();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getTrueDefense();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getTrueDefense();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getTrueDefense();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getTrueDefense();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getTrueDefense();
 
         return finalStat;
     }
@@ -366,23 +385,27 @@ public final class SkyblockPlayerData {
         int finalStat = health;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getHealth();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getHealth();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getHealth();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getHealth();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getHealth();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getHealth();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getHealth();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getHealth();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getHealth();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getHealth();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getHealth();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getHealth();
 
         return finalStat;
     }
@@ -391,23 +414,27 @@ public final class SkyblockPlayerData {
         int finalStat = intelligence;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getIntelligence();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getIntelligence();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getIntelligence();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getIntelligence();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getIntelligence();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getIntelligence();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getIntelligence();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getIntelligence();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getIntelligence();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getIntelligence();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getIntelligence();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getIntelligence();
 
         return finalStat;
     }
@@ -416,23 +443,27 @@ public final class SkyblockPlayerData {
         int finalStat = critChance;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getCritChance();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getCritChance();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getCritChance();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getCritChance();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getCritChance();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getCritChance();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getCritChance();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getCritChance();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getCritChance();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getCritChance();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getCritChance();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getCritChance();
 
         return finalStat;
     }
@@ -441,23 +472,27 @@ public final class SkyblockPlayerData {
         int finalStat = critDamage;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getCritDamage();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getCritDamage();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getCritDamage();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getCritDamage();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getCritDamage();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getCritDamage();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getCritDamage();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getCritDamage();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getCritDamage();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getCritDamage();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getCritDamage();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getCritDamage();
 
         return finalStat;
     }
@@ -466,23 +501,27 @@ public final class SkyblockPlayerData {
         int finalStat = bonusAttackSpeed;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getAttackSpeed();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getAttackSpeed();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getAttackSpeed();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getAttackSpeed();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getAttackSpeed();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getAttackSpeed();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getAttackSpeed();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getAttackSpeed();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getAttackSpeed();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getAttackSpeed();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getAttackSpeed();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getAttackSpeed();
 
         return finalStat;
     }
@@ -491,23 +530,27 @@ public final class SkyblockPlayerData {
         int finalStat = speed;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getSpeed();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getSpeed();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getSpeed();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getSpeed();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getSpeed();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getSpeed();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getSpeed();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getSpeed();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getSpeed();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getSpeed();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getSpeed();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getSpeed();
 
         return finalStat;
     }
@@ -516,23 +559,27 @@ public final class SkyblockPlayerData {
         int finalStat = seaCreatureChance;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getSeaCreatureChance();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getSeaCreatureChance();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getSeaCreatureChance();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getSeaCreatureChance();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getSeaCreatureChance();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getSeaCreatureChance();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getSeaCreatureChance();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getSeaCreatureChance();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getSeaCreatureChance();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getSeaCreatureChance();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getSeaCreatureChance();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getSeaCreatureChance();
 
         return finalStat;
     }
@@ -541,23 +588,27 @@ public final class SkyblockPlayerData {
         int finalStat = magicFind;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getMagicFind();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getMagicFind();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getMagicFind();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getMagicFind();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getMagicFind();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getMagicFind();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getMagicFind();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getMagicFind();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getMagicFind();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getMagicFind();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getMagicFind();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getMagicFind();
 
         return finalStat;
     }
@@ -566,23 +617,27 @@ public final class SkyblockPlayerData {
         int finalStat = petLuck;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getPetLuck();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getPetLuck();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getPetLuck();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getPetLuck();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getPetLuck();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getPetLuck();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getPetLuck();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getPetLuck();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getPetLuck();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getPetLuck();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getPetLuck();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getPetLuck();
 
         return finalStat;
     }
@@ -591,23 +646,27 @@ public final class SkyblockPlayerData {
         int finalStat = bonusAbilityDamage;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getAbilityDamage();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getAbilityDamage();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getAbilityDamage();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getAbilityDamage();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getAbilityDamage();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getAbilityDamage();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getAbilityDamage();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getAbilityDamage();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getAbilityDamage();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getAbilityDamage();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getAbilityDamage();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getAbilityDamage();
 
         return finalStat;
     }
@@ -616,23 +675,27 @@ public final class SkyblockPlayerData {
         int finalStat = ferocity;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getFerocity();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getFerocity();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getFerocity();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getFerocity();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getFerocity();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getFerocity();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getFerocity();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getFerocity();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getFerocity();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getFerocity();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getFerocity();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getFerocity();
 
         return finalStat;
     }
@@ -641,23 +704,27 @@ public final class SkyblockPlayerData {
         int finalStat = ferocity;
 
         PlayerInventory inventory = player.getBukkitPlayer().getInventory();
-        boolean useHelmet = false; boolean useChestplate = false; boolean useLeggings = false; boolean useBoots = false;
-        boolean useHand = false; boolean useOffHand = false;
+        boolean useHelmet = false;
+        boolean useChestplate = false;
+        boolean useLeggings = false;
+        boolean useBoots = false;
+        boolean useHand = false;
+        boolean useOffHand = false;
 
-        if(inventory.getHelmet() != null) useHelmet = true;
-        if(inventory.getChestplate() != null) useChestplate = true;
-        if(inventory.getLeggings() != null) useLeggings = true;
-        if(inventory.getBoots() != null) useBoots = true;
+        if (inventory.getHelmet() != null) useHelmet = true;
+        if (inventory.getChestplate() != null) useChestplate = true;
+        if (inventory.getLeggings() != null) useLeggings = true;
+        if (inventory.getBoots() != null) useBoots = true;
 
-        if(inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
-        if(inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
+        if (inventory.getItemInMainHand().getType() != Material.AIR) useHand = true;
+        if (inventory.getItemInOffHand().getType() != Material.AIR) useOffHand = true;
 
-        if(useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getFarmingFortune();
-        if(useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getFarmingFortune();
-        if(useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getFarmingFortune();
-        if(useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getFarmingFortune();
-        if(useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getFarmingFortune();
-        if(useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getFarmingFortune();
+        if (useHelmet) finalStat += new SandboxItemStack(inventory.getHelmet()).getFarmingFortune();
+        if (useChestplate) finalStat += new SandboxItemStack(inventory.getChestplate()).getFarmingFortune();
+        if (useLeggings) finalStat += new SandboxItemStack(inventory.getLeggings()).getFarmingFortune();
+        if (useBoots) finalStat += new SandboxItemStack(inventory.getBoots()).getFarmingFortune();
+        if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getFarmingFortune();
+        if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getFarmingFortune();
 
         return finalStat;
     }
@@ -668,5 +735,9 @@ public final class SkyblockPlayerData {
 
     public SkyblockPlayerPermissions getPermissionsData() {
         return playerPermissions;
+    }
+
+    public SkyblockPlayerStorage getPlayerStorage() {
+        return playerStorage;
     }
 }

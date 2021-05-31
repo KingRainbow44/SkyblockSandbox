@@ -30,10 +30,16 @@ public final class JoinDungeonCommand extends SkyblockCommand {
             case 2:
                 switch(args[0]) {
                     case "catacombs":
-                        if(!sbPlayer.inParty()) return true;
-                        PartyInstance party = sbPlayer.getCurrentParty();
+                        if(!sbPlayer.inParty()) {
+                            sbPlayer.sendMessages("&cYou have to be in a party to use this feature!");
+                            return true;
+                        }
 
-                        if(sbPlayer.getPartyPermissions() != 2) return true;
+                        PartyInstance party = sbPlayer.getCurrentParty();
+                        if(sbPlayer.getPartyPermissions() != 2) {
+                            sbPlayer.sendMessages("&cYou have to be the party leader to use this feature!");
+                            return true;
+                        }
 
                         try {
                             int floor = Integer.parseInt(args[1]);

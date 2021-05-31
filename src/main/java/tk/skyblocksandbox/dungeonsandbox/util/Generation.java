@@ -1,6 +1,7 @@
 package tk.skyblocksandbox.dungeonsandbox.util;
 
 import tk.skyblocksandbox.dungeonsandbox.dungeon.Dungeon;
+import tk.skyblocksandbox.dungeonsandbox.room.Room;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.HashMap;
@@ -8,19 +9,19 @@ import java.util.Map;
 
 public final class Generation {
 
-    private static final Map<AvailableRooms, RoomGenerationTypes> roomSizes = new HashMap<>();
+    private static final Map<AvailableRooms, Room> roomSizes = new HashMap<>();
 
     public Generation() {
-        roomSizes.put(AvailableRooms.ENTRANCE, RoomGenerationTypes.ONE_BY_ONE);
-        roomSizes.put(AvailableRooms.FAIRY_ROOM, RoomGenerationTypes.ONE_BY_ONE);
-        roomSizes.put(AvailableRooms.BLOOD_ROOM_SOUTH, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.ENTRANCE, Room.ENTRANCE);
+        roomSizes.put(AvailableRooms.FAIRY_ROOM, Room.FAIRY_ROOM);
+        roomSizes.put(AvailableRooms.BLOOD_ROOM_SOUTH, Room.BLOOD_ROOM);
 
-        roomSizes.put(AvailableRooms.PRISON_CELL_1, RoomGenerationTypes.ONE_BY_ONE);
-        roomSizes.put(AvailableRooms.BLUE_SKULLS_1, RoomGenerationTypes.ONE_BY_ONE);
-        roomSizes.put(AvailableRooms.ADMIN_1, RoomGenerationTypes.ONE_BY_ONE);
-        roomSizes.put(AvailableRooms.OVERGROWN_3, RoomGenerationTypes.ONE_BY_ONE);
+        roomSizes.put(AvailableRooms.PRISON_CELL_1, Room.PRISON_CELL_1);
+        roomSizes.put(AvailableRooms.BLUE_SKULLS_1, Room.BLUE_SKULLS_1);
+        roomSizes.put(AvailableRooms.ADMIN_1, Room.ADMIN_1);
+        roomSizes.put(AvailableRooms.OVERGROWN_3, Room.OVERGROWN_3);
 
-        roomSizes.put(AvailableRooms.FLAGS_7, RoomGenerationTypes.TWO_BY_TWO);
+        roomSizes.put(AvailableRooms.FLAGS_7, Room.FLAGS_7);
     }
 
     public enum FloorGenerationTypes {

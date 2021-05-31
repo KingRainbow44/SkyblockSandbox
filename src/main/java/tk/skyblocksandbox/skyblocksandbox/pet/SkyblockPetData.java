@@ -1,21 +1,28 @@
-package tk.skyblocksandbox.skyblocksandbox.item;
+package tk.skyblocksandbox.skyblocksandbox.pet;
 
-public class SkyblockItemData {
+import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
+import tk.skyblocksandbox.skyblocksandbox.item.SkyblockItemData;
+
+public final class SkyblockPetData extends SkyblockItemData {
+
+    /*
+     * Static Data Flags
+     */
+
+    public final boolean isDungeonItem = false;
+    public final boolean canDungeonize = false;
+    public final boolean canHaveStars = true;
+
+    public final boolean canReforge = false;
+
+    public final boolean isSkyblockMenu = false;
+
+    public final boolean isMaterial = false;
+    public final boolean isVanilla = false;
 
     /*
      * Data Flags
      */
-
-    public boolean isDungeonItem = false;
-    public boolean canDungeonize = false;
-    public boolean canHaveStars = true;
-
-    public boolean canReforge = true;
-
-    public boolean isSkyblockMenu = false;
-
-    public boolean isMaterial = false;
-    public boolean isVanilla = false;
 
     public int rarity = SandboxItem.COMMON;
 
@@ -57,40 +64,17 @@ public class SkyblockItemData {
      * Abilities
      */
 
-    public boolean hasAbility = false;
-    public boolean hasSecondAbility = false;
-    public boolean hasThirdAbility = false;
-
-    // Abilities - One \\
-    public int abilityTrigger = 0;
-    public String abilityName = "";
-    public String abilityDescription = "";
-
-    public int abilityCooldown = 0;
-    public int abilityCost = 0;
-
-    // Abilities - Two \\
-    public int abilityTrigger2 = 0;
-    public String abilityName2 = "";
-    public String abilityDescription2 = "";
-
-    public int abilityCooldown2 = 0;
-    public int abilityCost2 = 0;
-
-    // Abilities - Three \\
-    public int abilityTrigger3 = 0;
-    public String abilityName3 = "";
-    public String abilityDescription3 = "";
-
-    public int abilityCooldown3 = 0;
-    public int abilityCost3 = 0;
+    public SkyblockPetAbility petAbility1 = null;
+    public SkyblockPetAbility petAbility2 = null;
+    public SkyblockPetAbility petAbility3 = null;
+    public SkyblockPetAbility petAbility4 = null;
 
     /*
      * Attribute Flags
      */
-    public int itemType = -1;
+    public int itemType = SandboxItem.PET;
 
-    public final boolean isPet = false;
+    public final boolean isPet = true;
 
     public int finalDamage() {
         return baseDamage + fraggedDamage;

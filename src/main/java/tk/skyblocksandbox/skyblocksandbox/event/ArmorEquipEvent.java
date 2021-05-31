@@ -1,4 +1,4 @@
-package tk.skyblocksandbox.skyblocksandbox.events;
+package tk.skyblocksandbox.skyblocksandbox.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

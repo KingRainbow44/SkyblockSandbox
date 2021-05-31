@@ -8,6 +8,8 @@ import tk.skyblocksandbox.dungeonsandbox.util.Generation;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
+import java.util.Map;
+
 public abstract class Dungeon {
 
     private final String friendlyName;

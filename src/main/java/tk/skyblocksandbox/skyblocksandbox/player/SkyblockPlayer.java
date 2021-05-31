@@ -3,25 +3,23 @@ package tk.skyblocksandbox.skyblocksandbox.player;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.kingrainbow44.customplayer.player.CustomPlayer;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import me.vagdedes.mysql.database.SQL;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.partyandfriends.party.PartyManager;
 import tk.skyblocksandbox.permitable.rank.PermitableRank;
+import tk.skyblocksandbox.permitable.util.scoreboard.TagChanger;
+import tk.skyblocksandbox.permitable.util.scoreboard.TeamAction;
 import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
@@ -32,9 +30,6 @@ import tk.skyblocksandbox.skyblocksandbox.util.Music;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
 
@@ -65,7 +60,7 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         scoreboard = new HubScoreboard(this);
         if(SkyblockSandbox.getConfiguration().databaseEnabled) {
             if (!SQL.exists("uuid", player.getUniqueId().toString(), "players")) {
-                SQL.insertData("uuid, data", "'" + player.getUniqueId().toString() + "'" + ", '" + "{}" + "'", "players");
+                SQL.insertData("uuid, data", "'" + player.getUniqueId() + "'" + ", '" + "{}" + "'", "players");
             } else if (!SQL.tableExists("players")) {
                 throw new NullPointerException("SQL Table 'players' does not exist.");
             }
@@ -140,13 +135,6 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     /*
      * Get Methods
      */
-
-    /**
-     * @return PlayerConnection - An NMS method used for sending NPC head rotation packets.
-     */
-    public PlayerConnection getPlayerConnection() {
-        return playerConnection;
-    }
 
     public PartyInstance getCurrentParty() {
         return currentParty;
@@ -229,30 +217,10 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     }
 
     public void updateNameTag() {
-        PermitableRank rank = PermitableRank.getRankByEnum(getPlayerData().rank);
-        String nameTagFormat = PermitableRank.formatNameTag(rank.getRankNameTagFormat(), this);
-
-        WrappedDataWatcher dataWatcher = WrappedDataWatcher.getEntityWatcher(this.getBukkitPlayer()).deepClone();
-        WrappedDataWatcher.Serializer chatSerializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true);
-        WrappedDataWatcher.WrappedDataWatcherObject watcherObject = new WrappedDataWatcher.WrappedDataWatcherObject(2, chatSerializer);
-        Optional<Object> optional = Optional.of(WrappedChatComponent.fromChatMessage(
-                nameTagFormat
-        )[0].getHandle());
-        dataWatcher.setObject(watcherObject, optional);
-        dataWatcher.setObject(3, true);
-
-        PacketContainer packet = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
-        packet.getWatchableCollectionModifier().write(0, dataWatcher.getWatchableObjects());
-        packet.getIntegers().write(0, this.getBukkitPlayer().getEntityId());
-
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            try {
-                ProtocolLibrary.getProtocolManager().sendServerPacket(onlinePlayer, packet);
-            } catch (InvocationTargetException ex) {
-                Bukkit.getLogger().severe("Unable to update name tag packet for player " + onlinePlayer.getName() + "!");
-                ex.printStackTrace();
-            }
-        }
+        TagChanger.changePlayerName(
+                getBukkitPlayer(),
+                PermitableRank.getRankByEnum(getPlayerData().rank).getPrefix(), "", TeamAction.CREATE
+        );
     }
 
     /*

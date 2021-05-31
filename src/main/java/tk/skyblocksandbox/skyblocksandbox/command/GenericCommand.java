@@ -51,12 +51,20 @@ public final class GenericCommand extends SkyblockCommand {
 
         if(!continueExecution) {
             commandSender.sendMessage(UNKNOWN_COMMAND);
+            if(commandSender.isOp()) {
+                commandSender.sendMessage("DEBUG: Not a correct command sender.");
+            }
             return true;
         }
 
-        if(!commandSender.hasPermission(permission) || !permission.matches("all")) {
-            commandSender.sendMessage(UNKNOWN_COMMAND);
-            return true;
+        if(!permission.matches("all")) {
+            if(!commandSender.hasPermission(permission)) {
+                commandSender.sendMessage(UNKNOWN_COMMAND);
+                if(commandSender.isOp()) {
+                    commandSender.sendMessage("DEBUG: Not a correct command sender.");
+                }
+                return true;
+            }
         }
 
         if(!method.execute(
@@ -64,6 +72,9 @@ public final class GenericCommand extends SkyblockCommand {
                 args
         )) {
             commandSender.sendMessage(UNKNOWN_COMMAND);
+            if(commandSender.isOp()) {
+                commandSender.sendMessage("DEBUG: Return value of false.");
+            }
             return true;
         }
 

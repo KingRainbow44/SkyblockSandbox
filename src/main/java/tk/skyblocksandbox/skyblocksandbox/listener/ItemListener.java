@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
-import tk.skyblocksandbox.skyblocksandbox.events.ArmorEquipEvent;
+import tk.skyblocksandbox.skyblocksandbox.event.ArmorEquipEvent;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;

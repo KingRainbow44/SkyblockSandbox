@@ -17,6 +17,8 @@ public class SkyblockItemData {
     public boolean isMaterial = false;
     public boolean isVanilla = false;
 
+    public boolean unStackable = false;
+
     public int rarity = SandboxItem.COMMON;
 
     public int baseDamage = 0;

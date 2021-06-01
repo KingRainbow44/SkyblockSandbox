@@ -181,7 +181,7 @@ public final class SkyblockPlayerData {
     public Object getOrDefault(String constant, JsonObject array, Class<?> type) {
         if (array.get(constant) == null) {
             if (type == String.class) {
-                return "";
+                return "{}";
             } else if (type == Integer.class) {
                 return 0;
             } else if (type == JsonArray.class) {
@@ -465,7 +465,7 @@ public final class SkyblockPlayerData {
         if (useHand) finalStat += new SandboxItemStack(inventory.getItemInMainHand()).getCritChance();
         if (useOffHand) finalStat += new SandboxItemStack(inventory.getItemInOffHand()).getCritChance();
 
-        return finalStat;
+        return Math.min(finalStat, 100);
     }
 
     public Integer getFinalCritDamage() {

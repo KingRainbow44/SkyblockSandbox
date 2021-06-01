@@ -29,6 +29,7 @@ public final class NecronsHandle extends SandboxItem {
         itemData.isDungeonItem = true;
         itemData.canHaveStars = false;
         itemData.canReforge = false;
+        itemData.unStackable = true;
 
         itemData.rarity = EPIC;
         itemData.itemType = ITEM;

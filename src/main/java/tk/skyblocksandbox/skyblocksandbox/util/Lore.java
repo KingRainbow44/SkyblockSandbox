@@ -59,10 +59,6 @@ public final class Lore {
         ArrayList<String> finalLore = new ArrayList<>();
 
         int line = 0;
-        if(hasExtraLore && insertLocation == 0) {
-            finalLore.addAll(Arrays.asList(extraLore));
-            line = (extraLore.length - 1);
-        }
 
         /*
          * Lore Generation: Percentages
@@ -367,6 +363,7 @@ public final class Lore {
         switch(item.getItemData().itemType) {
             default:
             case SandboxItem.BREWING_INGREDIENT:
+            case SandboxItem.PET:
             case SandboxItem.OTHER:
                 finalLore.add(line, Utility.colorize(color));
                 break;
@@ -415,6 +412,10 @@ public final class Lore {
             case SandboxItem.BOOTS:
                 finalLore.add(line, Utility.colorize(color + " BOOTS"));
                 break;
+        }
+
+        if(hasExtraLore && insertLocation == 0) {
+            finalLore.addAll(insertLocation, Arrays.asList(extraLore));
         }
 
         if(hasExtraLore && insertLocation > 0) {

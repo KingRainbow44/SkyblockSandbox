@@ -213,7 +213,6 @@ public final class MainSkyblockMenu extends SkyblockMenu {
             player.closeInventory();
         }));
         contents.set(5, 5, makeClickable(Material.REDSTONE_TORCH, settingsMeta, k -> {
-            player.closeInventory();
             SkyblockSandbox.getMenuFactory().serveMenu(SkyblockPlayer.getSkyblockPlayer(player), MenuFactory.MenuList.SKYBLOCK_MENU_SETTINGS);
         }));
     }

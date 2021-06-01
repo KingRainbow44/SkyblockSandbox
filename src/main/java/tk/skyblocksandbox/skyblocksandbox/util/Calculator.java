@@ -146,7 +146,7 @@ public final class Calculator {
 
         int combatSkillLevel = 60/* sbPlayer().getPlayerData().skillCombatLevel */; // TODO: Skills
         int criticalDamage = 1;
-        if(Utility.generateRandomNumber(sbPlayer.getPlayerData().critChance, 100) == 100) {
+        if(Utility.generateRandomNumber(sbPlayer.getPlayerData().getFinalCritChance(), 100) >= 100) {
             criticalDamage = sbPlayer.getPlayerData().critDamage / 100;
         }
 
@@ -158,11 +158,10 @@ public final class Calculator {
         int finalStrength = sbPlayer.getPlayerData().getFinalStrength();
 
         /*
-         * Base Damage = (5 + WeaponDamage + [Strength / 5]) * (1 + [Strength / 100])
+         * Base Damage = (5 + WeaponDamage) * (1 + [Strength / 100])
          */
-        int strengthPart1 = finalStrength / 5;
         int strengthPart2 = finalStrength / 100;
-        int baseDamage = (5 + weaponDamage + strengthPart1) * (1 + strengthPart2);
+        int baseDamage = (5 + weaponDamage) * (1 + strengthPart2);
 
         /*
          * Damage Multiplier = 1 + (Combat Level * 0.04) + Enchantment Bonus + Weapon Bonus
@@ -223,7 +222,6 @@ public final class Calculator {
                     "armor bonus: " + armorBonus,
                     "&9&m--------------------",
                     "total strength (across inventory): " + finalStrength,
-                    "strength p1: " + strengthPart1,
                     "strength p2: " + strengthPart2,
                     "&9&m--------------------",
                     "base damage: " + baseDamage,
@@ -285,7 +283,7 @@ public final class Calculator {
 
         int combatSkillLevel = 60/* sbPlayer().getPlayerData().skillCombatLevel */; // TODO: Skills
         int criticalDamage = 1;
-        if(Math.random() < (sbPlayer.getPlayerData().critChance / 100.0f)) {
+        if(Utility.generateRandomNumber(sbPlayer.getPlayerData().getFinalCritChance(), 100) >= 100) {
             criticalDamage = sbPlayer.getPlayerData().critDamage / 100;
         }
 
@@ -297,11 +295,10 @@ public final class Calculator {
         int finalStrength = sbPlayer.getPlayerData().getFinalStrength();
 
         /*
-         * Base Damage = (5 + WeaponDamage + [Strength / 5]) * (1 + [Strength / 100])
+         * Base Damage = (5 + WeaponDamage) * (1 + [Strength / 100])
          */
-        int strengthPart1 = finalStrength / 5;
         int strengthPart2 = finalStrength / 100;
-        int baseDamage = (5 + weaponDamage + strengthPart1) * (1 + strengthPart2);
+        int baseDamage = (5 + weaponDamage) * (1 + strengthPart2);
 
         /*
          * Damage Multiplier = 1 + (Combat Level * 0.04) + Enchantment Bonus + Weapon Bonus
@@ -365,7 +362,6 @@ public final class Calculator {
                     "armor bonus: " + armorBonus,
                     "&9&m--------------------",
                     "total strength (across inventory): " + finalStrength,
-                    "strength p1: " + strengthPart1,
                     "strength p2: " + strengthPart2,
                     "&9&m--------------------",
                     "base damage: " + baseDamage,
@@ -401,7 +397,7 @@ public final class Calculator {
 
         int combatSkillLevel = 60/* sbPlayer().getPlayerData().skillCombatLevel */; // TODO: Skills
         int criticalDamage = 1;
-        if(Math.random() < (sbPlayer.getPlayerData().critChance / 100.0f)) {
+        if(Utility.generateRandomNumber(sbPlayer.getPlayerData().getFinalCritChance(), 100) >= 100) {
             criticalDamage = sbPlayer.getPlayerData().critDamage / 100;
         }
 
@@ -415,9 +411,8 @@ public final class Calculator {
         /*
          * Base Damage = (5 + WeaponDamage + [Strength / 5]) * (1 + [Strength / 100])
          */
-        int strengthPart1 = finalStrength / 5;
         int strengthPart2 = finalStrength / 100;
-        int baseDamage = (5 + weaponDamage + strengthPart1) * (1 + strengthPart2);
+        int baseDamage = (5 + weaponDamage) * (1 + strengthPart2);
 
         /*
          * Damage Multiplier = 1 + (Combat Level * 0.04) + Enchantment Bonus + Weapon Bonus
@@ -484,7 +479,6 @@ public final class Calculator {
                     "armor bonus: " + armorBonus,
                     "&9&m--------------------",
                     "total strength (across inventory): " + finalStrength,
-                    "strength p1: " + strengthPart1,
                     "strength p2: " + strengthPart2,
                     "&9&m--------------------",
                     "base damage: " + baseDamage,

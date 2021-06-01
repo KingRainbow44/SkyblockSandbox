@@ -25,12 +25,10 @@ public final class SkyblockPlayerStorage {
     public String exportData() {
         JsonObject storageData = new JsonObject();
 
-        pets.getItemsInStorage().forEach((slot, item) -> {
-            storageData.addProperty(
-                    "pet_" + slot,
-                    ItemSerializer.convertItemStackToString((ItemStack) item)
-            );
-        });
+        pets.getItemsInStorage().forEach((slot, item) -> storageData.addProperty(
+                "pet_" + slot,
+                ItemSerializer.convertItemStackToString((ItemStack) item)
+        ));
 
         return Base64.getUrlEncoder().encodeToString(storageData.toString().getBytes());
     }

@@ -52,6 +52,7 @@ public final class Bonemerang extends SandboxItem {
 
         itemData.baseDamage = 270;
         itemData.baseStrength = 130;
+        itemData.unStackable = true;
 
         itemData.hasAbility = true;
         itemData.abilityName = "Swing";

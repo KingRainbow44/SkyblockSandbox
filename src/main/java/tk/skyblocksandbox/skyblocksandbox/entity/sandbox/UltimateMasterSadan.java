@@ -41,12 +41,9 @@ public final class UltimateMasterSadan extends SandboxEntity {
     public void ability() {
         ticks++;
 
-        if(ticks % 20*10 == 0) {
+        if(ticks % 200 == 0) {
             if(Utility.generateRandomNumber(1, 30) == 30) {
-                SandboxEntity sadan = new UltimateMasterSadan();
-                sadan.create(getBukkitEntity().getLocation().add(0, 10, 0));
-
-                setHealth( Math.round(getHealth() + (getHealth() * 0.5)) );
+                setHealth(Math.round(getHealth() + (getHealth() * 0.5)));
             }
         }
     }

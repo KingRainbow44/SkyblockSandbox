@@ -74,8 +74,11 @@ public final class PlayerRunnable implements Runnable {
 
                 sbPlayer.getScoreboard().updateScoreboard();
 
-                if(sbPlayer.getPlayerData().getAbsorptionHealth() == 0) sbPlayer.getPlayerData().heal((int) Math.round(1.5 + (sbPlayer.getPlayerData().getFinalMaxHealth() * 0.1)));
-                sbPlayer.getPlayerData().addMana( sbPlayer.getPlayerData().intelligence / 50 );
+                if(sbPlayer.getPlayerData().getAbsorptionHealth() == 0) sbPlayer.getPlayerData().heal(
+                        (int) (Math.round(1.5 + (sbPlayer.getPlayerData().getFinalMaxHealth() * 0.01)) / 2)
+                );
+
+                sbPlayer.getPlayerData().addMana( sbPlayer.getPlayerData().getFinalIntelligence() / 50 );
 
                 sbPlayer.updateHud();
                 if(sbPlayer.getBukkitPlayer().getInventory().getItemInMainHand().getType() != Material.AIR && !SandboxItemStack.isSandboxItem(sbPlayer.getBukkitPlayer().getInventory().getItemInMainHand())) {

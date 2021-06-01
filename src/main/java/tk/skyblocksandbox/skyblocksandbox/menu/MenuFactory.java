@@ -4,6 +4,7 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryProvider;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.menu.providers.MainSkyblockMenu;
+import tk.skyblocksandbox.skyblocksandbox.menu.providers.PetModifierMenu;
 import tk.skyblocksandbox.skyblocksandbox.menu.providers.SkyblockSettingsMenu;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -27,6 +28,13 @@ public final class MenuFactory {
                 9, 6,
                 "menu.skyblock_menu_settings",
                 "Skyblock Menu"
+        ));
+
+        registerMenu(MenuList.SKYBLOCK_MENU_PET_CREATOR, buildFromProvider(
+                new PetModifierMenu(), MenuList.SKYBLOCK_MENU_MAIN,
+                9, 6,
+                "menu.skyblock_menu_item_creator.pet",
+                "Pet Creator"
         ));
     }
 
@@ -65,7 +73,17 @@ public final class MenuFactory {
     public enum MenuList {
         SKYBLOCK_MENU_MAIN,
         SKYBLOCK_MENU_SETTINGS,
-        SKYBLOCK_MENU_ITEM_CREATOR
+
+        SKYBLOCK_MENU_ITEM_CREATOR,
+        SKYBLOCK_MENU_PET_CREATOR
+    }
+
+    /*
+     * Other Methods
+     */
+
+    public SmartInventory makeUncloseable(SmartInventory inventory) {
+        inventory.setCloseable(false); return inventory;
     }
 
 }

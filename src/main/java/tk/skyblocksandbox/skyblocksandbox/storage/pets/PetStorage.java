@@ -48,10 +48,11 @@ public final class PetStorage implements IStoragePage {
      */
     public Map<Integer, Object> getPets() {
         // TODO: Organize Pets
-        storage.clear();
-
-        for(int i = 0; i <= pets.size(); i++) {
-            storage.put(i, pets.get(i));
+        if(storage.size() > 0) {
+            storage.clear();
+            for(int i = 0; i <= pets.size(); i++) {
+                storage.put(i, pets.get(i));
+            }
         }
 
         return storage;

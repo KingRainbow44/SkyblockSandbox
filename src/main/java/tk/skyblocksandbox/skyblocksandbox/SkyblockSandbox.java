@@ -27,6 +27,7 @@ import tk.skyblocksandbox.skyblocksandbox.command.GenericCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.ItemCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.admin.SummonCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.DebugCommand;
+import tk.skyblocksandbox.skyblocksandbox.command.all.PetCommand;
 import tk.skyblocksandbox.skyblocksandbox.command.all.SandboxCommand;
 import tk.skyblocksandbox.skyblocksandbox.listener.*;
 import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
@@ -93,6 +94,7 @@ public final class SkyblockSandbox extends JavaPlugin {
         registerCommand(new SandboxCommand());
         registerCommand(new DebugCommand());
         registerCommand(new SummonCommand());
+        registerCommand(new PetCommand());
 
         registerRunnable(new PlayerRunnable(), 1L);
         registerRunnable(new EntityRunnable(), 1L);

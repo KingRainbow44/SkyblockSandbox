@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.graalvm.compiler.core.common.util.Util;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
@@ -65,6 +66,10 @@ public abstract class SandboxItem {
         NBTCompound nbt = itemNbt.addCompound("itemData");
 
         // NBT Tags - START \\
+        if(getItemData().unStackable) {
+            nbt.setString("randomizedString", Utility.generateRandomString());
+        }
+
         nbt.setBoolean("isVanilla", getItemData().isVanilla);
         nbt.setBoolean("isSkyblockMenu", getItemData().isSkyblockMenu);
 

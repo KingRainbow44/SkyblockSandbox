@@ -4,6 +4,10 @@ import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.chestplates.PurplesPupleCloak;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.goldor.GoldorBoots;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.goldor.GoldorChestplate;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.goldor.GoldorHelmet;
+import tk.skyblocksandbox.skyblocksandbox.item.armor.goldor.GoldorLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.CraftyzFrenchBread;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.FlamingoMask;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.helmets.WardenHelmet;
@@ -18,6 +22,7 @@ import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
 import tk.skyblocksandbox.skyblocksandbox.item.misc.SkyblockMenu;
 import tk.skyblocksandbox.skyblocksandbox.item.misc.TheCarottesCarrot;
+import tk.skyblocksandbox.skyblocksandbox.item.pets.GenericPet;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.*;
 import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
 
@@ -29,8 +34,7 @@ public final class SkyblockItemFactory {
     private final Map<String, SandboxItem> items = new HashMap<>();
 
     public SkyblockItemFactory() {
-        registerItem(new Hyperion());
-        registerItem(new Valkyrie());
+        registerItem(new Hyperion()); registerItem(new Valkyrie());
         registerItem(new MidasStaff());
         registerItem(new Bonemerang());
         registerItem(new AxeOfTheShredded());
@@ -39,15 +43,11 @@ public final class SkyblockItemFactory {
 
         registerItem(new NecronsHandle());
 
-        registerItem(new NecronHelmet());
-        registerItem(new NecronChestplate());
-        registerItem(new NecronLeggings());
-        registerItem(new NecronBoots());
+        registerItem(new NecronHelmet()); registerItem(new NecronChestplate()); registerItem(new NecronLeggings()); registerItem(new NecronBoots());
 
-        registerItem(new StormHelmet());
-        registerItem(new StormChestplate());
-        registerItem(new StormLeggings());
-        registerItem(new StormBoots());
+        registerItem(new StormHelmet()); registerItem(new StormChestplate()); registerItem(new StormLeggings()); registerItem(new StormBoots());
+
+        registerItem(new GoldorHelmet()); registerItem(new GoldorChestplate()); registerItem(new GoldorLeggings()); registerItem(new GoldorBoots());
 
         registerItem(new CraftyzFrenchBread());
         registerItem(new FlamingoMask());
@@ -56,6 +56,8 @@ public final class SkyblockItemFactory {
 
         registerItem(new SkyblockMenu());
         registerItem(new TheCarottesCarrot());
+
+        registerItem(new GenericPet());
     }
 
     public void registerItem(SandboxItem item) {

@@ -28,6 +28,7 @@ import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.util.Music;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
+import tk.skyblocksandbox.skyblocksandbox.util.ram.FieldInstance;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -46,6 +47,8 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     private final PlayerConnection playerConnection;
 
     private PartyInstance currentParty = null;
+
+    private final FieldInstance fieldInstance = new FieldInstance();
 
     /*
      * Private Methods/Data Methods
@@ -135,6 +138,14 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
     /*
      * Get Methods
      */
+
+    /**
+     * A convenient way of accessing and writing data to a player without creating more variables.
+     * @return The FieldInstance. The player ram.
+     */
+    public FieldInstance getPlayerRam() {
+        return fieldInstance;
+    }
 
     public PartyInstance getCurrentParty() {
         return currentParty;

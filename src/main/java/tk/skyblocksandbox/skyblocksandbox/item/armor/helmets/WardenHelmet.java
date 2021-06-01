@@ -41,7 +41,7 @@ public final class WardenHelmet extends SandboxItem {
         itemData.hasAbility = true;
         itemData.abilityName = "Brute Force";
         itemData.abilityDescription = "&7Halves your speed but grants\n" +
-                "&c+10% &7base weapon damage for\n" +
+                "&c+20% &7base weapon damage for\n" +
                 "&7every &a25 &7speed";
 
         return itemData;
@@ -104,7 +104,7 @@ public final class WardenHelmet extends SandboxItem {
 
         if(sbPlayer.getPlayerData().debugStateMessages) sbPlayer.sendMessages("final damage increase: " + damageIncrease);
         for(int i = 0; i <= damageIncrease; i++) {
-            sbPlayer.getPlayerData().baseDamageIncrease += 0.1;
+            sbPlayer.getPlayerData().baseDamageIncrease += 0.2;
         }
     }
 

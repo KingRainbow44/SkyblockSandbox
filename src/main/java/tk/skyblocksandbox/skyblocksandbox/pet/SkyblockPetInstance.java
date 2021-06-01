@@ -2,6 +2,7 @@ package tk.skyblocksandbox.skyblocksandbox.pet;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public final class SkyblockPetInstance {
@@ -73,5 +74,21 @@ public final class SkyblockPetInstance {
     public void setPetExperience(long experience) {
         petData.setLong("petExperience", experience);
     }
+
+    /*
+     * Static Get Methods
+     */
+
+    public static boolean isPet(ItemStack pet) {
+        if(pet == null || pet.getType() == Material.AIR) {
+            return false;
+        }
+
+        NBTItem nbtPet = new NBTItem(pet, true);
+        if(!nbtPet.hasKey("itemData")) return false; NBTCompound itemData = nbtPet.getCompound("itemData");
+
+        return itemData.hasKey("petData");
+    }
+
 
 }

@@ -124,7 +124,7 @@ public final class AxeOfTheShredded extends SandboxItem {
                     axeThrows.replace(player, 0);
                 }
             }
-        }.runTaskLater(SkyblockSandbox.getInstance(), 10L);
+        }.runTaskLater(SkyblockSandbox.getInstance(), 20*3);
 
         Location throwLoc = player.getLocation().add(0, 1.2, 0);
         Vector throwVec = player.getLocation().add(player.getLocation().getDirection().multiply(10)).toVector().subtract(player.getLocation().toVector()).normalize().multiply(1.2D);

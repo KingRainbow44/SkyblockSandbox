@@ -1,33 +1,34 @@
 package tk.skyblocksandbox.skyblocksandbox.util;
 
+import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R3.ChatMessageType;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.LocaleLanguage;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
-import org.apache.commons.lang3.text.translate.*;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import tk.skyblocksandbox.permitable.rank.PermitableRank;
-import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Utility {
 
@@ -376,6 +377,24 @@ public final class Utility {
         steps.add(loopOver); steps.add(loopQuantity);
 
         return steps;
+    }
+
+    public static boolean isValidUsername(String username) throws IOException {
+        URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + username);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        return connection.getResponseCode() != HttpURLConnection.HTTP_NO_CONTENT;
+    }
+
+    public static int getLastIntFromString(String string) {
+        String result = "0";
+
+        Pattern p = Pattern.compile("[0-9]+$");
+        Matcher m = p.matcher(string);
+        if(m.find()) {
+            result = m.group();
+        }
+
+        return Integer.parseInt(result);
     }
 
 }

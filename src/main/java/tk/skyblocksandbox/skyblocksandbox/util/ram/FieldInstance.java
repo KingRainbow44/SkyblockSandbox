@@ -26,14 +26,9 @@ public final class FieldInstance {
     /**
      * @param field The value to write to.
      * @param data The data to write to the value.
-     * @param serialize Should the object be serialized?
      * @return The previous data.
      */
-    public Object writeValue(Value field, Object data, boolean serialize) {
-        if(serialize) {
-
-        }
-
+    public Object writeValue(Value field, Object data) {
         return values.put(field, data);
     }
 

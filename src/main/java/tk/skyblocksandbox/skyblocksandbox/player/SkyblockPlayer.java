@@ -24,6 +24,7 @@ import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocations;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.item.*;
+import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.HubScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.scoreboard.SkyblockScoreboard;
 import tk.skyblocksandbox.skyblocksandbox.util.Music;
@@ -316,6 +317,14 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Opens a menu specified by the plugin.
+     * @param menu The menu to open.
+     */
+    public void openMenu(MenuFactory.MenuList menu) {
+        SkyblockSandbox.getMenuFactory().serveMenu(this, menu);
     }
 
     /*

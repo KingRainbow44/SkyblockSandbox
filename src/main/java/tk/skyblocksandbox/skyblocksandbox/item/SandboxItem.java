@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.graalvm.compiler.core.common.util.Util;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
@@ -39,7 +38,10 @@ public abstract class SandboxItem {
         // Item Meta - START \\
         ItemMeta meta = item.getItemMeta();
         if(meta != null) {
-            meta.setUnbreakable(true);
+            if(baseItem.getMaxStackSize() == 1) {
+                meta.setUnbreakable(true);
+            }
+
             meta.setDisplayName(Utility.rarityToColor(getItemData().rarity) + itemName);
             meta.setLore(new ArrayList<>(getLore()));
 
@@ -70,7 +72,15 @@ public abstract class SandboxItem {
             nbt.setString("randomizedString", Utility.generateRandomString());
         }
 
+        if(getItemData().isPet) {
+            NBTCompound petData = nbt.addCompound("petData");
+            petData.setString("petName", "Skyblock");
+            petData.setInteger("petLevel", 1);
+            petData.setLong("petExperience", 0L);
+        }
+
         nbt.setBoolean("isVanilla", getItemData().isVanilla);
+        nbt.setBoolean("isPet", getItemData().isPet);
         nbt.setBoolean("isSkyblockMenu", getItemData().isSkyblockMenu);
 
         nbt.setString("itemId", internalId);

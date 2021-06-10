@@ -37,6 +37,7 @@ import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.runnable.EntityRunnable;
 import tk.skyblocksandbox.skyblocksandbox.runnable.PlayerRunnable;
 import tk.skyblocksandbox.skyblocksandbox.runnable.RegionCheck;
+import tk.skyblocksandbox.skyblocksandbox.util.sign.SignMenuFactory;
 
 public final class SkyblockSandbox extends JavaPlugin {
 
@@ -68,8 +69,11 @@ public final class SkyblockSandbox extends JavaPlugin {
         api.initialize();
 
         management = new SkyblockManager();
+
         management.setInventoryManager(new InventoryManager(this));
         management.getInventoryManager().init();
+
+        management.setSignManager(new SignMenuFactory(this));
 
         menuFactory = new MenuFactory();
 

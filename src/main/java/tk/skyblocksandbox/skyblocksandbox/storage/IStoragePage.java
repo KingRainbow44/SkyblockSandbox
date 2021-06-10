@@ -4,12 +4,12 @@ import java.util.Map;
 
 public interface IStoragePage {
 
-    public Map<Integer, Object> getItemsInStorage();
+    Map<Integer, Object> getItemsInStorage();
 
-    public void putItemIntoStorage(int slot, Object item);
+    void putItemIntoStorage(int slot, Object item);
 
-    public void removeItemFromStorage(int slot);
+    void removeItemFromStorage(int slot);
 
-    public void swapStorage(IStoragePage newStorage);
+    void swapStorage(IStoragePage newStorage);
 
 }

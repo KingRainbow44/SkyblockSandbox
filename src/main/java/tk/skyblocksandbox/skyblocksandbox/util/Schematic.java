@@ -52,10 +52,10 @@ public final class Schematic {
             new Thread(() -> {
                 editSession[0] = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
                 operation[0] = new ClipboardHolder(clipboard).createPaste(editSession[0]).to(BlockVector3.at(location.getX(), location.getY(), location.getZ())).ignoreAirBlocks(true).build();
-            }).start();
 
-            Operations.complete(operation[0]);
-            editSession[0].flushSession();
+                Operations.complete(operation[0]);
+                editSession[0].flushSession();
+            }).start();
         } catch (IOException | WorldEditException e) {
             Bukkit.getLogger().warning("Unable to paste schematic " + schematicName + ".schem: Exception caught. Check below for stack-trace.");
             e.printStackTrace();

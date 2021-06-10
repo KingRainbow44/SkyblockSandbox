@@ -1,15 +1,15 @@
 package tk.skyblocksandbox.skyblocksandbox.player;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
 import tk.skyblocksandbox.skyblocksandbox.pet.SkyblockPet;
 import tk.skyblocksandbox.skyblocksandbox.storage.IStoragePage;
 import tk.skyblocksandbox.skyblocksandbox.storage.StoragePage;
+import tk.skyblocksandbox.skyblocksandbox.storage.inventory.InventoryStorage;
 import tk.skyblocksandbox.skyblocksandbox.storage.pets.PetStorage;
 import tk.skyblocksandbox.skyblocksandbox.util.ItemSerializer;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -20,7 +20,16 @@ public final class SkyblockPlayerStorage {
 
     private final Map<Integer, StoragePage> enderchest = new HashMap<>();
     private final Map<Integer, StoragePage> storage = new HashMap<>();
+
+    private final InventoryStorage inventoryStorage;
     private final PetStorage pets = new PetStorage();
+
+    private final SkyblockPlayer sbPlayer;
+
+    public SkyblockPlayerStorage(SkyblockPlayer sbPlayer) {
+        this.sbPlayer = sbPlayer;
+        inventoryStorage = new InventoryStorage(sbPlayer.getBukkitPlayer().getInventory());
+    }
 
     public String exportData() {
         JsonObject storageData = new JsonObject();
@@ -28,6 +37,12 @@ public final class SkyblockPlayerStorage {
         pets.getItemsInStorage().forEach((slot, item) -> storageData.addProperty(
                 "pet_" + slot,
                 ItemSerializer.convertItemStackToString((ItemStack) item)
+        ));
+
+        inventoryStorage.putInventory(sbPlayer.getBukkitPlayer().getInventory());
+        inventoryStorage.getItemsInStorage().forEach((slot, item) -> storageData.addProperty(
+                "inventory_" + slot,
+                (String) item
         ));
 
         return Base64.getUrlEncoder().encodeToString(storageData.toString().getBytes());
@@ -49,15 +64,32 @@ public final class SkyblockPlayerStorage {
 
         Map<String, Object> attributes = new HashMap<>();
         Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-        for(Map.Entry<String,JsonElement> entry : entrySet){
+        for(Map.Entry<String, JsonElement> entry : entrySet){
             attributes.put(entry.getKey(), jsonObject.get(entry.getKey()));
         }
 
         attributes.forEach((key, val) -> {
-            if(key.contains("pet_")) {
-                int intVal = Integer.parseInt(key.substring(key.lastIndexOf("_") + 1));
-                pets.putItemIntoStorage(intVal, ItemSerializer.convertStringToItemStack((String) val));
+            int slot = Utility.getLastIntFromString(key);
+
+            if(key != null && key.contains("pet_")) {
+                if(val instanceof String) {
+                    pets.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack((String) val));
+                } else if (val instanceof JsonPrimitive) {
+                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack(
+                            ((JsonPrimitive) val).getAsString()
+                    ));
+                }
             }
+
+            if(key != null || key.contains("inventory_")) {
+                if(val instanceof String) {
+                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack((String) val));
+                } else if (val instanceof JsonPrimitive) {
+                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack(
+                            ((JsonPrimitive) val).getAsString()
+                    ));
+                }
+            } inventoryStorage.restoreInventory(sbPlayer.getBukkitPlayer().getInventory());
         });
     }
 
@@ -71,6 +103,10 @@ public final class SkyblockPlayerStorage {
 
     public IStoragePage getPetStorage() {
         return pets;
+    }
+
+    public IStoragePage getInventoryStorage() {
+        return inventoryStorage;
     }
 
     public void addToEnderChest(int slot, int page, SandboxItemStack item) {

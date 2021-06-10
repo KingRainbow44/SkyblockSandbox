@@ -57,7 +57,6 @@ public final class Lore {
         }
 
         ArrayList<String> finalLore = new ArrayList<>();
-
         int line = 0;
 
         /*
@@ -429,14 +428,167 @@ public final class Lore {
         return null;
     }
 
-    public Collection<String> petLore(SkyblockPet petObject) {
+    public Collection<String> petLore(SkyblockPet item) {
         if(hasExtraLore) {
             throw new IllegalArgumentException("Cannot add extra lore to a Skyblock Pet item.");
         }
 
         ArrayList<String> finalLore = new ArrayList<>();
+        int line = 0;
+
+        /*
+         * Lore Generation: Percentages
+         */
+        boolean addBreak1 = false;
+        if(item.getItemData().isDungeonItem && !item.getItemData().isMaterial) {
+            finalLore.add(line, Utility.colorize("&7Gear Score: &d--- &8(---)"));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseDamage > 0) {
+            finalLore.add(line, Utility.colorize("&7Damage: &c+" + item.getItemData().finalDamage()));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseStrength > 0) {
+            finalLore.add(line, Utility.colorize("&7Strength: &c+" + item.getItemData().finalStrength()));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseCriticalStrikeChance > 0) {
+            finalLore.add(line, Utility.colorize("&7Crit Chance: &c+" + item.getItemData().finalCritChance() + "%"));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseCriticalDamage > 0) {
+            finalLore.add(line, Utility.colorize("&7Crit Damage: &c+" + item.getItemData().finalCritDamage() + "%"));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseBonusAttackSpeed > 0) {
+            finalLore.add(line, Utility.colorize("&7Bonus Attack Speed: &c+" + item.getItemData().finalAttackSpeed() + "%"));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseSeaCreatureChance > 0) {
+            finalLore.add(line, Utility.colorize("&7Sea Creature Chance: &c+" + item.getItemData().finalSeaCreatureChance() + "%"));
+            line++; addBreak1 = true;
+        }
+
+        if(item.getItemData().baseAbilityDamage > 0) {
+            finalLore.add(line, Utility.colorize("&7Ability Damage: &c+" + item.getItemData().finalAbilityDamage() + "%"));
+            line++; addBreak1 = true;
+        }
 
 
+        // Break
+        if(line > 1 && addBreak1) {
+            finalLore.add(line, " ");
+            line++;
+        }
+        // Break
+
+        /*
+         * Lore Generation: Integers
+         */
+        boolean addBreak2 = false;
+        if(item.getItemData().baseHealth > 0) {
+            finalLore.add(line, Utility.colorize("&7Health: &a+" + item.getItemData().finalHealth() + " HP"));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().baseDefense > 0) {
+            finalLore.add(line, Utility.colorize("&7Defense: &a+" + item.getItemData().finalDefense()));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().baseSpeed > 0) {
+            finalLore.add(line, Utility.colorize("&7Speed: &a+" + item.getItemData().finalSpeed()));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().baseIntelligence > 0) {
+            finalLore.add(line, Utility.colorize("&7Intelligence: &a+" + item.getItemData().finalIntelligence()));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().baseTrueDefense > 0) {
+            finalLore.add(line, Utility.colorize("&7True Defense: &a+" + item.getItemData().finalTrueDefense()));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().baseMagicFind > 0) {
+            finalLore.add(line, Utility.colorize("&7Magic Find: &a+" + item.getItemData().finalMagicFind()));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().basePetLuck > 0) {
+            finalLore.add(line, Utility.colorize("&7Pet Luck: &a+" + item.getItemData().finalPetLuck()));
+            line++; addBreak2 = true;
+        }
+
+        if(item.getItemData().baseFerocity > 0) {
+            finalLore.add(line, Utility.colorize("&7Ferocity: &a+" + item.getItemData().finalFerocity()));
+            line++; addBreak2 = true;
+        }
+
+
+        // Break
+        if(line > 1 && addBreak2) {
+            finalLore.add(line, " ");
+            line++;
+        }
+        // Break
+
+        /*
+         * Abilities
+         */
+        boolean addBreak3 = false;
+        
+
+        // Break
+        if(line > 2 && addBreak3) {
+            finalLore.add(line, " ");
+            line++;
+        }
+        // Break
+
+        String color;
+        switch(item.getItemData().rarity) {
+            default:
+            case SandboxItem.COMMON:
+                color = Utility.colorize("&f&lCOMMON");
+                break;
+            case SandboxItem.UNCOMMON:
+                color = Utility.colorize("&a&lUNCOMMON");
+                break;
+            case SandboxItem.RARE:
+                color = Utility.colorize("&9&lRARE");
+                break;
+            case SandboxItem.EPIC:
+                color = Utility.colorize("&5&lEPIC");
+                break;
+            case SandboxItem.LEGENDARY:
+                color = Utility.colorize("&6&lLEGENDARY");
+                break;
+            case SandboxItem.MYTHIC:
+                color = Utility.colorize("&d&lMYTHIC");
+                break;
+            case SandboxItem.PURPLE:
+                color = Utility.colorize("&d&lPURPLE");
+                break;
+            case SandboxItem.SPECIAL:
+                color = Utility.colorize("&c&lSPECIAL");
+                break;
+            case SandboxItem.VERY_SPEICAL:
+                color = Utility.colorize("&c&lVERY SPECIAL");
+                break;
+            case SandboxItem.SUPREME:
+                color = Utility.colorize("&4&lSUPREME");
+                break;
+        }
+
+        finalLore.add(line, Utility.colorize(color));
 
         return finalLore;
     }

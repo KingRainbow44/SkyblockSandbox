@@ -200,7 +200,7 @@ public final class MainSkyblockMenu extends SkyblockMenu {
             player.sendMessage(ChatColor.RED + "This feature hasn't been implemented yet!");
         }));
         contents.set(3, 4, makeClickable(Material.CRAFTING_TABLE, craftingMeta, k -> {
-            player.sendMessage(ChatColor.RED + "This feature hasn't been implemented yet!");
+            player.openWorkbench(null, true);
         }));
         contents.set(3, 5, makeClickable(Material.LEATHER_CHESTPLATE, wardrobeMeta, k -> {
             player.sendMessage(ChatColor.RED + "This feature hasn't been implemented yet!");

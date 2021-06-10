@@ -77,7 +77,7 @@ public final class SkyblockPlayerData {
     public SkyblockPlayerData(SkyblockPlayer player) {
         this.player = player;
         playerPermissions = new SkyblockPlayerPermissions(player);
-        playerStorage = new SkyblockPlayerStorage();
+        playerStorage = new SkyblockPlayerStorage(player);
     }
 
     /*

@@ -1,5 +1,7 @@
 package tk.skyblocksandbox.skyblocksandbox.item;
 
+import tk.skyblocksandbox.skyblocksandbox.pet.SkyblockPetAbility;
+
 public class SkyblockItemData {
 
     /*
@@ -63,6 +65,11 @@ public class SkyblockItemData {
     public boolean hasSecondAbility = false;
     public boolean hasThirdAbility = false;
 
+    public SkyblockPetAbility petAbility1 = null;
+    public SkyblockPetAbility petAbility2 = null;
+    public SkyblockPetAbility petAbility3 = null;
+    public SkyblockPetAbility petAbility4 = null;
+
     // Abilities - One \\
     public int abilityTrigger = 0;
     public String abilityName = "";
@@ -92,7 +99,7 @@ public class SkyblockItemData {
      */
     public int itemType = -1;
 
-    public final boolean isPet = false;
+    public boolean isPet = false;
 
     public int finalDamage() {
         return baseDamage + fraggedDamage;

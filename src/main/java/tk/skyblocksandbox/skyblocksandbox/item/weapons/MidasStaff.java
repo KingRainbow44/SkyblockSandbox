@@ -19,6 +19,7 @@ import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;
 import tk.skyblocksandbox.skyblocksandbox.util.Cuboid;
 import tk.skyblocksandbox.skyblocksandbox.util.Lore;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,7 +82,7 @@ public final class MidasStaff extends SandboxItem {
         World world = player.getWorld();
 
         Vector direction = player.getLocation().getDirection();
-        Location nextLocation = player.getLocation().add(direction);
+        Location nextLocation = Utility.floor(player.getLocation().add(direction));
         Block nextBlock = nextLocation.getBlock();
 
         Collection<Location> possibleBlocks = new ArrayList<>();
@@ -110,8 +111,9 @@ public final class MidasStaff extends SandboxItem {
                 Collection<Entity> damaged = new ArrayList<>();
                 for(Object rawLoc : possibleBlocks.toArray()) {
                     if(rawLoc instanceof Location) {
-                        Location location = (Location) rawLoc;
+                        Location location = Utility.floor((Location) rawLoc);
                         world.spawnParticle(Particle.BLOCK_DUST, location, 1, 1, 0.1, 0.1, Material.GOLD_BLOCK.createBlockData());
+
                         for(Entity entity : world.getNearbyEntities(location, 1, 1, 1)) {
                             if(entity.hasMetadata("skyblockEntityId") && !damaged.contains(entity)) {
                                 damaged.add(entity);
@@ -123,8 +125,10 @@ public final class MidasStaff extends SandboxItem {
                         }
 
                         for (Block block : getBlocks(player, location.getBlock())) {
-                            world.spawnParticle(Particle.BLOCK_DUST, block.getLocation(), 1, 1, 0.1, 0.1, Material.GOLD_BLOCK.createBlockData());
-                            for(Entity entity : world.getNearbyEntities(block.getLocation(), 1, 1, 1)) {
+                            Location blockLoc = Utility.floor(block.getLocation());
+                            world.spawnParticle(Particle.BLOCK_DUST, blockLoc, 1, 1, 0.1, 0.1, Material.GOLD_BLOCK.createBlockData());
+
+                            for(Entity entity : world.getNearbyEntities(blockLoc, 1, 1, 1)) {
                                 if(entity.hasMetadata("skyblockEntityId") && !damaged.contains(entity)) {
                                     damaged.add(entity);
                                     SandboxEntity sbEntity = SandboxEntity.getSandboxEntity(entity);
@@ -151,7 +155,7 @@ public final class MidasStaff extends SandboxItem {
     }
 
     private Block getBlockFrom(Player player, Block centerBlock, Directions direction) {
-        BlockFace facing = fromDirection(player, centerBlock);
+        BlockFace facing = player.getFacing();
         switch(facing) {
             default:
             case NORTH:
@@ -187,36 +191,6 @@ public final class MidasStaff extends SandboxItem {
                 } else {
                     return centerBlock.getRelative(0, 0, -1);
                 }
-        }
-    }
-
-    private BlockFace fromDirection(Player player, Block targetBlock) {
-        float direction = (float) Math.toDegrees(Math.atan2(player.getLocation().getBlockX() - targetBlock.getX(), targetBlock.getZ() - player.getLocation().getBlockZ()));
-        direction = direction % 360;
-
-        if(direction < 0)
-            direction += 360;
-
-        direction = Math.round(direction / 45);
-
-        switch((int) direction){
-            default:
-            case 0:
-                return BlockFace.WEST;
-            case 1:
-                return BlockFace.NORTH_WEST;
-            case 2:
-                return BlockFace.NORTH;
-            case 3:
-                return BlockFace.NORTH_EAST;
-            case 4:
-                return BlockFace.EAST;
-            case 5:
-                return BlockFace.SOUTH_EAST;
-            case 6:
-                return BlockFace.SOUTH;
-            case 7:
-                return BlockFace.SOUTH_WEST;
         }
     }
 

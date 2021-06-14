@@ -9,6 +9,7 @@ import me.vagdedes.mysql.database.SQL;
 import net.minecraft.server.v1_16_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -204,6 +205,12 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
         return SandboxItemStack.toSandboxItem(bukkitItem);
     }
 
+    public SandboxItemStack getItemStackOfHand(boolean mainHand) {
+        ItemStack bukkitItem = mainHand ? getBukkitPlayer().getInventory().getItemInMainHand() : getBukkitPlayer().getInventory().getItemInOffHand();
+
+        return new SandboxItemStack(bukkitItem);
+    }
+
     public SkyblockScoreboard getScoreboard() {
         return scoreboard;
     }
@@ -240,7 +247,6 @@ public class SkyblockPlayer extends CustomPlayer implements ICustomPlayer {
      */
 
     private String getHudHealth() {
-
         if(getPlayerData().absorptionHealth > 0) {
             return "&6" + (getPlayerData().currentHealth + getPlayerData().absorptionHealth) + "/" + playerData.getFinalMaxHealth() + "❤";
         }

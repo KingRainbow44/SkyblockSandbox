@@ -53,7 +53,7 @@ public class FileUtils {
         }
     }
 
-    private static File[] verifiedListFiles(File directory) throws IOException{
+    private static File[] verifiedListFiles(File directory) throws IOException {
         if(!directory.exists()){
             final String message = directory + " does not exist";
             throw new IllegalArgumentException(message);
@@ -71,7 +71,7 @@ public class FileUtils {
         return files;
     }
 
-    private static boolean isSymlink(final File file) throws IOException{
+    private static boolean isSymlink(final File file) {
         if(file == null){
             throw new NullPointerException("File must no be null");
         }

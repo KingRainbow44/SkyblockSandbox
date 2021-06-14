@@ -15,12 +15,27 @@ public final class SandboxItemStack {
 
     public SandboxItemStack(ItemStack item) {
         this.item = item;
-        this.nbtItem = new NBTItem(item);
+
+        if(item.getType() == Material.AIR) {
+            ItemStack clone = item.clone();
+            clone.setType(Material.STRUCTURE_VOID);
+
+            this.nbtItem = new NBTItem(clone);
+        } else {
+            this.nbtItem = new NBTItem(item);
+        }
 
         sandboxItem = toSandboxItem(item);
     }
 
     public ItemStack getBukkitItemStack() {
+        if(item.getType() == Material.STRUCTURE_VOID) {
+            ItemStack itemStack = item.clone();
+            itemStack.setType(Material.AIR);
+
+            return itemStack;
+        }
+
         return item;
     }
 

@@ -2,6 +2,7 @@ package tk.skyblocksandbox.skyblocksandbox.item.weapons;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -67,8 +68,9 @@ public final class GiantsSword extends SandboxItem {
         Block block = player.getTargetBlock(null, 6);
         World world = block.getWorld();
 
-        LivingEntity giant = (LivingEntity) world.spawnEntity(block.getLocation(), EntityType.GIANT);
-        LivingEntity ride = (LivingEntity) world.spawnEntity(block.getLocation(), EntityType.ARMOR_STAND);
+        Location loc = block.getLocation().subtract(0, 1, 0);
+        LivingEntity giant = (LivingEntity) world.spawnEntity(Utility.floor(loc), EntityType.GIANT);
+        LivingEntity ride = (LivingEntity) world.spawnEntity(Utility.floor(loc), EntityType.ARMOR_STAND);
 
         ride.setMetadata("isNotSkyblockEntity", new FixedMetadataValue(SkyblockSandbox.getInstance(), true));
         ride.setInvisible(true);

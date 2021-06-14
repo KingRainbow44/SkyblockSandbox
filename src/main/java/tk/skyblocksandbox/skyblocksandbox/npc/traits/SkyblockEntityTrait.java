@@ -5,9 +5,7 @@ import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
@@ -200,9 +198,16 @@ public final class SkyblockEntityTrait extends Trait {
             if(target == null) {
                 target = getNextEntity(32); if(target == null || target.hasMetadata("NPC")) return;
                 getNPC().getNavigator().setTarget(target.getLocation());
+                if(target instanceof LivingEntity) {
+                    ((Monster) getNPC().getEntity()).setTarget((LivingEntity) target);
+                }
             } else {
                 if(target.hasMetadata("NPC")) return;
                 npc.getNavigator().setTarget(target, true);
+
+                if(target instanceof LivingEntity) {
+                    ((Monster) getNPC().getEntity()).setTarget((LivingEntity) target);
+                }
             }
         }
     }

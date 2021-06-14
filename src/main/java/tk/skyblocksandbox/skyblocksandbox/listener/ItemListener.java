@@ -51,6 +51,9 @@ public final class ItemListener implements Listener {
         if(sbItem == null) return;
 
         sbItem.ability(ability, sbPlayer);
+        if(sbItem.shouldCancel()) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

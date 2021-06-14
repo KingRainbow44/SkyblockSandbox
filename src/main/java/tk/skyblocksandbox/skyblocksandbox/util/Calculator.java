@@ -34,6 +34,8 @@ public final class Calculator {
             strikes++;
         }
 
+        if(strikes > 50) strikes = 50;
+
         return strikes;
     }
 
@@ -46,6 +48,8 @@ public final class Calculator {
             strikes = (int) Math.floor(ferocity / 100f);
             if(Utility.generateRandomNumber(remainingFerocity, 100) == 100) strikes++;
         }
+
+        if(strikes > 50) strikes = 50;
 
         for(int i = 0; i <= strikes; i++) {
             if(sbPlayer.getPlayerData().debugStateMessages) sbPlayer.sendMessages("ferocity triggered; strikes: " + strikes);
@@ -76,6 +80,8 @@ public final class Calculator {
             strikes = (int) Math.floor(ferocity / 100f);
             if(Utility.generateRandomNumber(remainingFerocity, 100) == 100) strikes++;
         }
+
+        if(strikes > 50) strikes = 50;
 
         for(int i = 0; i <= strikes; i++) {
             if(sbPlayer.getPlayerData().debugStateMessages) sbPlayer.sendMessages("ferocity triggered; strikes: " + strikes);

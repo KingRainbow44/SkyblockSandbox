@@ -61,9 +61,9 @@ public class SkyblockItemData {
      * Abilities
      */
 
-    public boolean hasAbility = false;
-    public boolean hasSecondAbility = false;
-    public boolean hasThirdAbility = false;
+    public boolean hasAbility = false; public boolean hideAbilityTag = false;
+    public boolean hasSecondAbility = false; public boolean hideAbilityTag2 = false;
+    public boolean hasThirdAbility = false; public boolean hideAbilityTag3 = false;
 
     public SkyblockPetAbility petAbility1 = null;
     public SkyblockPetAbility petAbility2 = null;

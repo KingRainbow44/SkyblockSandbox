@@ -20,6 +20,7 @@ import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormChestplate;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormHelmet;
 import tk.skyblocksandbox.skyblocksandbox.item.armor.storm.StormLeggings;
 import tk.skyblocksandbox.skyblocksandbox.item.bows.Bonemerang;
+import tk.skyblocksandbox.skyblocksandbox.item.bows.JujuShortbow;
 import tk.skyblocksandbox.skyblocksandbox.item.misc.SkyblockMenu;
 import tk.skyblocksandbox.skyblocksandbox.item.misc.TheCarottesCarrot;
 import tk.skyblocksandbox.skyblocksandbox.item.pets.GenericPet;
@@ -37,6 +38,7 @@ public final class SkyblockItemFactory {
         registerItem(new Hyperion()); registerItem(new Valkyrie());
         registerItem(new MidasStaff());
         registerItem(new Bonemerang());
+        registerItem(new JujuShortbow());
         registerItem(new AxeOfTheShredded());
         registerItem(new GiantsSword());
         registerItem(new ShadowFury());

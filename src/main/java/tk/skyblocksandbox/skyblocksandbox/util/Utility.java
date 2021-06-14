@@ -8,6 +8,7 @@ import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.LocaleLanguage;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
@@ -395,6 +396,26 @@ public final class Utility {
         }
 
         return Integer.parseInt(result);
+    }
+
+    public static Location floor(Location location) {
+//        Location finalLocation = location.clone();
+//
+//        while(finalLocation.getBlock().getType().isAir() && finalLocation.getY() < 256) {
+//            finalLocation.add(0, 1, 0);
+//        }
+//
+//        if(finalLocation.getY() == location.getY()) {
+//            finalLocation.add(0, 1, 0);
+//        }
+//
+//        if(finalLocation.getY() == 255) {
+//            while(finalLocation.getBlock().getType().isAir() && finalLocation.getY() > 0) {
+//                finalLocation.subtract(0, 1, 0);
+//            }
+//        }
+//
+/*        return finalLocation; TODO: Fix & Complete {Utility#floor()}*/ return location;
     }
 
 }

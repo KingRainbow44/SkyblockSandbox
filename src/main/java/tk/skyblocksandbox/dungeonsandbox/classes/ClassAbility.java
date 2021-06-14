@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.dungeonsandbox.classes;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -12,6 +13,7 @@ import java.util.UUID;
 public abstract class ClassAbility implements Listener {
 
     private final Map<UUID, Integer> cooldownArray = new HashMap<>();
+    private final Map<UUID, Boolean> abilityEnabled = new HashMap<>();
 
     /**
      * @param abilityName The name of the ability to be shown on the class select screen.
@@ -34,15 +36,29 @@ public abstract class ClassAbility implements Listener {
      * Called on right/left click air & right/left click block.
      * @param event The player event. Contains the player variable.
      */
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {}
+    public void interact(PlayerInteractEvent event) {}
 
     /**
      * Triggers when a player moves. Counts on the X, Y, Z & Pitch + Yaw.
      * @param event The player event. Contains the player variable.
      */
+    public void move(PlayerMoveEvent event) {}
+
     @EventHandler
-    public void onMove(PlayerMoveEvent event) {}
+    public final void onInteract(PlayerInteractEvent event) {
+        if(abilityEnabled.getOrDefault(
+                event.getPlayer().getUniqueId(),
+                false
+        )) interact(event);
+    }
+
+    @EventHandler
+    public final void onMove(PlayerMoveEvent event) {
+        if(abilityEnabled.getOrDefault(
+                event.getPlayer().getUniqueId(),
+                false
+        )) move(event);
+    }
 
     /**
      * Gets the array used for storing ability cooldowns.
@@ -50,6 +66,14 @@ public abstract class ClassAbility implements Listener {
      */
     public final Map<UUID, Integer> getCooldownArray() {
         return cooldownArray;
+    }
+
+    public final void enableAbility(Player player) {
+        abilityEnabled.put(player.getUniqueId(), true);
+    }
+
+    public final void disableAbility(Player player) {
+        abilityEnabled.put(player.getUniqueId(), false);
     }
 
 }

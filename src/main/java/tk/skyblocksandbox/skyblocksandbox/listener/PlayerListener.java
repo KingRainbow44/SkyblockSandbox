@@ -10,6 +10,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import tk.skyblocksandbox.dungeonsandbox.player.DungeonPlayer;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -45,5 +46,4 @@ public final class PlayerListener implements Listener {
     public void onHunger(FoodLevelChangeEvent event) {
         event.setCancelled(true);
     }
-
 }

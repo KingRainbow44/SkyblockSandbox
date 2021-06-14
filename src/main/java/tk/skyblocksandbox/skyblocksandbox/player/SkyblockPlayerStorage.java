@@ -39,11 +39,11 @@ public final class SkyblockPlayerStorage {
                 ItemSerializer.convertItemStackToString((ItemStack) item)
         ));
 
-        inventoryStorage.putInventory(sbPlayer.getBukkitPlayer().getInventory());
-        inventoryStorage.getItemsInStorage().forEach((slot, item) -> storageData.addProperty(
-                "inventory_" + slot,
-                (String) item
-        ));
+//        inventoryStorage.putInventory(sbPlayer.getBukkitPlayer().getInventory());
+//        inventoryStorage.getItemsInStorage().forEach((slot, item) -> storageData.addProperty(
+//                "inventory_" + slot,
+//                (String) item
+//        ));
 
         return Base64.getUrlEncoder().encodeToString(storageData.toString().getBytes());
     }
@@ -81,15 +81,15 @@ public final class SkyblockPlayerStorage {
                 }
             }
 
-            if(key != null || key.contains("inventory_")) {
-                if(val instanceof String) {
-                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack((String) val));
-                } else if (val instanceof JsonPrimitive) {
-                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack(
-                            ((JsonPrimitive) val).getAsString()
-                    ));
-                }
-            } inventoryStorage.restoreInventory(sbPlayer.getBukkitPlayer().getInventory());
+//            if(key != null || key.contains("inventory_")) {
+//                if(val instanceof String) {
+//                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack((String) val));
+//                } else if (val instanceof JsonPrimitive) {
+//                    inventoryStorage.putItemIntoStorage(slot, ItemSerializer.convertStringToItemStack(
+//                            ((JsonPrimitive) val).getAsString()
+//                    ));
+//                }
+//            } inventoryStorage.restoreInventory(sbPlayer.getBukkitPlayer().getInventory());
         });
     }
 

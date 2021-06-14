@@ -53,10 +53,10 @@ public final class InventoryStorage implements IStoragePage {
      */
 
     public void putInventory(PlayerInventory inventory) {
-        String[] array = ItemSerializer.playerInventoryToBase64(inventory);
-
-        playerInventory = array[0];
-        armorInventory = array[1];
+//        String[] array = ItemSerializer.playerInventoryToBase64(inventory);
+//
+//        playerInventory = array[0];
+//        armorInventory = array[1];
     }
 
     public void restoreInventory(PlayerInventory inventory) {

@@ -1,12 +1,18 @@
 package tk.skyblocksandbox.dungeonsandbox.dungeon;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import tk.skyblocksandbox.dungeonsandbox.catacombs.FloorOne;
+import tk.skyblocksandbox.dungeonsandbox.catacombs.FloorSix;
+import tk.skyblocksandbox.dungeonsandbox.generator.VoidGenerator;
 import tk.skyblocksandbox.dungeonsandbox.util.Generation;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+import tk.skyblocksandbox.skyblocksandbox.util.Schematic;
+import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.util.Map;
 
@@ -83,6 +89,8 @@ public abstract class Dungeon {
                 switch(dungeonFloor) {
                     case 1:
                         return new FloorOne();
+                    case 6:
+                        return new FloorSix();
                 }
                 return null;
         }
@@ -95,7 +103,46 @@ public abstract class Dungeon {
     /**
      * Called when the party first requests a dungeon entrance.
      */
-    public abstract void initializeDungeon();
+    public void initializeDungeon() {
+        dungeonToken = "dungeon_" + Utility.generateRandomString();
+        WorldCreator worldCreator = new WorldCreator(dungeonToken);
+        worldCreator.generator(new VoidGenerator());
+
+        org.bukkit.World bukkitWorld = worldCreator.createWorld();
+        com.sk89q.worldedit.world.World world = BukkitAdapter.adapt(bukkitWorld);
+
+        Generation generation = new Generation();
+
+        assert bukkitWorld != null;
+        Utility.applyGamerules(bukkitWorld);
+
+        boolean pasted;
+
+        // Entrance
+        pasted = Schematic.pasteSchematic(
+                new Location(bukkitWorld, 0, 108, 0),
+                "entrance", false
+        ); if(!pasted) {
+            Bukkit.getLogger().warning("Unable to paste entrance.schem, check CONSOLE for more details.");
+            return;
+        } entranceGenerated = true;
+
+        // Other Rooms
+        for(int i = 1; i <= roomsTotal; i++) {
+            int z = i * 32;
+            Generation.AvailableRooms room = generation.generateRandomRoom(this);
+            pasted = Schematic.pasteSchematic(
+                    new Location(bukkitWorld, 0, 109, z),
+                    generation.enumToSchematic(room), false
+            ); if(!pasted) {
+                Bukkit.getLogger().warning("Unable to paste " + Utility.changeCase(room.name(), false) + ".schem, check CONSOLE for more details.");
+                return;
+            }
+        }
+
+        // Finish Generation
+        dungeonGenerationFinished = true;
+    }
 
     /**
      * After beating the room at the end of the dungeon, this is called.

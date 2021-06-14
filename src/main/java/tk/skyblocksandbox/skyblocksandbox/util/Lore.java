@@ -167,7 +167,7 @@ public final class Lore {
          * Abilities
          */
         boolean addBreak3 = false;
-        if(item.getItemData().hasAbility) {
+        if(item.getItemData().hasAbility && !item.getItemData().hideAbilityTag) {
             addBreak3 = true;
             String[] lines = item.getItemData().abilityDescription.split("\n");
             switch(item.getItemData().abilityTrigger) {
@@ -201,7 +201,7 @@ public final class Lore {
             }
         }
 
-        if(item.getItemData().hasSecondAbility) {
+        if(item.getItemData().hasSecondAbility && !item.getItemData().hideAbilityTag2) {
             finalLore.add(line, " "); line++;
 
             String[] lines = item.getItemData().abilityDescription2.split("\n");
@@ -234,7 +234,7 @@ public final class Lore {
             }
         }
 
-        if(item.getItemData().hasThirdAbility) {
+        if(item.getItemData().hasThirdAbility && !item.getItemData().hideAbilityTag3) {
             finalLore.add(line, " "); line++;
 
             String[] lines = item.getItemData().abilityDescription3.split("\n");

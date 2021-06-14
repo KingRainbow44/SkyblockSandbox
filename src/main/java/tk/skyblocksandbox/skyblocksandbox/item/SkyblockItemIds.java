@@ -21,6 +21,7 @@ public final class SkyblockItemIds {
      * Bows
      */
     public static final String BONEMERANG = "BONE_BOOMERANG";
+    public static final String JUJU_SHORTBOW = "JUJU_SHORTBOW";
 
     /*
      * Armors

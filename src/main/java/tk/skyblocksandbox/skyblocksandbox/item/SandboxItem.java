@@ -138,6 +138,7 @@ public abstract class SandboxItem {
      */
 
     public void ability(int action, SkyblockPlayer player) {} // A 'null' method because not all items have an ability.
+        public boolean shouldCancel() { return false; } // Should the interact event be canceled after ability?
 
     public void armorAbility(SkyblockPlayer player) {} // A 'null' method because not all armor pieces have an ability.
 

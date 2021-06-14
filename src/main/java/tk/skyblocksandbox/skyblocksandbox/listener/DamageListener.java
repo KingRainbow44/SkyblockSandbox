@@ -1,14 +1,18 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.event.NPCDamageEvent;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitRunnable;
+import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.entity.SandboxEntity;
 import tk.skyblocksandbox.skyblocksandbox.npc.SkyblockNPC;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -63,6 +67,35 @@ public final class DamageListener implements Listener {
 
                 event.setCancelled(true);
                 Calculator.damage(sbDamagee, sbDamager, true);
+            } else if (damager instanceof Projectile && damagee instanceof Player && !CitizensAPI.getNPCRegistry().isNPC(damagee)) {
+                SkyblockPlayer sbDamagee = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
+                ProjectileSource source = ((Projectile) damager).getShooter();
+
+                event.setCancelled(true);
+                if(source instanceof Player) {
+                    Player pSource = (Player) source;
+                    if(pSource.equals(damagee)) return;
+
+                    SkyblockPlayer sbSource = SkyblockPlayer.getSkyblockPlayer(pSource);
+
+                    Calculator.damage(sbDamagee, sbSource, true);
+                } else if (source instanceof LivingEntity) {
+                    LivingEntity entity = (LivingEntity) source;
+                    if(entity.hasMetadata("skyblockEntityId")) {
+                        SandboxEntity sbDamager = SandboxEntity.getSandboxEntity(entity);
+                        Calculator.damage(sbDamagee, sbDamager.getEntityData().damage, true);
+                    }
+                }
+            } else if (damager instanceof Projectile && damagee.hasMetadata("skyblockEntityId")) {
+                ProjectileSource source = ((Projectile) damager).getShooter();
+                if(!(source instanceof Player)) return;
+
+                Player pSource = (Player) source;
+                SkyblockPlayer sbSource = SkyblockPlayer.getSkyblockPlayer(pSource);
+                SandboxEntity sbDamagee = SandboxEntity.getSandboxEntity(damagee);
+
+                event.setCancelled(true);
+                Calculator.damage(sbDamagee, sbSource, true);
             } else {
                 if(damagee instanceof Player) {
                     SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer((Player) damagee);
@@ -125,6 +158,21 @@ public final class DamageListener implements Listener {
 
         event.setDamage(0);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        Projectile entity = event.getEntity();
+        if(entity instanceof Arrow) {
+            entity.setBounce(false);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    entity.remove();
+                }
+            }.runTaskLater(SkyblockSandbox.getInstance(), 3*20L);
+        }
     }
 
 }

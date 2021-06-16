@@ -1,8 +1,12 @@
 package tk.skyblocksandbox.skyblocksandbox.runnable;
 
 import net.citizensnpcs.api.CitizensAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import tk.skyblocksandbox.skyblocksandbox.npc.traits.SkyblockEntityTrait;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 import tk.skyblocksandbox.skyblocksandbox.util.Calculator;

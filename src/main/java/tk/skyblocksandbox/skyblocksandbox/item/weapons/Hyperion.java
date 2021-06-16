@@ -150,7 +150,7 @@ public final class Hyperion extends SandboxItem {
         if(sbPlayer.getPlayerData().canUseWitherShield) {
             int absorption = (int) Math.round(sbPlayer.getPlayerData().getFinalCritDamage() * 1.5);
 
-            sbPlayer.getPlayerData().damageIncrease += 0.1;
+            sbPlayer.getPlayerData().damageReduction += 0.1;
             sbPlayer.getPlayerData().addAbsorptionHealth(absorption);
             sbPlayer.getPlayerData().canUseWitherShield = false;
 

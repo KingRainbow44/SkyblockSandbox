@@ -97,7 +97,7 @@ public abstract class Dungeon {
     }
 
     /*
-     * Abstract Methods
+     * Override-able methods.
      */
 
     /**
@@ -145,14 +145,15 @@ public abstract class Dungeon {
     }
 
     /**
+     * Called when a dungeon instance breaks.
+     */
+    public void destroy(boolean forcibly) {
+        if(dungeonToken.equals("")) return;
+    }
+
+    /**
      * After beating the room at the end of the dungeon, this is called.
      */
     public abstract void initializeBossRoom();
-
-    /**
-     * Called when a dungeon instance breaks.
-     * This is a "force-close," to destroy the instance correctly, use DungeonInstance#remove()
-     */
-    public abstract void destroy(boolean forcibly);
 
 }

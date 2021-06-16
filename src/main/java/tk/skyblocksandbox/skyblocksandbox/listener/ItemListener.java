@@ -7,17 +7,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.event.ArmorEquipEvent;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItem;
@@ -149,6 +152,18 @@ public final class ItemListener implements Listener {
                 sbNew.onWear(sbPlayer);
             }
         }
+    }
+
+    @EventHandler
+    public void onHit(ProjectileHitEvent event) {
+        if(!(event.getEntity() instanceof Arrow)) return;
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                event.getEntity().remove();
+            }
+        }.runTaskLater(SkyblockSandbox.getInstance(), 20L);
     }
 
 }

@@ -165,13 +165,6 @@ public final class DamageListener implements Listener {
         Projectile entity = event.getEntity();
         if(entity instanceof Arrow) {
             entity.setBounce(false);
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    entity.remove();
-                }
-            }.runTaskLater(SkyblockSandbox.getInstance(), 3*20L);
         }
     }
 

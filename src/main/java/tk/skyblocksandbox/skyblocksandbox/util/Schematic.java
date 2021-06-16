@@ -30,6 +30,11 @@ public final class Schematic {
         String schematicFinal = SkyblockSandbox.getInstance().getDataFolder().getAbsolutePath() + "/schematics/" + schematicName + ".schem";
         File schematicFile = new File(schematicFinal);
 
+        if(location.getWorld() == null) {
+            Bukkit.getLogger().warning("Unable to paste schematic " + schematicName + ".schem: Location provided does not contain world.");
+            return false;
+        }
+
         if(!schematicFile.exists()) {
             Bukkit.getLogger().warning("Unable to paste schematic " + schematicName + ".schem: Cannot find file.");
             return false;
@@ -47,15 +52,11 @@ public final class Schematic {
 
             com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(location.getWorld());
 
-            final Operation[] operation = new Operation[1];
-            final EditSession[] editSession = new EditSession[1];
-            new Thread(() -> {
-                editSession[0] = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
-                operation[0] = new ClipboardHolder(clipboard).createPaste(editSession[0]).to(BlockVector3.at(location.getX(), location.getY(), location.getZ())).ignoreAirBlocks(true).build();
+            EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
+            Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(BlockVector3.at(location.getX(), location.getY(), location.getZ())).ignoreAirBlocks(true).build();
 
-                Operations.complete(operation[0]);
-                editSession[0].flushSession();
-            }).start();
+            Operations.complete(operation);
+            editSession.flushSession();
         } catch (IOException | WorldEditException e) {
             Bukkit.getLogger().warning("Unable to paste schematic " + schematicName + ".schem: Exception caught. Check below for stack-trace.");
             e.printStackTrace();
@@ -90,15 +91,11 @@ public final class Schematic {
             ClipboardHolder paste = new ClipboardHolder(clipboard);
             paste.setTransform(rotation);
 
-            final Operation[] operation = new Operation[1];
-            final EditSession[] editSession = new EditSession[1];
-            new Thread(() -> {
-                editSession[0] = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
-                operation[0] = new ClipboardHolder(clipboard).createPaste(editSession[0]).to(BlockVector3.at(location.getX(), location.getY(), location.getZ())).ignoreAirBlocks(true).build();
-            }).start();
+            EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
+            Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(BlockVector3.at(location.getX(), location.getY(), location.getZ())).ignoreAirBlocks(true).build();
 
-            Operations.complete(operation[0]);
-            editSession[0].flushSession();
+            Operations.complete(operation);
+            editSession.flushSession();
         } catch (IOException | WorldEditException e) {
             Bukkit.getLogger().warning("Unable to paste schematic " + schematicName + ".schem: Exception caught. Check below for stack-trace.");
             e.printStackTrace();

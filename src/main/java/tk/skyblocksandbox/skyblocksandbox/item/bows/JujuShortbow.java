@@ -62,19 +62,23 @@ public final class JujuShortbow extends SandboxItem {
                 Player player = sbPlayer.getBukkitPlayer();
 
                 Arrow arrow = player.launchProjectile(Arrow.class); arrow.setBounce(false);
+                arrow.setVelocity(
+                        player.getEyeLocation().getDirection()
+                                .multiply(1.5)
+                );
 
                 Arrow arrow2 = player.launchProjectile(Arrow.class); arrow2.setBounce(false);
                 arrow2.setVelocity(
                         player.getEyeLocation().getDirection()
                                 .rotateAroundY(0.05)
-                                .multiply(arrow.getVelocity().length())
+                                .multiply(1.5)
                 );
 
                 Arrow arrow3 = player.launchProjectile(Arrow.class); arrow3.setBounce(false);
                 arrow3.setVelocity(
                         player.getEyeLocation().getDirection()
                                 .rotateAroundY(-0.05)
-                                .multiply(arrow.getVelocity().length())
+                                .multiply(1.5)
                 );
         }
     } @Override public boolean shouldCancel() { return true; }

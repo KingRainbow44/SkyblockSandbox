@@ -19,6 +19,8 @@ import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 public final class PlayerListener implements Listener {
 
+
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

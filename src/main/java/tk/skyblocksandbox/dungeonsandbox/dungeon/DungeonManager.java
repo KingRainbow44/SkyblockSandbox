@@ -28,7 +28,8 @@ public final class DungeonManager {
             );
         }
 
-        dungeonType.initializeDungeon();
+        new Thread(dungeonType::initializeDungeon).start();
+
         dungeonType.warpParty(party);
     }
 

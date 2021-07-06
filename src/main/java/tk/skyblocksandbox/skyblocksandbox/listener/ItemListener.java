@@ -1,6 +1,5 @@
 package tk.skyblocksandbox.skyblocksandbox.listener;
 
-import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
@@ -33,9 +32,7 @@ public final class ItemListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        ICustomPlayer customPlayer = SkyblockSandbox.getApi().getPlayerManager().isCustomPlayer(player);
-        if(!(customPlayer instanceof SkyblockPlayer)) return;
-        SkyblockPlayer sbPlayer = (SkyblockPlayer) customPlayer;
+        SkyblockPlayer sbPlayer = SkyblockPlayer.getSkyblockPlayer(player);
 
         int ability;
         switch(event.getAction()) {

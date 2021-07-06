@@ -40,6 +40,15 @@ public final class PartyInstance {
             return;
         }
 
+        if(inviter == toInvite) {
+            inviter.sendMessages(
+                    "&9&m-----------------------------",
+                    "&cYou can't invite yourself!",
+                    "&9&m-----------------------------"
+            );
+            return;
+        }
+
         invitedPlayers.add(toInvite);
 
         TextComponent text = new TextComponent(" Click here to join! ");
@@ -85,7 +94,7 @@ public final class PartyInstance {
         for(SkyblockPlayer member : partyMembers) {
             member.sendMessages(
                     "&9&m-----------------------------",
-                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(inviter).getRankNameTagFormat(), inviter) + " &einvited&e " + Utility.getRankOfPlayer(toInvite).getRankNameTagFormat() + " &eto the party! They",
+                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(inviter).getRankNameTagFormat(), inviter) + " &einvited&e " + PermitableRank.formatNameTag(Utility.getRankOfPlayer(toInvite).getRankNameTagFormat(), toInvite) + " &eto the party! They",
                     "&ehave &c60 &eseconds to accept.",
                     "&9&m-----------------------------"
             );
@@ -105,7 +114,7 @@ public final class PartyInstance {
         for(SkyblockPlayer member : partyMembers) {
             member.sendMessages(
                     "&9&m-----------------------------",
-                    "&e" + player.getBukkitPlayer().getDisplayName() + " joined the party.",
+                    "&e" + PermitableRank.formatNameTag(Utility.getRankOfPlayer(player).getRankNameTagFormat(), player) + " joined the party.",
                     "&9&m-----------------------------"
             );
         }
@@ -130,7 +139,7 @@ public final class PartyInstance {
             if(member == player) return;
             member.sendMessages(
                     "&9&m-----------------------------",
-                    "&e" + player.getBukkitPlayer().getDisplayName() + " has left the party.",
+                    "&e" + PermitableRank.formatNameTag(Utility.getRankOfPlayer(player).getRankNameTagFormat(), player) + " has left the party.",
                     "&9&m-----------------------------"
             );
         }
@@ -150,7 +159,7 @@ public final class PartyInstance {
 
         toKick.sendMessages(
                 "&9&m-----------------------------",
-                "&eYou have been kicked from the party by " + kicker.getBukkitPlayer().getDisplayName(),
+                "&eYou have been kicked from the party by " + PermitableRank.formatNameTag(Utility.getRankOfPlayer(kicker).getRankNameTagFormat(), kicker),
                 "&9&m-----------------------------"
         );
 
@@ -160,7 +169,7 @@ public final class PartyInstance {
         for(SkyblockPlayer member : partyMembers) {
             member.sendMessages(
                     "&9&m-----------------------------",
-                    "&e" + toKick.getBukkitPlayer().getDisplayName() + " has been removed from the party.",
+                    "&e" + PermitableRank.formatNameTag(Utility.getRankOfPlayer(toKick).getRankNameTagFormat(), toKick) + " has been removed from the party.",
                     "&9&m-----------------------------"
             );
         }

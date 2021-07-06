@@ -2,7 +2,7 @@ package tk.skyblocksandbox.dungeonsandbox.command;
 
 import org.bukkit.command.CommandSender;
 import tk.skyblocksandbox.dungeonsandbox.DungeonsModule;
-import tk.skyblocksandbox.dungeonsandbox.dungeon.Dungeon;
+import tk.skyblocksandbox.dungeonsandbox.deprecated.Dungeon;
 import tk.skyblocksandbox.partyandfriends.party.PartyInstance;
 import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
@@ -43,7 +43,7 @@ public final class JoinDungeonCommand extends SkyblockCommand {
 
                         try {
                             int floor = Integer.parseInt(args[1]);
-                            DungeonsModule.getDungeonManager().createNewDungeon(Dungeon.getDungeon(Dungeon.CATACOMBS, floor), party);
+//                            DungeonsModule.getDungeonManager().createNewDungeon(Dungeon.getDungeon(Dungeon.CATACOMBS, floor), party); // TODO: Fix when available.
                         } catch (NumberFormatException e) {
                             sbPlayer.sendMessage("&cInvalid dungeon floor! Usage: &e/joindungeon catacombs {1}");
                             return true;

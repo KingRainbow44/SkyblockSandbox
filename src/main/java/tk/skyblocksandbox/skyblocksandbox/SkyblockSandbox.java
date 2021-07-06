@@ -185,7 +185,7 @@ public final class SkyblockSandbox extends JavaPlugin {
 
     private void initializeGenericCommands() {
         registerCommand(new GenericCommand(
-                "restart", "A safer restart command for SB Sandbox.", "minecraft.command.stop", GenericCommand.SenderType.ALL, (sender, args) -> {
+                "safestop", "A safer restart command for SB Sandbox.", "minecraft.command.stop", GenericCommand.SenderType.ALL, (sender, args) -> {
                     if(!sender.isOp()) {
                         return false;
                     }

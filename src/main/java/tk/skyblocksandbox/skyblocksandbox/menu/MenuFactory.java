@@ -5,6 +5,7 @@ import fr.minuskube.inv.content.InventoryProvider;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
 import tk.skyblocksandbox.skyblocksandbox.menu.providers.MainSkyblockMenu;
 import tk.skyblocksandbox.skyblocksandbox.menu.providers.PetModifierMenu;
+import tk.skyblocksandbox.skyblocksandbox.menu.providers.PetsSkyblockMenu;
 import tk.skyblocksandbox.skyblocksandbox.menu.providers.SkyblockSettingsMenu;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
@@ -35,6 +36,13 @@ public final class MenuFactory {
                 9, 6,
                 "menu.skyblock_menu_item_creator.pet",
                 "Pet Creator"
+        ));
+
+        registerMenu(MenuList.SKYBLOCK_MENU_PETS, buildFromProvider(
+                new PetsSkyblockMenu(), MenuList.SKYBLOCK_MENU_MAIN,
+                9, 6,
+                "menu.skyblock_menu_pets",
+                "Pets"
         ));
     }
 
@@ -70,9 +78,15 @@ public final class MenuFactory {
         menu.open(sbPlayer.getBukkitPlayer());
     }
 
+    public void serveMenu(SkyblockPlayer sbPlayer, String menuType) {
+        SmartInventory menu = menus.getOrDefault(MenuList.valueOf(menuType), null);
+        menu.open(sbPlayer.getBukkitPlayer());
+    }
+
     public enum MenuList {
         SKYBLOCK_MENU_MAIN,
         SKYBLOCK_MENU_SETTINGS,
+        SKYBLOCK_MENU_PETS,
 
         SKYBLOCK_MENU_ITEM_CREATOR,
         SKYBLOCK_MENU_PET_CREATOR

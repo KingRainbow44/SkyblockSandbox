@@ -51,6 +51,16 @@ public final class PermitableRank {
         return colorize(prefix);
     }
 
+    public String getPlayerName(String inheritFrom) {
+        String finalString = "";
+
+        finalString += getPrefix().charAt(0);
+        finalString += getPrefix().charAt(1);
+        finalString += inheritFrom;
+
+        return colorize(finalString);
+    }
+
     public static String formatNameTag(String format, Player player) {
         return format.replaceAll("PLAYER", player.getDisplayName());
     }

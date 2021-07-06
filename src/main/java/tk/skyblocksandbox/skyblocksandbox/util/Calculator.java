@@ -110,6 +110,8 @@ public final class Calculator {
     }
 
     public static void damage(SkyblockPlayer sbPlayer, float damage, boolean doKnockback) {
+        if(sbPlayer == null) return;
+
         Player player = sbPlayer.getBukkitPlayer();
 
         double finalDamage = damage;
@@ -140,6 +142,8 @@ public final class Calculator {
     }
 
     public static long damage(SkyblockPlayer sbTarget, SkyblockPlayer sbPlayer, boolean doKnockback) {
+        if(sbTarget == null) return 0;
+
         /*
          * Variables
          */
@@ -247,6 +251,8 @@ public final class Calculator {
     }
 
     public static long damage(SandboxEntity entity, float damage, boolean doKnockback) {
+        if(entity == null) return 0;
+
         double finalDamage = damage;
         float damageReduction = entity.getEntityData().defense / (entity.getEntityData().defense + 100);
 
@@ -277,6 +283,8 @@ public final class Calculator {
     }
 
     public static long damage(SandboxEntity entity, SkyblockPlayer sbPlayer, boolean doKnockback) {
+        if(entity == null) return 0;
+
         /*
          * Variables
          */
@@ -391,6 +399,8 @@ public final class Calculator {
     }
 
     public static long damage(SandboxEntity entity, SkyblockPlayer sbPlayer, boolean doKnockback, int multiplier, float damageCap) {
+        if(entity == null) return 0;
+
         /*
          * Variables
          */

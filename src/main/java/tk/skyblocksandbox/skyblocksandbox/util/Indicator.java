@@ -19,6 +19,10 @@ public final class Indicator {
             throw new NullPointerException("Location does not contain a Bukkit world.");
         }
 
+        if(indicatorDamage == 0) {
+            return;
+        }
+
         World world = location.getWorld();
         ArmorStand armorStand = (ArmorStand) world.spawnEntity(location.add(
                 Utility.generateRandomNumber(-1, 1),

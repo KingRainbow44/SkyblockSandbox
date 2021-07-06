@@ -9,7 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
 import tk.skyblocksandbox.partyandfriends.PartyModule;
 import tk.skyblocksandbox.permitable.rank.PermitableRank;
+import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocation;
 import tk.skyblocksandbox.skyblocksandbox.item.SandboxItemStack;
+import tk.skyblocksandbox.skyblocksandbox.pet.Pet;
 import tk.skyblocksandbox.skyblocksandbox.util.Utility;
 
 import java.nio.charset.StandardCharsets;
@@ -24,10 +26,13 @@ public final class SkyblockPlayerData {
      */
     public int coins;
     public int bits;
-    public int location;
     public int currentHealth = 100;
     public int absorptionHealth = 0;
     public int currentMana = 100;
+    public SkyblockLocation location = SkyblockLocation.VILLAGE;
+
+    // Null is no pet.
+    public Pet selectedPet = null;
 
     /*
      * Increase by Percentage Stats (special stats)

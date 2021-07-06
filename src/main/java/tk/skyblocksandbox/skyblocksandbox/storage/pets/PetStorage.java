@@ -58,6 +58,10 @@ public final class PetStorage implements IStoragePage {
         return storage;
     }
 
+    public List<ItemStack> getRawPets() {
+        return pets;
+    }
+
     /**
      * @param item The pet to add to the storage.
      */

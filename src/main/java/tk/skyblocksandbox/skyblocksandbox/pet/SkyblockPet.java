@@ -24,8 +24,8 @@ public abstract class SkyblockPet extends SandboxItem {
     }
 
     @Override
-    public final void ability(int trigger, SkyblockPlayer sbPlayer) {
-        if(trigger != RIGHT_CLICK_TRIGGER) return;
+    public void ability(int trigger, SkyblockPlayer sbPlayer) {
+        if(trigger != INTERACT_RIGHT_CLICK) return;
 
         SkyblockPlayerStorage storage = sbPlayer.getPlayerData().getPlayerStorage();
         IStoragePage petsMenu = storage.getPetStorage(); if(!(petsMenu instanceof PetStorage)) return;
@@ -35,8 +35,7 @@ public abstract class SkyblockPet extends SandboxItem {
         SkyblockPetInstance petInstance = new SkyblockPetInstance(pet);
 
         ps.addPet(pet);
-
-        pet.setType(Material.AIR);
+        pet.setAmount(0);
 
         sbPlayer.sendMessages("&aAdded " + petInstance.getPetName() + " to your pets menu!");
     }

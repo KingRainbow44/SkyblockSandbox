@@ -1,5 +1,6 @@
 package tk.skyblocksandbox.skyblocksandbox.command.all;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import tk.skyblocksandbox.skyblocksandbox.command.SkyblockCommand;
 import tk.skyblocksandbox.skyblocksandbox.menu.MenuFactory;
 import tk.skyblocksandbox.skyblocksandbox.pet.SkyblockPetInstance;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
+import tk.skyblocksandbox.skyblocksandbox.storage.pets.PetStorage;
 
 public final class PetCommand extends SkyblockCommand {
 
@@ -59,6 +61,12 @@ public final class PetCommand extends SkyblockCommand {
                         }
 
                         SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, MenuFactory.MenuList.SKYBLOCK_MENU_PET_CREATOR);
+                        return true;
+                    case "debug":
+                        PetStorage pets = (PetStorage) sbPlayer.getPlayerData().getPlayerStorage().getPetStorage();
+                        for(Object value : pets.getRawPets()) {
+                            Bukkit.getLogger().info(value.toString());
+                        }
                         return true;
                 }
 

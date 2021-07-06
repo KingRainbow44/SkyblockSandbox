@@ -3,6 +3,7 @@ package tk.skyblocksandbox.skyblocksandbox.runnable;
 import com.kingrainbow44.customplayer.player.ICustomPlayer;
 import org.bukkit.entity.Player;
 import tk.skyblocksandbox.skyblocksandbox.SkyblockSandbox;
+import tk.skyblocksandbox.skyblocksandbox.area.SkyblockLocation;
 import tk.skyblocksandbox.skyblocksandbox.player.SkyblockPlayer;
 
 public final class RegionCheck implements Runnable {
@@ -27,7 +28,7 @@ public final class RegionCheck implements Runnable {
                 }
 
                 if(worldName.matches(SkyblockSandbox.getConfiguration().dungeonHubWorld)) {
-                    sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_DUNGEON_HUB;
+                    sbPlayer.getPlayerData().location = SkyblockLocation.DUNGEON_HUB;
                     return;
                 }
             }

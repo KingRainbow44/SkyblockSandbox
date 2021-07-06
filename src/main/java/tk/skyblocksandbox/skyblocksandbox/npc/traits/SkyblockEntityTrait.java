@@ -157,6 +157,8 @@ public final class SkyblockEntityTrait extends Trait {
     }
 
     public void onAttach() {
+        if(npc.getEntity() == null) return;
+
         if(npc.getEntity().getType() != EntityType.GHAST) {
             npc.getNavigator().getLocalParameters().attackRange(4.0).attackDelayTicks(15);
         }
@@ -198,16 +200,14 @@ public final class SkyblockEntityTrait extends Trait {
             if(target == null) {
                 target = getNextEntity(32); if(target == null || target.hasMetadata("NPC")) return;
                 getNPC().getNavigator().setTarget(target.getLocation());
-                if(target instanceof LivingEntity) {
-                    ((Monster) getNPC().getEntity()).setTarget((LivingEntity) target);
-                }
             } else {
                 if(target.hasMetadata("NPC")) return;
                 npc.getNavigator().setTarget(target, true);
 
-                if(target instanceof LivingEntity) {
-                    ((Monster) getNPC().getEntity()).setTarget((LivingEntity) target);
-                }
+            }
+
+            if(target instanceof LivingEntity && getNPC().getEntity() instanceof Monster) {
+                ((Monster) getNPC().getEntity()).setTarget((LivingEntity) target);
             }
         }
     }

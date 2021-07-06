@@ -9,35 +9,27 @@ import java.util.Map;
 
 public final class DungeonManager {
 
-    private final Map<PartyInstance, Dungeon> dungeons = new HashMap<>();
+    private final Map<PartyInstance, DungeonInstance> dungeons = new HashMap<>();
 
-    public void createNewDungeon(Dungeon dungeonType, PartyInstance party) {
-        dungeons.put(party, dungeonType);
+    public void createNewDungeon(Dungeon.Types dungeonType, PartyInstance party) {
+        DungeonInstance dungeonInstance = new DungeonInstance(dungeonType, party);
+        dungeons.put(party, dungeonInstance);
 
         try {
             party.sendMessages(
                     "&9&m-----------------------------",
-                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(party.getLeader()).getRankNameTagFormat(), party.getLeader()) + " &eentered &c" + dungeonType.getDungeonName() + "&e, Floor " + Utility.toRomanNumeral(dungeonType.getDungeonFloor()) + "!",
+                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(party.getLeader()).getRankNameTagFormat(), party.getLeader()) + " &eentered &r" + dungeonInstance.getDungeonFriendlyName() + "&e, Floor " + Utility.toRomanNumeral(dungeonInstance.getDungeonFloor()) + "!",
                     "&9&m-----------------------------"
             );
         } catch (Exception e) {
             party.sendMessages(
                     "&9&m-----------------------------",
-                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(party.getLeader()).getRankNameTagFormat(), party.getLeader()) + " &eentered &c" + dungeonType.getDungeonName() + "&e, Floor " + dungeonType.getDungeonFloor() + "!",
+                    PermitableRank.formatNameTag(Utility.getRankOfPlayer(party.getLeader()).getRankNameTagFormat(), party.getLeader()) + " &eentered &r" + dungeonInstance.getDungeonFriendlyName() + "&e, Floor " + dungeonInstance.getDungeonFloor() + "!",
                     "&9&m-----------------------------"
             );
         }
 
-        new Thread(dungeonType::initializeDungeon).start();
-
-        dungeonType.warpParty(party);
-    }
-
-    public void destroy(PartyInstance party, boolean forcibly) {
-        Dungeon dungeon = dungeons.getOrDefault(party, null);
-        if(dungeon == null) return;
-
-        dungeon.destroy(forcibly);
+        dungeonInstance.startDungeon();
     }
 
 }

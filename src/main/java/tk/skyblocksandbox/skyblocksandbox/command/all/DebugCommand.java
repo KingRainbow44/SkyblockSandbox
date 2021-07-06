@@ -177,7 +177,7 @@ public final class DebugCommand extends SkyblockCommand {
                             case "kill":
                                 sbPlayer.sendMessage("&eAttempting to kill all entities...");
                                 for(Entity entity : sbPlayer.getBukkitPlayer().getWorld().getEntities()) {
-                                    if(entity instanceof Player) return true;
+                                    if(entity instanceof Player) continue;
 
                                     if(SkyblockSandbox.getManagement().getEntityManager().getEntity(entity) == null) {
                                         entity.remove();
@@ -191,31 +191,9 @@ public final class DebugCommand extends SkyblockCommand {
                                 sbPlayer.sendMessage("&cInvalid argument. Usage: &e/debug entity check [entity id]");
                                 return true;
                         }
-                    case "warp":
-                        sbPlayer.sendMessage("&7Warping...");
-                        switch(args[1]) {
-                            default:
-                                String worldName = args[1];
-                                World world = Bukkit.getWorld(worldName);
-
-                                if(world == null) {
-                                    WorldCreator worldCreator = new WorldCreator(worldName);
-                                    worldCreator.generator(new VoidGenerator());
-                                    world = worldCreator.createWorld();
-                                }
-
-                                sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_NONE;
-                                sbPlayer.getBukkitPlayer().teleport(new Location(world, 0, 0,0));
-                                return true;
-                            case "village":
-                                sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_VILLAGE;
-                                sbPlayer.getBukkitPlayer().teleport(sbPlayer.getSpawn());
-                                return true;
-                            case "dungeon_hub":
-                                sbPlayer.getPlayerData().location = SkyblockPlayer.SUBLOC_DUNGEON_HUB;
-                                sbPlayer.getBukkitPlayer().teleport(sbPlayer.getSpawn());
-                                return true;
-                        }
+                    case "openmenu":
+                        SkyblockSandbox.getMenuFactory().serveMenu(sbPlayer, args[1]);
+                        return true;
                 }
                 return true;
 

@@ -26,6 +26,7 @@ import tk.skyblocksandbox.skyblocksandbox.item.misc.TheCarottesCarrot;
 import tk.skyblocksandbox.skyblocksandbox.item.pets.GenericPet;
 import tk.skyblocksandbox.skyblocksandbox.item.weapons.*;
 import tk.skyblocksandbox.skyblocksandbox.item.materials.NecronsHandle;
+import tk.skyblocksandbox.skyblocksandbox.pet.pets.BabyYeti;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +60,7 @@ public final class SkyblockItemFactory {
         registerItem(new SkyblockMenu());
         registerItem(new TheCarottesCarrot());
 
-        registerItem(new GenericPet());
+        registerItem(new GenericPet()); registerItem(new BabyYeti());
     }
 
     public void registerItem(SandboxItem item) {

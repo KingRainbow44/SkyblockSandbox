@@ -21,7 +21,7 @@ public final class HubScoreboard extends SkyblockScoreboard {
                     Utility.colorize("&e "),
                     Utility.colorize(" &fEarly Summer 1st"),
                     Utility.colorize(" &70:00 am &e☀"),
-                    Utility.colorize(" &7⏣ " + sbPlayer.getLocation(true)),
+                    Utility.colorize(" &7⏣ " + sbPlayer.getPlayerData().location.getDisplayName()),
                     Utility.colorize("&a "),
                     Utility.colorize("&fPiggy: &6" + Utility.commafy("" + sbPlayer.getCoins())),
                     Utility.colorize("&fBits: &b" + Utility.commafy("" + sbPlayer.getBits())),
@@ -34,7 +34,7 @@ public final class HubScoreboard extends SkyblockScoreboard {
                     Utility.colorize("&e "),
                     Utility.colorize(" &fEarly Summer 1st"),
                     Utility.colorize(" &70:00 am &e☀"),
-                    Utility.colorize(" &7⏣ " + sbPlayer.getLocation(true)),
+                    Utility.colorize(" &7⏣ " + sbPlayer.getPlayerData().location.getDisplayName()),
                     Utility.colorize("&a "),
                     Utility.colorize("&fPiggy: &6" + Utility.commafy("" + sbPlayer.getCoins())),
                     Utility.colorize("&b "),
@@ -53,11 +53,11 @@ public final class HubScoreboard extends SkyblockScoreboard {
             board.set(Utility.colorize("&fPiggy: &6" + Utility.commafy("" + sbPlayer.getCoins())), 4);
 
             board.set(Utility.colorize("&7" + dtf.format(dateTime) + " &8mini1A"), 10);
-            board.set(Utility.colorize(" &7⏣ " + sbPlayer.getLocation(true)), 6);
+            board.set(Utility.colorize(" &7⏣ " + sbPlayer.getPlayerData().location.getDisplayName()), 6);
         } else {
             board.set(Utility.colorize("&fPiggy: &6" + Utility.commafy("" + sbPlayer.getCoins())), 3);
             board.set(Utility.colorize("&7" + dtf.format(dateTime) + " &8mini1A"), 9);
-            board.set(Utility.colorize(" &7⏣ " + sbPlayer.getLocation(true)), 5);
+            board.set(Utility.colorize(" &7⏣ " + sbPlayer.getPlayerData().location.getDisplayName()), 5);
         }
     }
 

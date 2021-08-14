@@ -1,0 +1,32 @@
+##################################
+# Skyblock Sandbox Configuration #
+##################################
+
+# Database Configuration:
+databaseHost: "127.0.0.1"
+databasePort: 3306
+databaseName: "skyblocksandbox"
+initConnectionWithSSL: false
+
+# Database User Configuration:
+databaseUser: "sbsb"
+databasePassword: "defaultPasswordYouShouldChange"
+
+# Public Islands Configuration:
+enablePublicIslands: false
+
+dungeonHubEnabled: false
+theParkEnabled: false
+spidersDenEnabled: false
+theEndEnabled: false
+farmingIslandsEnabled: false
+jerrysWorkshopEnabled: false
+
+# Server Configuration:
+enableDefaultBuilding: false
+oneIslandServer: true
+privateIslandsServer: false
+
+# Content Configuration:
+hubWorld: "hub"
+dungeonHubWorld: "dungeon_hub"

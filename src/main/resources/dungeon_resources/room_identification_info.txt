@@ -1,0 +1,29 @@
+Identifying Dungeon Rooms:
+1. Find paste location. (aka the middle of the schematic, or where the paste should take place)
+2. Check the sign 1 block below the middle. (1 block below the redstone block)
+3. Check the Text1-4 on the sign NBT for data.
+
+Text1:
+The first line contains the floor the room belongs to. This should be "zero" through "seven".
+When generating, if the room is less than the number on the sign, it will ignore the room from generation.
+To bypass this, place: "all" on the line.
+
+"0" - Example.
+
+Text2:
+The second line contains the secrets belonging to that room. This should be a numerical long.
+When playing, this number will be displayed to the user. If the number is 0, the user will be shown "No secrets".
+To bypass this, write an identifier for the room. Examples of this are: "boss", "fairy", "blood".
+
+"boss", "5" - Example.
+
+Text3:
+The third line contains data on how the room can be generated. This should be a series of 4 numerical integers.
+When generating, this number is binary decoded and used to determine if a room can be placed in that location.
+If true, it will paste. If false, it will see if it can rotate the schematic so it is in a valid position. Else, don't paste.
+This is a special line. It cannot be bypassed and should be encoded with the schema: "north, south, east, west", "boolean, boolean, boolean, boolean".
+The 4 numerical integers should represent a byte. Where there are 2 states. 1 = true; 0 = false.
+
+In the chance where the room can be placed in any state, write 1111.
+
+"1001"; Decodes to north, invalid, invalid, west - Example.
